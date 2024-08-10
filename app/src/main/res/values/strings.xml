@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">donona</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_streaming">Streaming</string>
+    <string name="title_account">Account</string>
+    <string name="title_setting">Setting</string>
+    <string name="username_label">Username</string>
+    <string name="email_label">Email</string>
+    <string name="password_label">Password</string>
+    <string name="confirm_password_label">Confirm Password</string>
+
 </resources>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFEBC9"
+    tools:context=".SignupActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="130dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="303dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="donona_logo"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/logo_text"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="29dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username_label"
+            android:labelFor="@id/editTextTextUsername"
+            android:textSize="20sp"/>
+        <EditText
+            android:id="@+id/editTextTextUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:minHeight="50dp"
+            android:inputType="text"
+            android:autofillHints="name"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_label"
+            android:labelFor="@id/editTextTextEmailAddress"
+            android:textSize="20sp"/>
+        <EditText
+            android:id="@+id/editTextTextEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:minHeight="50dp"
+            android:autofillHints="emailAddress"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password_label"
+            android:labelFor="@id/editTextPassword"
+            android:textSize="20sp"/>
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:minHeight="50dp"
+            android:autofillHints="emailAddress"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_password_label"
+            android:labelFor="@id/editTextPasswordConfirm"
+            android:textSize="20sp"/>
+        <EditText
+            android:id="@+id/editTextPasswordConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:minHeight="50dp"
+            android:autofillHints="emailAddress"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/login_navigate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#A17246"
+            android:minHeight="50dp"
+            android:text="Signup"
+            android:onClick="onSignUp"
+            />
+
+        <Button
+            android:id="@+id/button_signin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#ffffff"
+            android:textColor="#000000"
+            android:minHeight="50dp"
+            android:text="Sign in"
+            android:onClick="onSignIn"
+            />
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/logo" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

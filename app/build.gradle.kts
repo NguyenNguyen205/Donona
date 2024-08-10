@@ -1,14 +1,16 @@
 plugins {
     alias(libs.plugins.android.application)
+
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.donona"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.donona"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -43,7 +45,37 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.activity)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Firebase bom (version manager)
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+
+    // Firebase authentication
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+    // Firebase store
+    implementation("com.google.firebase:firebase-firestore")
+
+    // Firebase storage
+    implementation("com.google.firebase:firebase-storage")
+
+    // For facebook authentication
+//    implementation("com.facebook.android:facebook-android-sdk:8.x")
+
+    // Prebuilt Auth UI
+    implementation("com.firebaseui:firebase-ui-auth:7.2.0")
+
+//    implementation("com.facebook.android:facebook-login:latest.release")
+
+    // For credential manager since everything else is deprecated
+//    implementation("androidx.credentials:credentials:1.5.0-alpha04")
+//    implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
+//    implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
 }
+
+
+
