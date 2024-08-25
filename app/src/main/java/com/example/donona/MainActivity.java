@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         // Init auth instance
         mAuth = FirebaseAuth.getInstance();
 
@@ -44,20 +45,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onStart() {
-        Log.v("Test", "Helloworld");
-        // temporarily sign user out every time re run emulator
-//        mAuth.signOut();
         super.onStart();
-        FirebaseUser user = mAuth.getCurrentUser();
 
-        // Direct user to home page if user is sign in, else to login/signup
-        if (user != null) {
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            intent.putExtra("userID", user.getUid());
-            startActivity(intent);
-            return;
-        }
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//        Log.v("Test", "Helloworld");
+//        temporarily sign user out every time re run emulator
+//        mAuth.signOut();
+//        FirebaseUser user = mAuth.getCurrentUser();
+//
+//        // Direct user to home page if user is sign in, else to login/signup
+//        if (user != null) {
+//            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+//            intent.putExtra("userID", user.getUid());
+//            startActivity(intent);
+//            return;
+//        }
+//        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+//        return;
+
+        startActivity(new Intent(MainActivity.this, HomeActivity.class));
         return;
     }
 }

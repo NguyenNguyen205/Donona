@@ -108,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Login successfully");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d(TAG, user.toString());
                             handleSuccessAuthentication(user);
                         }
                         else {

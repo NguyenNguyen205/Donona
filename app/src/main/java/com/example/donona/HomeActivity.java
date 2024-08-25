@@ -1,5 +1,6 @@
 package com.example.donona;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -12,12 +13,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -35,7 +35,25 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         db = FirebaseFirestore.getInstance();
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            // can't use switch case due to non constant id
+            final int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                return true;
+            }
+            if (itemId == R.id.navigation_streaming) {
+                startActivity(new Intent(HomeActivity.this, StreamingActivity.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
+
     }
+
 
     @Override
     protected void onStart() {

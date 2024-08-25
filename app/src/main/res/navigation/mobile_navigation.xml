@@ -5,21 +5,25 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
-    <fragment
+    <activity
         android:id="@+id/navigation_home"
-        android:name="com.example.donona.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:name="com.example.donona.HomeActivity"
+        />
 
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.donona.ui.dashboard.DashboardFragment"
+    <activity
+        android:id="@+id/navigation_streaming"
         android:label="@string/title_streaming"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.example.donona.StreamingActivity"
+        />
 
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.donona.ui.notifications.NotificationsFragment"
-        android:label="@string/title_account"
-        tools:layout="@layout/fragment_notifications" />
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_account"-->
+<!--        android:label="@string/title_account"/>-->
+
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_setting"-->
+<!--        android:label="@string/title_setting"/>-->
+
+
 </navigation>
