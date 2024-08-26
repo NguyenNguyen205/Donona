@@ -38,11 +38,6 @@ public class StreamingActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_streaming) {
                 return true;
             }
-            if (itemId == R.id.navigation_map) {
-                startActivity(new Intent(StreamingActivity.this, MapActivity.class));
-                finish();
-                return true;
-            }
 
             return false;
         });

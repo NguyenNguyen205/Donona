@@ -11,12 +11,6 @@
         android:icon="@drawable/smart_display_24px"
         android:title="@string/title_streaming" />
 
-    <item
-        android:id="@+id/navigation_map"
-        android:icon="@drawable/sports_esports_24px"
-        android:title="Map"
-        />
-
 <!--    <item-->
 <!--        android:id="@+id/navigation_account"-->
 <!--        android:icon="@drawable/account_circle_24px"-->
