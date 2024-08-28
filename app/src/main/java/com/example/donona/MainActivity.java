@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(new Intent(MainActivity.this, LoginActivity.class));
 //        return;
 
-        startActivity(new Intent(MainActivity.this, VietMapMapViewActivity.class));
+        startActivity(new Intent(MainActivity.this, HomeActivity.class));
         return;
     }
 }

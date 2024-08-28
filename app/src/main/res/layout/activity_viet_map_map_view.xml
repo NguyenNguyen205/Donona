@@ -15,6 +15,29 @@
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="1"/>
+        app:layout_constraintHeight_percent="1">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/return_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/background"
+                android:src="@drawable/keyboard_return_24px"
+                android:onClick="onClickReturn"
+                />
+            <EditText
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Searching"
+                android:layout_toRightOf="@+id/return_button"
+                />
+
+        </RelativeLayout>
+    </vn.vietmap.vietmapsdk.maps.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

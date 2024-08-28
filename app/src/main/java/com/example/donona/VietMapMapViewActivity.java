@@ -1,6 +1,8 @@
 package com.example.donona;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -88,7 +90,7 @@ public class VietMapMapViewActivity extends AppCompatActivity {
                 vietMapGL = map;
 
                 // Add VietMap vector style to VietMapSDK
-                String apiKey = "";
+                String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
                 vietMapGL.setStyle(new Style.Builder()
                         .fromUri("https://maps.vietmap.vn/api/maps/light/styles.json?apikey=" + apiKey)
                 );
@@ -146,4 +148,8 @@ public class VietMapMapViewActivity extends AppCompatActivity {
         mapView.onDestroy();
     }
 
+    public void onClickReturn(View view) {
+        Intent intent = new Intent(VietMapMapViewActivity.this, HomeActivity.class);
+        startActivity(intent);
+    }
 }

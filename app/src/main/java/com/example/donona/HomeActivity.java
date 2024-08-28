@@ -2,6 +2,8 @@ package com.example.donona;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
+    private String TAG = "TEST";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +71,21 @@ public class HomeActivity extends AppCompatActivity {
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot docs = task.getResult();
-                                DocumentSnapshot doc = docs.getDocuments().get(0);
-                                TextView text = (TextView) findViewById(R.id.welcome);
-                                String welcome = "Welcome " + doc.get("username");
-                                text.setText(welcome);
-                            }
+//                            if (task.isSuccessful()) {
+//                                QuerySnapshot docs = task.getResult();
+//                                DocumentSnapshot doc = docs.getDocuments().get(0);
+//                                TextView text = (TextView) findViewById(R.id.welcome);
+//                                String welcome = "Welcome " + doc.get("username");
+//                                text.setText(welcome);
+//                            }
                         }
                     });
         }
+    }
+
+    public void onClickNearMe(View view) {
+        Log.d(TAG, "Near me button click");
+        Intent intent = new Intent(HomeActivity.this, VietMapMapViewActivity.class);
+        startActivity(intent);
     }
 }

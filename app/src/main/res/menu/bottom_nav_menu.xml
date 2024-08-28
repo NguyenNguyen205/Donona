@@ -11,15 +11,15 @@
         android:icon="@drawable/smart_display_24px"
         android:title="@string/title_streaming" />
 
-<!--    <item-->
-<!--        android:id="@+id/navigation_account"-->
-<!--        android:icon="@drawable/account_circle_24px"-->
-<!--        android:title="@string/title_account" />-->
+    <item
+        android:id="@+id/navigation_account"
+        android:icon="@drawable/account_circle_24px"
+        android:title="@string/title_account" />
 
-<!--    <item-->
-<!--        android:id="@+id/navigation_setting"-->
-<!--        android:icon="@drawable/settings_24px"-->
-<!--        android:title="@string/title_setting" />-->
+    <item
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/settings_24px"
+        android:title="@string/title_setting" />
 
 
 
