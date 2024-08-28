@@ -16,6 +16,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // Add two lines below to the repositories block (In setting.gradle file)
+        // Add two lines below to the repositories block (In setting.gradle.kts file)
+        maven {
+            url = uri("https://plugins.gradle.org/m2")
+        }
+        maven {
+            url = uri("https://jitpack.io")
+        }
     }
 }
 

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "934478608997",
+    "project_id": "dononacoffee",
+    "storage_bucket": "dononacoffee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:934478608997:android:cc438d380c31876972a48c",
+        "android_client_info": {
+          "package_name": "com.example.donona"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "934478608997-01r27jl64lq3m1bg303q55c6g71fia0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.donona",
+            "certificate_hash": "d772ac347762a91dd4b7e601ea1fcf52c396025a"
+          }
+        },
+        {
+          "client_id": "934478608997-85hok6nl93dsui5mm5talpoeki90fhpp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRb88K9qc4ux9md9mUeOvzfNO0-KojLk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "934478608997-85hok6nl93dsui5mm5talpoeki90fhpp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
