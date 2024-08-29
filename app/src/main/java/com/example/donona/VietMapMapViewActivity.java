@@ -2,7 +2,12 @@ package com.example.donona;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,9 +21,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.donona.util.IconUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import vn.vietmap.vietmapsdk.Vietmap;
 import vn.vietmap.vietmapsdk.annotations.Icon;
 import vn.vietmap.vietmapsdk.annotations.Marker;
@@ -48,6 +60,12 @@ public class VietMapMapViewActivity extends AppCompatActivity {
     private static final LatLng HUE = new LatLng(16.469602, 107.577462);
     private static final LatLng NGHEAN = new LatLng(18.932151, 105.577207);
     private static final LatLng HANOI = new LatLng(21.024696, 105.833099);
+
+    private List<String> autocompleteData = new ArrayList<>(Arrays.asList("Testing", "Test again"));
+    private ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_place, autocompleteData);
+    private OkHttpClient client = new OkHttpClient();
+
+    private String apiKey = "";
 
     private Marker addMarker(LatLng position) {
         return vietMapGL.addMarker(
@@ -90,9 +108,9 @@ public class VietMapMapViewActivity extends AppCompatActivity {
                 vietMapGL = map;
 
                 // Add VietMap vector style to VietMapSDK
-                String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
+                String url = "https://maps.vietmap.vn/api/maps/light/styles.json?apikey=";
                 vietMapGL.setStyle(new Style.Builder()
-                        .fromUri("https://maps.vietmap.vn/api/maps/light/styles.json?apikey=" + apiKey)
+                        .fromUri(url + apiKey)
                 );
 
                 vietMapGL.setOnPolylineClickListener(new VietMapGL.OnPolylineClickListener() {
@@ -115,7 +133,41 @@ public class VietMapMapViewActivity extends AppCompatActivity {
                 });
             }
         });
-//        addMarker(HOCHIMINH);
+
+        // Set autocomplete place, which is empty when first started
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.search_bar);
+        autoCompleteTextView.setThreshold(1);
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                return;
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Focus around Ho Chi Minh city during development
+                Log.d("TEST", s.toString());
+                if (s.toString().length() <  6) {
+                    return;
+                }
+                // May cause exceed in API calls
+                String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + s.toString() + "&focus=10.791257,106.669189";
+                getVietMapSuggestion(url);
+
+                if (s.toString().equals("Hello")) {
+                    autocompleteData.add("Hello");
+                    adapter.insert(s.toString(), adapter.getCount());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                return;
+            }
+        });
+
     }
 
     @Override
@@ -152,4 +204,34 @@ public class VietMapMapViewActivity extends AppCompatActivity {
         Intent intent = new Intent(VietMapMapViewActivity.this, HomeActivity.class);
         startActivity(intent);
     }
+
+    private String sendVietMapRequest(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try (Response res = client.newCall(request).execute()) {
+            return res.body().string();
+        }
+    }
+
+    private void getVietMapSuggestion(String url) {
+        Request req = new Request.Builder()
+                .url(url)
+                .build();
+        Call call = client.newCall(req);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                return;
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                Log.d("TEST", response.body().string());
+
+            }
+        });
+
+    }
+
 }

@@ -29,12 +29,23 @@
                 android:src="@drawable/keyboard_return_24px"
                 android:onClick="onClickReturn"
                 />
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Searching"
+                android:hint="Searching"
                 android:layout_toRightOf="@+id/return_button"
+                >
+
+            </AutoCompleteTextView>
+            <ImageButton
+                android:id="@+id/search"
+                android:minHeight="50dp"
+                android:background="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search_24px"
+                android:layout_alignParentRight="true"
                 />
 
         </RelativeLayout>
