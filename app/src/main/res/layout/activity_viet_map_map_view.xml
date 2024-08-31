@@ -18,7 +18,7 @@
         app:layout_constraintHeight_percent="1">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <ImageButton
                 android:id="@+id/return_button"
                 android:layout_width="wrap_content"
@@ -46,9 +46,45 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/search_24px"
                 android:layout_alignParentRight="true"
+                android:onClick="onClickSearch"
                 />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:visibility="invisible"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:id="@+id/place_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:text="Hello world"
+                        android:textSize="30dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/place_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text="Address in Afterlife"
+                        android:textSize="20dp"
+                        />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
         </RelativeLayout>
+
+
     </vn.vietmap.vietmapsdk.maps.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

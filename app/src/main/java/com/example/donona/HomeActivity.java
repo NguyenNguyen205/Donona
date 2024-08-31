@@ -83,9 +83,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickNearMe(View view) {
-        Log.d(TAG, "Near me button click");
+    public void onClickSearchPlace(View view) {
+        Log.d(TAG, "Search button click");
         Intent intent = new Intent(HomeActivity.this, VietMapMapViewActivity.class);
         startActivity(intent);
+    }
+
+    public void onClickNearMe(View view) {
+        Log.d(TAG, "Near me button click");
+//        Intent intent = new Intent(HomeActivity.this)
+//        startActivity(intent);
+
     }
 }

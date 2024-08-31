@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Donona"
         tools:targetApi="31">
         <activity
+            android:name=".NearActivity"
+            android:exported="false" />
+        <activity
             android:name=".VietMapMapViewActivity"
             android:exported="false" />
         <activity
