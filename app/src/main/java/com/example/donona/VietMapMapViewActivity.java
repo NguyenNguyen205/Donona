@@ -2,7 +2,6 @@ package com.example.donona;
 
 import android.content.Context;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -33,7 +32,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,7 +41,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import vn.vietmap.vietmapsdk.Vietmap;
-import vn.vietmap.vietmapsdk.annotations.Icon;
 import vn.vietmap.vietmapsdk.annotations.Marker;
 import vn.vietmap.vietmapsdk.annotations.MarkerOptions;
 import vn.vietmap.vietmapsdk.annotations.Polygon;
@@ -79,6 +76,7 @@ public class VietMapMapViewActivity extends AppCompatActivity {
     private OkHttpClient client = new OkHttpClient();
     private HashMap<String, String> suggestionMap = new HashMap<>();
     private Handler handler;
+    private Marker currentFocus = null;
 
     private String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
 
@@ -196,7 +194,10 @@ public class VietMapMapViewActivity extends AppCompatActivity {
     }
 
     private Marker addMarker(LatLng position, String name) {
-        return vietMapGL.addMarker(
+        if (currentFocus != null) {
+            vietMapGL.removeMarker(currentFocus);
+        }
+        currentFocus = vietMapGL.addMarker(
                 new MarkerOptions()
                         .position(position)
                         .title(name)
@@ -210,6 +211,7 @@ public class VietMapMapViewActivity extends AppCompatActivity {
                                 )
                         )
         );
+        return currentFocus;
     }
 
     public void onClickReturn(View view) {

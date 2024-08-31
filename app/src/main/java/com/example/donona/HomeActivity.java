@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -91,8 +93,9 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onClickNearMe(View view) {
         Log.d(TAG, "Near me button click");
-//        Intent intent = new Intent(HomeActivity.this)
-//        startActivity(intent);
+        Intent intent = new Intent(HomeActivity.this, NearActivity.class);
+        startActivity(intent);
+
 
     }
 }
