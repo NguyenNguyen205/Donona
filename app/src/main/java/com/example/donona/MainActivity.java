@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
 //        Log.v("Test", "Helloworld");
-//        temporarily sign user out every time re run emulator
+//        temporarily sign user out every time run the fridging app
 //        mAuth.signOut();
 //        FirebaseUser user = mAuth.getCurrentUser();
 //

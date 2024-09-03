@@ -17,6 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Donona"
         tools:targetApi="31">
+        <!--<meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/rounded_imageButton"
+            />-->
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.Donona" />
         <activity
             android:name=".VietMapMapViewActivity"
             android:exported="false" />
