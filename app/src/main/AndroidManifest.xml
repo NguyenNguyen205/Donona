@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -17,16 +19,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Donona"
         tools:targetApi="31">
-        <!--<meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/rounded_imageButton"
-            />-->
-
+        <service
+            android:name=".NearActivity"
+            android:foregroundServiceType="location"
+            />
         <activity
             android:name=".ProfileActivity"
             android:exported="false"
             android:label="@string/title_activity_profile"
             android:theme="@style/Theme.Donona" />
+
+        <activity
+            android:name=".NearActivity"
+            android:exported="false" />
         <activity
             android:name=".VietMapMapViewActivity"
             android:exported="false" />

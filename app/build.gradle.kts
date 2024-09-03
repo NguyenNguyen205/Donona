@@ -69,6 +69,10 @@ dependencies {
     // Prebuilt Auth UI
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
 
+    // Cardview module
+    implementation("androidx.cardview:cardview:1.0.0")
+
+
 //    implementation("com.facebook.android:facebook-login:latest.release")
 
     // For credential manager since everything else is deprecated
