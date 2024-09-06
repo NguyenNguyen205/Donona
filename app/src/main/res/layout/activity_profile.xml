@@ -32,9 +32,10 @@
 
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
             android:background="@drawable/rounded_button"
             android:layout_margin="10dp"/>
 
@@ -107,9 +108,10 @@
 <!--            />-->
 
         <Button
+            android:id="@+id/update_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change your life here"
+            android:text="Update"
             android:layout_margin="10dp"
             android:layout_gravity="center"
 
