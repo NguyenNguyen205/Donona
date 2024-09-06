@@ -88,10 +88,14 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
     implementation("com.google.code.gson:gson:2.10.1")
 
+    //Add picasso to load image from url to imageView
+    implementation("com.squareup.picasso:picasso:2.71828")
+
     // Material UI
     implementation("com.google.android.material:material:1.3.0-alpha02")
 
-
+    //Applying FireStorage
+    implementation ("com.google.firebase:firebase-storage:20.2.1")
 
 }
 
