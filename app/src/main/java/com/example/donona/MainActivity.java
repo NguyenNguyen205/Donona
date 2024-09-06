@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 //        Log.v("Test", "Helloworld");
 //        temporarily sign user out every time run the fridging app
 //        mAuth.signOut();
-//        FirebaseUser user = mAuth.getCurrentUser();
+//        FirebaseUser user = mAuth.getCurrentUser(); // Lay user dang login o d
 //
 //        // Direct user to home page if user is sign in, else to login/signup
 //        if (user != null) {

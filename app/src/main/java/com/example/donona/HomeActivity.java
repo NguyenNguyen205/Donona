@@ -71,19 +71,20 @@ public class HomeActivity extends AppCompatActivity {
         // Get user data
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String uid = extras.getString("userID");
-            db.collection("user")
-                    .whereEqualTo("userID", uid)
-                    .get()
+            String uid = extras.getString("userID"); // CAI NAY chi nay h, tu nho
+            db.collection("user") // Muon lay collection nao thi khai bao ten do
+                    .whereEqualTo("userID", uid) // Cai nay la no se luot qua toan bo collection, va tim kiem theo document thich hop, o day la tim theo userID
+                    .get() // Ten field muon so sanh // Hieu toi day chua
+                    // Tu day la xu ly ket qua dc tra ve
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                QuerySnapshot docs = task.getResult();
-//                                DocumentSnapshot doc = docs.getDocuments().get(0);
+//                            if (task.isSuccessful()) { // Nay la check coi chay thanh cong hay thanh thang
+//                                QuerySnapshot docs = task.getResult(); // nay chuyen ket qua ve dang doc duoc
+//                                DocumentSnapshot doc = docs.getDocuments().get(0); // nay lay ket qua
 //                                TextView text = (TextView) findViewById(R.id.welcome);
-//                                String welcome = "Welcome " + doc.get("username");
-//                                text.setText(welcome);
+//                                String welcome = "Welcome " + doc.get("username"); // nay lay tung thuoc tinh cua ket qua
+//                                text.setText(welcome); // nay set text cho thang frontend, set cai text cho cai textView
 //                            }
                         }
                     });
