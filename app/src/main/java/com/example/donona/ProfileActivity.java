@@ -59,7 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        storage = FirebaseStorage.getInstance();
+        storage = FirebaseStorage.getInstance("gs://dononacoffee.appspot.com");
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_profile);
         usernameProfile = findViewById(R.id.username_profile);
@@ -155,7 +155,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
                         Log.d("TAG", "Updated successfully");
+//                        finish();
+//                        startActivity(getIntent());
+                        updateAvatar();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -164,33 +168,59 @@ public class ProfileActivity extends AppCompatActivity {
                         Log.w("TAG", "Error updating ", e);
                     }
                 });
-        if (imageUri.isEmpty()) {
-            return;
-        }
-        Log.d("TEST", "Hello");
-        Uri file = Uri.fromFile(new File(imageUri));
-        StorageReference storageRef = storage.getReference();
-        StorageReference riversRef = storageRef.child("Young_Kreden/"+file.getLastPathSegment());
-        UploadTask uploadTask = riversRef.putFile(file);
-
-// Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-                Log.d("TESTING", "Upload successfully");
-            }
-        });
 
     }
 
-    void imageChooser() {
+    private void updateAvatar() {
+        if (!imageUri.isEmpty()) {
+            Uri file = Uri.parse(imageUri);
+            StorageReference storageRef = storage.getReference();
+            StorageReference imagesRef = storageRef.child("Young_Kreden/" + file.getLastPathSegment());
+            UploadTask uploadTask = imagesRef.putFile(file);
+
+            // Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                    Log.d("TESTING", "Upload successfully");
+                    // Set image url
+                    imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+//                            imageButton.setImageURI(uri);
+                            db.collection("user").document(currentDocumentId)
+                                    .update("image", uri.toString())
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("TAG", "Updated successfully");
+                                            finish();
+                                            startActivity(getIntent());
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("TAG", "Error updating ", e);
+                                        }
+                                    });
+
+
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void imageChooser() {
 
         // create an instance of the
         // intent of the type image
@@ -216,10 +246,11 @@ public class ProfileActivity extends AppCompatActivity {
                 if (null != selectedImageUri) {
                     // update the preview image to the firebase
                     Log.d("IMAGE HERE", selectedImageUri.toString());
-                    imageButton.setImageURI(selectedImageUri);
+//                    imageButton.setImageURI(selectedImageUri);
                     imageUri = selectedImageUri.toString();
                 }
             }
         }
     }
+
 }
