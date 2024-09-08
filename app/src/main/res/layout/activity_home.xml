@@ -132,6 +132,7 @@
             android:layout_column="3"
             android:layout_row="1"
             android:src="@drawable/sports_esports_24px"
+            android:onClick="onClickGameLauncher"
             />
 
     </GridLayout>
