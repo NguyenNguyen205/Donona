@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import com.example.donona.model.CurrentCenterPoint;
 import com.example.donona.util.IconUtils;
+import com.mapbox.api.directions.v5.models.DirectionsRoute;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +51,17 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import vn.vietmap.services.android.navigation.ui.v5.listeners.NavigationListener;
+import vn.vietmap.services.android.navigation.v5.location.replay.ReplayRouteLocationEngine;
+import vn.vietmap.services.android.navigation.v5.milestone.Milestone;
+import vn.vietmap.services.android.navigation.v5.milestone.MilestoneEventListener;
+import vn.vietmap.services.android.navigation.v5.navigation.NavigationEventListener;
+import vn.vietmap.services.android.navigation.v5.navigation.VietmapNavigation;
+import vn.vietmap.services.android.navigation.v5.offroute.OffRouteListener;
+import vn.vietmap.services.android.navigation.v5.route.FasterRouteListener;
+import vn.vietmap.services.android.navigation.v5.routeprogress.ProgressChangeListener;
+import vn.vietmap.services.android.navigation.v5.routeprogress.RouteProgress;
+import vn.vietmap.services.android.navigation.v5.snap.SnapToRoute;
 import vn.vietmap.vietmapsdk.Vietmap;
 import vn.vietmap.vietmapsdk.annotations.Marker;
 import vn.vietmap.vietmapsdk.annotations.MarkerOptions;
@@ -72,7 +86,7 @@ import vn.vietmap.vietmapsdk.maps.Style;
 import vn.vietmap.vietmapsdk.maps.VietMapGL;
 
 
-public class NearActivity extends AppCompatActivity {
+public class NearActivity extends AppCompatActivity implements NavigationEventListener, FasterRouteListener, ProgressChangeListener, MilestoneEventListener, OffRouteListener {
     private MapView mapView;
     private VietMapGL vietMapGL;
 
@@ -97,6 +111,17 @@ public class NearActivity extends AppCompatActivity {
     private Handler handler;
     private int zoom = 15;
     private int tilt = 20;
+
+    //Variables for startNavigation
+    private boolean isOverviewing;
+    private boolean isNavigationCanceled;
+    private DirectionsRoute currentRoute = null;
+    private boolean simulateRoute = false;
+    private VietmapNavigation navigation;
+    private boolean isRunning = false;
+    private SnapToRoute snapEngine;
+    private boolean isNavigationInProgress = false;
+    private CurrentCenterPoint currentCenterPoint = null;
 
     private String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
 
@@ -127,6 +152,14 @@ public class NearActivity extends AppCompatActivity {
             return;
         }
         createMap();
+
+        ImageButton navButton = (ImageButton) findViewById(R.id.startNavigation);
+        navButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNavigation(v);
+            }
+        });
     }
 
     @Override
@@ -507,5 +540,82 @@ public class NearActivity extends AppCompatActivity {
         });
     }
 
+    private void startNavigation(View view) {
+        tilt = 60;
+        zoom = 19;
+        isOverviewing = false;
+        isNavigationCanceled = false;
 
+        if (vietMapGL != null && vietMapGL.getLocationComponent() != null) {
+            vietMapGL.getLocationComponent().setCameraMode(CameraMode.TRACKING_GPS_NORTH);
+        }
+
+        if (currentRoute != null) {
+            if (simulateRoute) {
+                ReplayRouteLocationEngine mockLocationEngine = new ReplayRouteLocationEngine();
+                mockLocationEngine.assign(currentRoute);
+                navigation.setLocationEngine(mockLocationEngine);
+            } else {
+                if (locationEngine != null) {
+                    navigation.setLocationEngine(locationEngine);
+                }
+            }
+
+            isRunning = true;
+
+            if (vietMapGL != null && vietMapGL.getLocationComponent() != null) {
+                vietMapGL.getLocationComponent().setLocationEngine(null);
+            }
+
+            navigation.addNavigationEventListener(this);
+            navigation.addFasterRouteListener(this);
+            navigation.addMilestoneEventListener(this);
+            navigation.addOffRouteListener(this);
+            navigation.addProgressChangeListener(this);
+            navigation.setSnapEngine(snapEngine);
+
+            if (currentRoute != null) {
+                isNavigationInProgress = true;
+                navigation.startNavigation(currentRoute);
+                recenter();
+            }
+        }
+    }
+
+    private void recenter() {
+        isOverviewing = false;
+        if (currentCenterPoint != null) {
+            focusCamera(new LatLng(currentCenterPoint.getLatitude(), currentCenterPoint.getLongitude()));
+//            moveCamera(
+//                    new LatLng(currentCenterPoint.getLatitude(), currentCenterPoint.getLongitude()),
+//                    currentCenterPoint.getBearing()
+//            );
+        }
+    }
+
+    @Override
+    public void onRunning(boolean b) {
+
+    }
+
+    @Override
+    public void fasterRouteFound(DirectionsRoute directionsRoute) {
+
+    }
+
+    @Override
+    public void onProgressChange(Location location, RouteProgress routeProgress) {
+
+    }
+
+    @Override
+    public void onMilestoneEvent(RouteProgress routeProgress, String s, Milestone milestone) {
+
+
+    }
+
+    @Override
+    public void userOffRoute(Location location) {
+
+    }
 }
