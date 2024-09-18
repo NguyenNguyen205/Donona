@@ -34,7 +34,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.donona.model.CurrentCenterPoint;
 import com.example.donona.util.IconUtils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
+import com.mapbox.geojson.Point;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,12 +55,16 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import vn.vietmap.services.android.navigation.ui.v5.camera.CameraOverviewCancelableCallback;
 import vn.vietmap.services.android.navigation.ui.v5.listeners.NavigationListener;
 import vn.vietmap.services.android.navigation.v5.location.replay.ReplayRouteLocationEngine;
 import vn.vietmap.services.android.navigation.v5.milestone.Milestone;
 import vn.vietmap.services.android.navigation.v5.milestone.MilestoneEventListener;
 import vn.vietmap.services.android.navigation.v5.navigation.NavigationEventListener;
+import vn.vietmap.services.android.navigation.v5.navigation.NavigationMapRoute;
+import vn.vietmap.services.android.navigation.v5.navigation.NavigationRoute;
 import vn.vietmap.services.android.navigation.v5.navigation.VietmapNavigation;
+import vn.vietmap.services.android.navigation.v5.navigation.VietmapNavigationOptions;
 import vn.vietmap.services.android.navigation.v5.offroute.OffRouteListener;
 import vn.vietmap.services.android.navigation.v5.route.FasterRouteListener;
 import vn.vietmap.services.android.navigation.v5.routeprogress.ProgressChangeListener;
@@ -69,8 +77,10 @@ import vn.vietmap.vietmapsdk.annotations.Polygon;
 import vn.vietmap.vietmapsdk.annotations.Polyline;
 import vn.vietmap.vietmapsdk.annotations.PolylineOptions;
 import vn.vietmap.vietmapsdk.camera.CameraPosition;
+import vn.vietmap.vietmapsdk.camera.CameraUpdate;
 import vn.vietmap.vietmapsdk.camera.CameraUpdateFactory;
 import vn.vietmap.vietmapsdk.geometry.LatLng;
+import vn.vietmap.vietmapsdk.geometry.LatLngBounds;
 import vn.vietmap.vietmapsdk.location.LocationComponent;
 import vn.vietmap.vietmapsdk.location.LocationComponentActivationOptions;
 import vn.vietmap.vietmapsdk.location.LocationComponentOptions;
@@ -84,6 +94,7 @@ import vn.vietmap.vietmapsdk.maps.MapView;
 import vn.vietmap.vietmapsdk.maps.OnMapReadyCallback;
 import vn.vietmap.vietmapsdk.maps.Style;
 import vn.vietmap.vietmapsdk.maps.VietMapGL;
+import vn.vietmap.vietmapsdk.maps.VietMapGLOptions;
 
 
 public class NearActivity extends AppCompatActivity implements NavigationEventListener, FasterRouteListener, ProgressChangeListener, MilestoneEventListener, OffRouteListener {
@@ -122,8 +133,18 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private SnapToRoute snapEngine;
     private boolean isNavigationInProgress = false;
     private CurrentCenterPoint currentCenterPoint = null;
+    private FusedLocationProviderClient fusedLocationClient = null;
+    private VietMapGLOptions options = null;
+    private VietmapNavigationOptions navigationOptions = VietmapNavigationOptions.builder().build();
+    private List<DirectionsRoute> directionsRoutes = new ArrayList<>();
+    private LatLng destination = null;
+    private LatLng origin = null;
+    private NavigationMapRoute navigationMapRoute = null;
+    private boolean isBuildingRoute = false;
+    private int[] padding = {150, 500, 150, 500};
 
     private String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,14 +173,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             return;
         }
         createMap();
-
-        ImageButton navButton = (ImageButton) findViewById(R.id.startNavigation);
-        navButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startNavigation(v);
-            }
-        });
     }
 
     @Override
@@ -210,10 +223,24 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
     private void createMap() {
 
+        initLocationEngine();
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(VietMapGL map) {
                 vietMapGL = map;
+
+                // Setup navigation
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(NearActivity.this);
+                options = VietMapGLOptions.createFromAttributes(NearActivity.this).compassEnabled(false);
+                mapView = new MapView(NearActivity.this, options);
+                navigation = new VietmapNavigation(NearActivity.this, navigationOptions, locationEngine);
+                mapView.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(@NonNull VietMapGL vietMapGL) {
+                        return;
+                    }
+                });
+
 
                 // Add VietMap raster style to VietMapSDK - Can't add vector style
                 String url = "https://maps.vietmap.vn/api/maps/light/styles.json?apikey=";
@@ -237,6 +264,16 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     }
                 });
 
+                // start navigation
+                ImageButton navButton = (ImageButton) findViewById(R.id.startNavigation);
+                navButton.setOnClickListener(new ImageButton.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("TEST", "Navigation start");
+                        fetchRoute();
+                    }
+                });
+
                 // Custom marker click event handler
 //                vietMapGL.setOnMarkerClickListener(new VietMapGL.OnMarkerClickListener() {
 //                    @Override
@@ -246,6 +283,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 //                        return true;
 //                    }
 //                });
+
 
 
             }
@@ -296,6 +334,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             atct.clearFocus();
             return;
         }
+        if (navigationMapRoute != null) {
+            navigationMapRoute.removeRoute();
+        }
         closeKeyboard();
         atct.clearFocus();
         String refID = suggestionMap.get(searchName);
@@ -324,6 +365,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     JSONObject res = new JSONObject(body);
                     String placeName = res.getString("name");
                     LatLng pos = new LatLng(res.getDouble("lat"), res.getDouble("lng"));
+                    destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
                     handler.post(() -> {
                         addMarker(pos, placeName);
                         if (focus) focusCamera(pos);
@@ -470,7 +512,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 .build();
 
         if (locationComponent != null) {
-            Log.d("TEST", "OH HI");
+//            Log.d("TEST", "OH HI");
             locationComponent.activateLocationComponent(
                     LocationComponentActivationOptions.builder(
                             this, style
@@ -523,6 +565,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 if (location == null) return;
                 Log.d("TEST", "GET location successful");
                 LatLng userLoc = new LatLng(location.getLatitude(), location.getLongitude());
+                origin = new LatLng(location.getLatitude(), location.getLongitude()); // store user location as origin
 
                 // find near coffee place (update find near place method later)
                 String text = "coffee";
@@ -540,7 +583,12 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         });
     }
 
-    private void startNavigation(View view) {
+    // Navigation function
+    private void overViewRoute() {}
+
+    private void clearRoute() {}
+
+    private void startNavigation() {
         tilt = 60;
         zoom = 19;
         isOverviewing = false;
@@ -592,6 +640,84 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 //            );
         }
     }
+
+    private void fetchRoute() {
+        if (origin == null || destination == null) {
+            return;
+        }
+        Log.d("TEST", "Fetching route");
+        NavigationRoute.builder(NearActivity.this).apikey(apiKey)
+                .origin(Point.fromLngLat(origin.getLongitude(), origin.getLatitude()))
+                .destination(Point.fromLngLat(destination.getLongitude(), destination.getLatitude()))
+                .build().getRoute(new retrofit2.Callback<DirectionsResponse>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<DirectionsResponse> call, retrofit2.Response<DirectionsResponse> response) {
+                        if (response.body() == null) return;
+                        Log.d("TEST", "responding body");
+                        directionsRoutes = response.body().routes();
+                        currentRoute = directionsRoutes.get(0);
+
+                        // Only show 1 route for now
+                        if (navigationMapRoute != null) {
+                            navigationMapRoute.removeRoute();
+                        }
+
+                        navigationMapRoute = new NavigationMapRoute(mapView, vietMapGL);
+                        navigationMapRoute.addRoute(currentRoute);
+
+                        // allow user to choose route ??
+
+                        // get route points
+                        isBuildingRoute = false;
+                        List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
+                        animateVietmapGLForRouteOverview(padding, routePoints);
+
+                        // start navigation
+                        if (isNavigationInProgress) {
+                            startNavigation();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<DirectionsResponse> call, Throwable t) {
+                        Log.d("TEST", "Fail to fetch route");
+                    }
+                });
+    }
+
+    // Animate camera only
+    private void animateVietmapGLForRouteOverview(int[] padding, List<Point> routePoints) {
+        if (routePoints.size() <= 1) return;
+        CameraUpdate resetUpdate = buildResetCameraUpdate();
+        CameraUpdate overviewUpdate = buildOverviewCameraUpdate(padding, routePoints);
+        vietMapGL.animateCamera(
+                resetUpdate, 150, new CameraOverviewCancelableCallback(overviewUpdate, vietMapGL)
+        );
+
+    }
+
+    private CameraUpdate buildResetCameraUpdate() {
+        CameraPosition resetPosition = new CameraPosition.Builder().tilt(0.0).bearing(0.0).build();
+        return CameraUpdateFactory.newCameraPosition(resetPosition);
+    }
+
+    private CameraUpdate buildOverviewCameraUpdate(int[] padding, List<Point> routePoints) {
+        LatLngBounds routeBounds = convertRoutePointsToLatLngBounds(routePoints);
+        return CameraUpdateFactory.newLatLngBounds(
+                routeBounds, padding[0], padding[1], padding[2], padding[3]
+        );
+    }
+
+    private LatLngBounds convertRoutePointsToLatLngBounds(List<Point> routePoints) {
+        ArrayList<LatLng> latLngs = new ArrayList<>();
+        for (Point routePoint: routePoints) {
+            latLngs.add(new LatLng(routePoint.latitude(), routePoint.longitude()));
+        }
+        return new LatLngBounds.Builder().includes(latLngs).build();
+    }
+
 
     @Override
     public void onRunning(boolean b) {
