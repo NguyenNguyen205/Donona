@@ -108,6 +108,11 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+            if (itemId == R.id.navigation_setting) {
+                startActivity(new Intent(ProfileActivity.this, SettingActivity.class));
+                finish();
+                return true;
+            }
             return false;
         });
     }
