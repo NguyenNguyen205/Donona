@@ -93,10 +93,11 @@
                 android:layout_columnWeight="0.9"
                 >
 
-                <com.google.android.material.textfield.TextInputEditText
+                <TextView
                     android:id="@+id/email_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
         </GridLayout>

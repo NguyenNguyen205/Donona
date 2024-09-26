@@ -20,6 +20,9 @@
         android:theme="@style/Theme.Donona"
         tools:targetApi="31">
         <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameLauncherActivity"
             android:exported="false" />
 
@@ -60,6 +63,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name="vn.vietmap.services.android.navigation.v5.navigation.NavigationService"
             android:enabled="true"
