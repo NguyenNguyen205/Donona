@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -48,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     //Declaring UI from layout
     private TextInputEditText usernameProfile;
-    private TextInputEditText emailProfile;
+    private TextView emailProfile;
     private Button updateButton;
     private String currentDocumentId;
     private ImageButton imageButton;
@@ -71,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String newUsername = usernameProfile.getText().toString();
                 String newEmail = emailProfile.getText().toString();
                 if (currentDocumentId != null) {
-                    updateProfile(currentDocumentId, newUsername, newEmail);
+                    updateProfile(currentDocumentId, newUsername);
                 } else {
                     Log.w("TAG", "No document ID available for updating");
                 }
@@ -104,6 +105,11 @@ public class ProfileActivity extends AppCompatActivity {
             }
             if (itemId == R.id.navigation_home) {
                 startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
+                finish();
+                return true;
+            }
+            if (itemId == R.id.navigation_setting) {
+                startActivity(new Intent(ProfileActivity.this, SettingActivity.class));
                 finish();
                 return true;
             }
@@ -149,9 +155,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private void updateProfile(String documentId, String newUsername, String newEmail) {
+    private void updateProfile(String documentId, String newUsername) {
         db.collection("user").document(documentId)
-                .update("username", newUsername, "email", newEmail)
+                .update("username", newUsername)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

@@ -26,6 +26,9 @@
             android:name=".BlogPostActivity"
             android:exported="false" />
         <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".GameLauncherActivity"
             android:exported="false" />
 

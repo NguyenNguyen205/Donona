@@ -59,6 +59,11 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+            if (itemId == R.id.navigation_setting) {
+                startActivity(new Intent(HomeActivity.this, SettingActivity.class));
+                finish();
+                return true;
+            }
             return false;
         });
 

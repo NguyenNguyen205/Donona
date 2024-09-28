@@ -28,6 +28,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+//import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+//import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -128,6 +132,32 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView notice = (TextView) findViewById(R.id.notice);
         notice.setText(Html.fromHtml("To continue, you need to <b>Hello world</b>"));
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.nav);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_account);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            // can't use switch case due to non constant id
+            final int itemId = item.getItemId();
+            if (itemId == R.id.navigation_account) {
+                return true;
+            }
+            if (itemId == R.id.navigation_streaming) {
+                startActivity(new Intent(LoginActivity.this, StreamingActivity.class));
+                finish();
+                return true;
+            }
+            if (itemId == R.id.navigation_setting) {
+                startActivity(new Intent(LoginActivity.this, SettingActivity.class));
+                finish();
+                return true;
+            }
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
