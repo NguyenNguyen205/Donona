@@ -113,4 +113,10 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(HomeActivity.this, GameLauncherActivity.class);
         startActivity(intent);
     }
+
+    public void onClickSuggest(View view) {
+        Log.d(TAG, "Near me test button click");
+        Intent intent = new Intent(HomeActivity.this, NearMeActivity.class);
+        startActivity(intent);
+    }
 }
