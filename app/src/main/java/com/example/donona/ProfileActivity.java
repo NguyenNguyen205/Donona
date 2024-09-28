@@ -246,7 +246,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (null != selectedImageUri) {
                     // update the preview image to the firebase
                     Log.d("IMAGE HERE", selectedImageUri.toString());
-//                    imageButton.setImageURI(selectedImageUri);
+                    imageButton.setImageURI(selectedImageUri);
                     imageUri = selectedImageUri.toString();
                 }
             }

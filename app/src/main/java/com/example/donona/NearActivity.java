@@ -90,6 +90,7 @@ import vn.vietmap.vietmapsdk.location.engine.LocationEngineDefault;
 import vn.vietmap.vietmapsdk.location.engine.LocationEngineResult;
 import vn.vietmap.vietmapsdk.location.modes.CameraMode;
 import vn.vietmap.vietmapsdk.location.modes.RenderMode;
+import vn.vietmap.vietmapsdk.maps.Image;
 import vn.vietmap.vietmapsdk.maps.MapView;
 import vn.vietmap.vietmapsdk.maps.OnMapReadyCallback;
 import vn.vietmap.vietmapsdk.maps.Style;
@@ -97,6 +98,7 @@ import vn.vietmap.vietmapsdk.maps.VietMapGL;
 import vn.vietmap.vietmapsdk.maps.VietMapGLOptions;
 
 
+// To do next: set up proper onmarker click listener
 public class NearActivity extends AppCompatActivity implements NavigationEventListener, FasterRouteListener, ProgressChangeListener, MilestoneEventListener, OffRouteListener {
     private MapView mapView;
     private VietMapGL vietMapGL;
@@ -107,12 +109,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
     private static final String STATE_POLYLINE_OPTIONS = "polylineOptions";
     private static final LatLng HOCHIMINH = new LatLng(10.791257, 106.669189);
-    private static final LatLng NINHTHUAN = new LatLng(11.550254, 108.960579);
-    private static final LatLng DANANG = new LatLng(16.045746, 108.202241);
-    private static final LatLng HUE = new LatLng(16.469602, 107.577462);
-    private static final LatLng NGHEAN = new LatLng(18.932151, 105.577207);
-    private static final LatLng HANOI = new LatLng(21.024696, 105.833099);
-    private LocationComponent locationComponent;
+ private LocationComponent locationComponent;
     private LocationEngine locationEngine;
 
     private List<String> suggesstionName = new ArrayList<>();
@@ -120,8 +117,10 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private OkHttpClient client = new OkHttpClient();
     private HashMap<String, String> suggestionMap = new HashMap<>();
     private Handler handler;
-    private int zoom = 15;
-    private int tilt = 20;
+    private int zoom = 17;
+    private int tilt = 23;
+    private HashMap<String, String> markerRefid = new HashMap<>();
+    private Marker focusMarker = null;
 
     //Variables for startNavigation
     private boolean isOverviewing;
@@ -205,20 +204,46 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         mapView.onDestroy();
     }
 
-    private Marker addMarker(LatLng position, String name) {
+    private Marker addMarker(LatLng position, String name, String address, boolean focus) {
+        int color = R.color.orange;
+        if (focus) {
+            color = R.color.red;
+        }
         return vietMapGL.addMarker(
                 new MarkerOptions()
                         .position(position)
                         .title(name)
-                        .snippet("Sai lam qua lon anh thua nen anh chiu")
+                        .snippet(address)
                         .icon(
                                 IconUtils.drawableToIcon(
                                         this,
                                         R.drawable.pin_drop_24px,
-                                        ResourcesCompat.getColor(getResources(), R.color.red, getTheme())
+                                        ResourcesCompat.getColor(getResources(), color, getTheme())
                                 )
                         )
         );
+    }
+
+    private void setFocusMarker(Marker marker, boolean focus) {
+        handler.post(() -> {
+            if (!focus) {
+                marker.setIcon(
+                        IconUtils.drawableToIcon(
+                                this,
+                                R.drawable.pin_drop_24px,
+                                ResourcesCompat.getColor(getResources(), R.color.orange, getTheme())
+                        )
+                );
+                return;
+            }
+            marker.setIcon(
+                    IconUtils.drawableToIcon(
+                            this,
+                            R.drawable.location_on_24px,
+                            ResourcesCompat.getColor(getResources(), R.color.red, getTheme())
+                    )
+            );
+        });
     }
 
     private void createMap() {
@@ -270,20 +295,54 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     @Override
                     public void onClick(View v) {
                         Log.d("TEST", "Navigation start");
+                        isNavigationInProgress = true;
                         fetchRoute();
+                    }
+                });
+                ImageButton routeButton = (ImageButton) findViewById(R.id.findRoute);
+                routeButton.setOnClickListener(new ImageButton.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("TEST", "Find route");
+                        isNavigationInProgress = false;
+                        fetchRoute();
+                    }
+                });
+                ImageButton closeButton = (ImageButton) findViewById(R.id.stopNavigation);
+                closeButton.setOnClickListener(new ImageButton.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("TEST", "Close navigation");
+                        isNavigationInProgress = false;
+                        stopNavigation();
                     }
                 });
 
                 // Custom marker click event handler
-//                vietMapGL.setOnMarkerClickListener(new VietMapGL.OnMarkerClickListener() {
-//                    @Override
-//                    public boolean onMarkerClick(@NonNull Marker marker) {
-//                        // if set a custom marker click listener handler, the tool tip will not display
-//                        Log.d("TEST MARKER CLICK", marker.getTitle());
-//                        return true;
-//                    }
-//                });
+                vietMapGL.setOnMarkerClickListener(new VietMapGL.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(@NonNull Marker marker) {
+                        if (focusMarker != null) {
+                            Log.d("TEST", "reset marker");
+                            setFocusMarker(focusMarker,false);
+                        }
 
+                        focusMarker = marker;
+                        setFocusMarker(focusMarker,true);
+                        // if set a custom marker click listener handler, the tool tip will not display
+                        String key = marker.getTitle() + marker.getSnippet();
+                        if (markerRefid.containsKey(key)) {
+                            Log.d("TEST MARKER CLICK", markerRefid.get(key));
+                            String refID = markerRefid.get(key);
+                            String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
+                            addMarkerToMap(url, "", true);
+                        }
+                        else {
+                            Log.d("TEST MARKER CLICK", "Can't find ID");
+                        }
+                        return true;
+                    }
+                });
 
 
             }
@@ -320,8 +379,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
 
     public void onClickReturn(View view) {
-        Intent intent = new Intent(NearActivity.this, HomeActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(NearActivity.this, HomeActivity.class);
+//        startActivity(intent);
+        finish();
     }
 
     public void onClickSearch(View view) {
@@ -343,10 +403,10 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         Log.d("TEST", refID);
         // Fetch api
         String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
-        addMarkerToMap(url, true);
+        addMarkerToMap(url, "", true);
     }
 
-    private void addMarkerToMap(String url, boolean focus) {
+    private void addMarkerToMap(String url, String refId, boolean focus) {
         Request req = new Request.Builder()
                 .url(url)
                 .build();
@@ -364,10 +424,15 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 try {
                     JSONObject res = new JSONObject(body);
                     String placeName = res.getString("name");
+                    String address = res.getString("hs_num") + " " + res.getString("street") + " " + res.getString("city") + " " + res.getString("district") + res.getString("ward");
                     LatLng pos = new LatLng(res.getDouble("lat"), res.getDouble("lng"));
                     destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                    // Store ref Id for pre loaded marker
+                    if (!refId.isEmpty()) {
+                        markerRefid.put(placeName + address, refId);
+                    }
                     handler.post(() -> {
-                        addMarker(pos, placeName);
+                        addMarker(pos, placeName, address, focus);
                         if (focus) focusCamera(pos);
                         if (focus) displayPlaceInfo(res);
                     });
@@ -443,7 +508,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         for (int i = 0; i < res.length(); i++) {
                             JSONObject mid = res.getJSONObject(i);
                             String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + mid.getString("ref_id");
-                            addMarkerToMap(placeUrl, false);
+                            addMarkerToMap(placeUrl, mid.getString("ref_id"), false);
                         }
                         return;
                     }
@@ -590,7 +655,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
     private void startNavigation() {
         tilt = 60;
-        zoom = 19;
+        zoom = 17;
         isOverviewing = false;
         isNavigationCanceled = false;
 
@@ -687,6 +752,34 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 });
     }
 
+    private void stopNavigation() {
+        isNavigationInProgress = false;
+        isNavigationCanceled = true;
+        navigation.stopNavigation();
+        navigation.removeFasterRouteListener(this);
+        navigation.removeMilestoneEventListener(this);
+        navigation.removeNavigationEventListener(this);
+        navigation.removeOffRouteListener(this);
+        navigation.removeProgressChangeListener(this);
+
+        if (navigationMapRoute != null) {
+            navigationMapRoute.removeRoute();
+            currentRoute = null;
+        }
+        CardView cardView = (CardView) findViewById(R.id.card_view);
+        cardView.setVisibility(View.INVISIBLE);
+
+        zoom = 17;
+        tilt = 23;
+        focusCamera(origin);
+
+
+
+
+    }
+
+
+
     // Animate camera only
     private void animateVietmapGLForRouteOverview(int[] padding, List<Point> routePoints) {
         if (routePoints.size() <= 1) return;
@@ -717,7 +810,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         }
         return new LatLngBounds.Builder().includes(latLngs).build();
     }
-
 
     @Override
     public void onRunning(boolean b) {
