@@ -114,10 +114,15 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onClickSuggest(View view) {
+        Log.d(TAG, "Near me test button click");
+        Intent intent = new Intent(HomeActivity.this, NearMeActivity.class);
+        startActivity(intent);
+    }
+
     public void onClickPost(View view) {
         Log.d(TAG, "Post page launch");
         Intent intent = new Intent(HomeActivity.this, BlogPostActivity.class);
         startActivity(intent);
-
     }
 }

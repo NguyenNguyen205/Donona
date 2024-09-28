@@ -23,6 +23,9 @@
             android:name=".SubscriptionActivity"
             android:exported="false" />
         <activity
+            android:name=".NearMeActivity"
+            android:exported="false" />
+        <activity
             android:name=".ReadBlogActivity"
             android:exported="false" />
         <activity
