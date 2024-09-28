@@ -23,6 +23,12 @@
             android:name=".NearMeActivity"
             android:exported="false" />
         <activity
+            android:name=".ReadBlogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BlogPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".SettingActivity"
             android:exported="false" />
         <activity
@@ -41,9 +47,9 @@
         <activity
             android:name=".NearActivity"
             android:exported="false" />
-        <activity
-            android:name=".VietMapMapViewActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".VietMapMapViewActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".StreamingActivity"
             android:exported="false" />
