@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -161,11 +162,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
+                        Toast.makeText(ProfileActivity.this, "Update user name successfully", Toast.LENGTH_LONG).show();
                         Log.d("TAG", "Updated successfully");
 //                        finish();
 //                        startActivity(getIntent());
-                        updateAvatar();
+//                        updateAvatar();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -177,54 +178,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    private void updateAvatar() {
-        if (!imageUri.isEmpty()) {
-            Uri file = Uri.parse(imageUri);
-            StorageReference storageRef = storage.getReference();
-            StorageReference imagesRef = storageRef.child("Young_Kreden/" + file.getLastPathSegment());
-            UploadTask uploadTask = imagesRef.putFile(file);
-
-            // Register observers to listen for when the download is done or if it fails
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                    // ...
-                    Log.d("TESTING", "Upload successfully");
-                    // Set image url
-                    imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-//                            imageButton.setImageURI(uri);
-                            db.collection("user").document(currentDocumentId)
-                                    .update("image", uri.toString())
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("TAG", "Updated successfully");
-                                            finish();
-                                            startActivity(getIntent());
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("TAG", "Error updating ", e);
-                                        }
-                                    });
-
-
-                        }
-                    });
-                }
-            });
-        }
-    }
+//    private void updateAvatar() {
+//
+//    }
 
     private void imageChooser() {
 
@@ -254,6 +210,53 @@ public class ProfileActivity extends AppCompatActivity {
                     Log.d("IMAGE HERE", selectedImageUri.toString());
                     imageButton.setImageURI(selectedImageUri);
                     imageUri = selectedImageUri.toString();
+                    if (!imageUri.isEmpty()) {
+                        Uri file = Uri.parse(imageUri);
+                        StorageReference storageRef = storage.getReference();
+                        StorageReference imagesRef = storageRef.child("Young_Kreden/" + file.getLastPathSegment());
+                        UploadTask uploadTask = imagesRef.putFile(file);
+
+                        // Register observers to listen for when the download is done or if it fails
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle unsuccessful uploads
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                                // ...
+                                Log.d("TESTING", "Upload successfully");
+                                // Set image url
+                                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+//                            imageButton.setImageURI(uri);
+                                        db.collection("user").document(currentDocumentId)
+                                                .update("image", uri.toString())
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Toast.makeText(ProfileActivity.this, "Update avatar successfully", Toast.LENGTH_LONG).show();
+                                                        Log.d("TAG", "Updated successfully");
+                                                        finish();
+                                                        startActivity(getIntent());
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w("TAG", "Error updating ", e);
+                                                    }
+                                                });
+
+
+                                    }
+                                });
+                            }
+                        });
+                    }
                 }
             }
         }

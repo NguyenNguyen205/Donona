@@ -34,23 +34,23 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
     @Override
     public void onBindViewHolder(@NonNull CoffeePlaceViewHolder holder, int position) {
         CoffeePlace coffeePlace = coffeePlaceList.get(position);
-        holder.binding.coffeeDisplay.setText(coffeePlace.getDisplay());
-        holder.binding.coffeeCity.setText(coffeePlace.getCity());
-        holder.binding.coffeeAddress.setText(coffeePlace.getAddress());
-        holder.binding.coffeeDistrict.setText(coffeePlace.getDistrict());
-        holder.binding.coffeeEndtime.setText(coffeePlace.getEndtime());
-        holder.binding.coffeeHsNum.setText(coffeePlace.getHs_num());
-        holder.binding.coffeeLat.setText(String.valueOf(coffeePlace.getLat()));
-        holder.binding.coffeeLng.setText(String.valueOf(coffeePlace.getLng()));
-        holder.binding.coffeeName.setText(coffeePlace.getName());
-        holder.binding.coffeePriceRange.setText(coffeePlace.getPriceRange());
-        holder.binding.coffeeStarttime.setText(coffeePlace.getStartTime());
-        holder.binding.coffeeStreet.setText(coffeePlace.getStreet());
-        holder.binding.coffeeThumbnail.setText(coffeePlace.getThumbnail());
-        holder.binding.coffeeWard.setText(coffeePlace.getWard());
-        boolean hasWifi = coffeePlace.isWifi(); // Replace with your actual method to get the boolean value
-        holder.binding.coffeeWifi.setText(hasWifi ? "Yes" : "No"); // Use a ternary operator for conversion
         Picasso.get().load(coffeePlace.getImage()).into(holder.binding.coffeeImage);
+        holder.binding.coffeeName.setText(coffeePlace.getName());
+        holder.binding.coffeeDisplay.setText("Coffee Name:" + coffeePlace.getDisplay());
+        holder.binding.coffeeAddress.setText("Address:" + coffeePlace.getAddress());
+        holder.binding.coffeeStreet.setText("Street:" + coffeePlace.getStreet());
+        holder.binding.coffeeWard.setText("Ward:" + coffeePlace.getWard());
+        holder.binding.coffeeDistrict.setText("District:" + coffeePlace.getDistrict());
+        holder.binding.coffeeCity.setText("City:" + coffeePlace.getCity());
+        holder.binding.coffeePriceRange.setText("Price:" + coffeePlace.getPriceRange());
+        holder.binding.coffeeStarttime.setText("Opening Hours:" + coffeePlace.getStartTime());
+        holder.binding.coffeeEndtime.setText("Closing Hours:" + coffeePlace.getEndtime());
+        holder.binding.coffeeHsNum.setText("Hs Number:" + coffeePlace.getHs_num());
+        holder.binding.coffeeLat.setText(String.valueOf("Latitude:" + coffeePlace.getLat()));
+        holder.binding.coffeeLng.setText(String.valueOf("Longitude:" + coffeePlace.getLng()));
+        boolean hasWifi = coffeePlace.isWifi();
+        holder.binding.coffeeWifi.setText(hasWifi ? "Wifi: Yes" : "Wifi: No");
+        holder.binding.coffeeThumbnail.setText(coffeePlace.getThumbnail());
     }
 
     @Override
