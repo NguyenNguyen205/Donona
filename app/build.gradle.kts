@@ -34,6 +34,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+//    sourceSets.getByName("main") {
+//        res.srcDir("src/main/res/layout/fragment")
+//        res.srcDir("src/main/res/layout")
+//        res.srcDir("src/main/res")
+//    }
 }
 
 dependencies {
@@ -114,10 +120,5 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.0.0-beta4")
 
-
-
-
 }
-
-
 

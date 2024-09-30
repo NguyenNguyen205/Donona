@@ -108,6 +108,11 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
                 return true;
             }
+            if (itemId == R.id.navigation_setting) {
+                startActivity(new Intent(ProfileActivity.this, SettingActivity.class));
+                finish();
+                return true;
+            }
             return false;
         });
     }
@@ -247,7 +252,7 @@ public class ProfileActivity extends AppCompatActivity {
                 if (null != selectedImageUri) {
                     // update the preview image to the firebase
                     Log.d("IMAGE HERE", selectedImageUri.toString());
-//                    imageButton.setImageURI(selectedImageUri);
+                    imageButton.setImageURI(selectedImageUri);
                     imageUri = selectedImageUri.toString();
                 }
             }

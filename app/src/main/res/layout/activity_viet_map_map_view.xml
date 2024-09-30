@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VietMapMapViewActivity">
+    tools:context=".NearActivity">
 
     <vn.vietmap.vietmapsdk.maps.MapView
         android:id="@+id/vmMapView"
@@ -61,13 +61,34 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     >
-                    <ImageButton
-                        android:id="@+id/startNavigation"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/near_me_24px"
-                        android:onClick="startNavigation"
-                        />
+                        >
+                        <ImageButton
+                            android:id="@+id/findRoute"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/directions_24px"
+                            android:background="@color/blue"
+                            />
+
+                        <ImageButton
+                            android:id="@+id/startNavigation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/near_me_24px"
+                            android:layout_toRightOf="@+id/findRoute"
+                            />
+                        <ImageButton
+                            android:id="@+id/stopNavigation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/close_24px"
+                            android:layout_alignParentRight="true"
+                            />
+
+                    </RelativeLayout>
 
                     <TextView
                         android:id="@+id/place_name"

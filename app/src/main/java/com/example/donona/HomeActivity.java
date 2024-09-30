@@ -96,11 +96,11 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickSearchPlace(View view) {
-        Log.d(TAG, "Search button click");
-        Intent intent = new Intent(HomeActivity.this, VietMapMapViewActivity.class);
-        startActivity(intent);
-    }
+//    public void onClickSearchPlace(View view) {
+//        Log.d(TAG, "Search button click");
+//        Intent intent = new Intent(HomeActivity.this, VietMapMapViewActivity.class);
+//        startActivity(intent);
+//    }
 
     public void onClickNearMe(View view) {
         Log.d(TAG, "Near me button click");
@@ -111,6 +111,18 @@ public class HomeActivity extends AppCompatActivity {
     public void onClickGameLauncher(View view) {
         Log.d(TAG, "Game launcher button click");
         Intent intent = new Intent(HomeActivity.this, GameLauncherActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickSuggest(View view) {
+        Log.d(TAG, "Near me test button click");
+        Intent intent = new Intent(HomeActivity.this, NearMeActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickPost(View view) {
+        Log.d(TAG, "Post page launch");
+        Intent intent = new Intent(HomeActivity.this, BlogPostActivity.class);
         startActivity(intent);
     }
 }
