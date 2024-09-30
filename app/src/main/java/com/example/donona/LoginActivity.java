@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         TextView notice = (TextView) findViewById(R.id.notice);
-        notice.setText(Html.fromHtml("To continue, you need to <b>Hello world</b>"));
+        notice.setText(Html.fromHtml("To continue, you can review Company’s <b>privacy policy</b> and <b>terms of service</b>."));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav);
         bottomNavigationView.setSelectedItemId(R.id.navigation_account);

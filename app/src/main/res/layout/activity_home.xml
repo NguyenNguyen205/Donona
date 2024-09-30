@@ -53,87 +53,88 @@
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:rowCount="2"
+        android:layout_marginTop="504dp"
         android:columnCount="4"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintRight_toRightOf="parent"
+        android:rowCount="2"
+        app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintLeft_toLeftOf="parent"
-        >
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
         <ImageButton
             android:id="@+id/near_me"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="0"
             android:layout_row="0"
-            android:src="@drawable/near_me_24px"
+            android:layout_column="0"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
             android:onClick="onClickNearMe"
-            />
+            android:src="@drawable/near_me_24px" />
+
         <ImageButton
             android:id="@+id/map"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="1"
             android:layout_row="0"
-            android:src="@drawable/map_24px"
+            android:layout_column="1"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
             android:onClick="onClickSearchPlace"
-            />
+            android:src="@drawable/map_24px" />
+
         <ImageButton
             android:id="@+id/upgrade"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="2"
             android:layout_row="0"
-            android:src="@drawable/sports_esports_24px"
-            />
+            android:layout_column="2"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
+            android:src="@drawable/sports_esports_24px" />
+
         <ImageButton
             android:id="@+id/bookmark"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="3"
             android:layout_row="0"
-            android:src="@drawable/sports_esports_24px"
-            />
+            android:layout_column="3"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
+            android:src="@drawable/sports_esports_24px" />
+
         <ImageButton
             android:id="@+id/blog"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="0"
             android:layout_row="1"
-            android:src="@drawable/sports_esports_24px"
-            />
+            android:layout_column="0"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
+            android:src="@drawable/sports_esports_24px" />
+
         <ImageButton
             android:id="@+id/promotion"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="1"
             android:layout_row="1"
-            android:src="@drawable/sports_esports_24px"
-            />
+            android:layout_column="1"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
+            android:src="@drawable/sports_esports_24px" />
+
         <ImageButton
             android:id="@+id/suggest"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="2"
             android:layout_row="1"
-            android:src="@drawable/sports_esports_24px"
-            />
+            android:layout_column="2"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
+            android:src="@drawable/sports_esports_24px" />
+
         <ImageButton
             android:id="@+id/game"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="3"
             android:layout_row="1"
-            android:src="@drawable/sports_esports_24px"
+            android:layout_column="3"
+            android:layout_marginLeft="10dp"
+            android:contentDescription="hello"
+            android:minHeight="50dp"
             android:onClick="onClickGameLauncher"
-            />
+            android:src="@drawable/sports_esports_24px" />
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
