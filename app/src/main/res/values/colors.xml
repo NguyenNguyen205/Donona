@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#ffebc9</color>
     <color name="red">#ff0000</color>
-    <color name="blue">#0000ff</color>
+    <color name="blue">#1b6ef3</color>
     <color name="text">#643120</color>
     <color name="beige_brown">#BC9E82</color>
     <color name="quite_brown">#A17246</color>
@@ -17,4 +17,5 @@
     <color name="beige">#FFEBC9</color>
     <color name="darker_gray">#AAA49E</color>
 
+    <color name="orange">#FFA500</color>
 </resources>

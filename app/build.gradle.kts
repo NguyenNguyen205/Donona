@@ -34,6 +34,12 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+//    sourceSets.getByName("main") {
+//        res.srcDir("src/main/res/layout/fragment")
+//        res.srcDir("src/main/res/layout")
+//        res.srcDir("src/main/res")
+//    }
 }
 
 dependencies {

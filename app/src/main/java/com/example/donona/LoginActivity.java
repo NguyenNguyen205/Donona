@@ -1,14 +1,11 @@
 package com.example.donona;
 
 import android.content.Intent;
-//import androidx.credentials.exceptions.GetCredentialException;
 import android.os.Bundle;
-import android.os.CancellationSignal;
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,26 +13,20 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-//import androidx.credentials.Credential;
-//import androidx.credentials.CredentialManager;
-//import androidx.credentials.CredentialManagerCallback;
-//import androidx.credentials.GetCredentialRequest;
-//import androidx.credentials.GetCredentialResponse;
 
+import com.example.donona.transformation.CircleTransform;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
+import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
-import com.google.android.gms.auth.api.identity.BeginSignInRequest;
-import com.google.android.gms.auth.api.identity.BeginSignInResult;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 //import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 //import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
@@ -44,17 +35,22 @@ import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private String TAG = "Hello";
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -62,9 +58,62 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
                     Log.v(TAG, result.toString());
+                    onSignInResult(result);
                 }
             }
     );
+
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        if (result.getResultCode() == RESULT_OK) {
+            Log.d("TEST", "Sign in successful");
+            // Successfully signed in
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            // Create user in firebase table if not existed
+            db.collection("user")
+                    .whereEqualTo("userID", user.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.getResult().isEmpty()) {
+                                Map<String, Object> data = new HashMap<>();
+                                data.put("username", user.getEmail());
+                                data.put("email", user.getEmail());
+                                data.put("userID", user.getUid());
+                                data.put("image", "No image");
+                                db.collection("user")
+                                        .add(data)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Log.d(TAG, "Document write successfull");
+                                                handleSuccessAuthentication(user);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "Document write fail");
+                                            }
+                                        });
+
+                            } else {
+                                handleSuccessAuthentication(user);
+
+                            }
+                        }
+                    });
+
+        } else {
+            Log.d("TEST", "Google sign in failed");
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Sign in failed");
+            alert.setMessage("Please sign in again");
+            alert.setCancelable(false);
+            alert.show();
+        }
+    }
+
 
 
     @Override
@@ -79,6 +128,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         TextView notice = (TextView) findViewById(R.id.notice);
         notice.setText(Html.fromHtml("To continue, you need to <b>Hello world</b>"));
@@ -159,33 +209,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void googleSignin(View view) {
         Log.d(TAG, "googleSignin: Hello world");
-//        CredentialManager cm = CredentialManager.create(getApplicationContext());
-//        String WEB_CLIENT_ID = "815387647289-cvs26lf9ftlcu4rhude58b1bqbu2ucg6.apps.googleusercontent.com";
-//        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-//                .setFilterByAuthorizedAccounts(false)
-//                .setServerClientId(WEB_CLIENT_ID)
-//                .build();
-//        GetCredentialRequest request = new GetCredentialRequest.Builder()
-//                .addCredentialOption(googleIdOption)
-//                .build();
-//        cm.getCredentialAsync(
-//                LoginActivity.this,
-//                request,
-//                new CancellationSignal(),
-//                getMainExecutor(),
-//                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
-//                    @Override
-//                    public void onError(@NonNull GetCredentialException e) {
-//                        Log.e(TAG, e.toString());
-//                        return;
-//                    }
-//                    @Override
-//                    public void onResult(GetCredentialResponse result) {
-////                        Credential credential = result.getCredential();
-////                        Log.v(TAG, credential.toString());
-//                        Log.v(TAG, "Another world");
-//                    }
-//                });
         // Pre built UI sign in
 
         List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -197,6 +220,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setAvailableProviders(providers)
                 .build();
         signInLauncher.launch(signInIntent);
+
     }
 
 }
