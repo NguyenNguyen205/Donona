@@ -114,8 +114,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.0.0-beta4")
 
-
-
+    // Auto Image Slider in Homepage
+    implementation ("com.github.denzcoskun:ImageSlideshow:0.1.0")
 
 }
 
