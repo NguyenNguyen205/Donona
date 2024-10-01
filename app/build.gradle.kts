@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
 
     id("com.google.gms.google-services")
+//    id("com.android.application")
 }
 
 android {
@@ -119,6 +120,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:3.2.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.0.0-beta4")
+
+    // Stripe
+    implementation("com.stripe:stripe-android:20.51.1")
 
 }
 

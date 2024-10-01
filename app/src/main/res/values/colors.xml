@@ -12,4 +12,5 @@
     <color name="blue">#1b6ef3</color>
     <color name="text">#643120</color>
     <color name="orange">#FFA500</color>
+    <color name="card_background">#faeed9</color>
 </resources>

@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Init auth instance
         mAuth = FirebaseAuth.getInstance();
+
     }
 
     @Override
