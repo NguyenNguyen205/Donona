@@ -13,13 +13,6 @@
         android:orientation="vertical"
         android:background="@color/background"
         >
-        <ImageButton
-            android:id="@+id/return_from_read_blog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/keyboard_return_24px"
-            />
-
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="200dp"
@@ -37,6 +30,7 @@
             android:textSize="30dp"
             android:layout_marginLeft="30dp"
             />
+        
 
 
 

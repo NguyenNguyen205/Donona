@@ -125,4 +125,10 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(HomeActivity.this, BlogPostActivity.class);
         startActivity(intent);
     }
+
+    public void onClickSubscription(View view) {
+        Log.d(TAG, "Subscription page launch");
+        Intent intent = new Intent(HomeActivity.this, SubscriptionActivity.class);
+        startActivity(intent);
+    }
 }

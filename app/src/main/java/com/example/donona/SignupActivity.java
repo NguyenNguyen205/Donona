@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +52,7 @@ public class SignupActivity extends AppCompatActivity {
 
         EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
+
 
         mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -85,6 +87,7 @@ public class SignupActivity extends AppCompatActivity {
         data.put("email", user.getEmail());
         data.put("userID", user.getUid());
         data.put("password", mPassword.getText().toString());
+        data.put("bookmarks", new ArrayList<String>());
 
         db.collection("user")
                 .add(data)

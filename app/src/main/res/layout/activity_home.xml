@@ -85,7 +85,8 @@
             android:minHeight="50dp"
             android:layout_column="2"
             android:layout_row="0"
-            android:src="@drawable/sports_esports_24px"
+            android:src="@drawable/subscriptions_24px"
+            android:onClick="onClickSubscription"
             />
         <ImageButton
             android:id="@+id/bookmark"
