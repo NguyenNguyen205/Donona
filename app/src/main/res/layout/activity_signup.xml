@@ -19,11 +19,11 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="303dp"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="donona_logo"
             android:layout_marginTop="30dp"
+            android:contentDescription="donona_logo"
             app:srcCompat="@drawable/logo_text"
             tools:layout_editor_absoluteX="27dp"
             tools:layout_editor_absoluteY="29dp" />
@@ -31,29 +31,40 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/username_label"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
             android:labelFor="@id/editTextTextUsername"
-            android:textSize="20sp"/>
+            android:text="@string/username_label"
+            android:textSize="15sp" />
+
         <EditText
             android:id="@+id/editTextTextUsername"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="345dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button"
             android:ems="10"
             android:minHeight="50dp"
             android:inputType="text"
-            android:autofillHints="name"
-            />
+            android:autofillHints="name"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/email_label"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/email"
             android:labelFor="@id/editTextTextEmailAddress"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
+
         <EditText
             android:id="@+id/editTextTextEmailAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="345dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button"
             android:ems="10"
             android:minHeight="50dp"
             android:autofillHints="emailAddress"
@@ -62,13 +73,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
             android:text="@string/password_label"
             android:labelFor="@id/editTextPassword"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
+
         <EditText
             android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="345dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button"
             android:ems="10"
             android:minHeight="50dp"
             android:autofillHints="emailAddress"
@@ -77,13 +94,20 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
             android:text="@string/confirm_password_label"
             android:labelFor="@id/editTextPasswordConfirm"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
+
         <EditText
+
             android:id="@+id/editTextPasswordConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="345dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/button"
             android:ems="10"
             android:minHeight="50dp"
             android:autofillHints="emailAddress"
@@ -91,31 +115,43 @@
 
         <Button
             android:id="@+id/login_navigate"
-            android:layout_width="match_parent"
+            android:layout_width="345dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
             android:backgroundTint="#A17246"
-            android:minHeight="50dp"
-            android:text="Signup"
-            android:onClick="onSignUp"
-            />
+            android:minHeight="48dp"
+            android:text="@string/sign_up"
+            android:onClick="onSignUp" />
 
         <Button
             android:id="@+id/button_signin"
-            android:layout_width="match_parent"
+            android:layout_width="345dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:backgroundTint="#ffffff"
             android:textColor="#000000"
-            android:minHeight="50dp"
+            android:minHeight="48dp"
             android:text="Sign in"
-            android:onClick="onSignIn"
-            />
+            android:onClick="onSignIn" />
 
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="94dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
             app:srcCompat="@drawable/logo" />
 
+        <TextView
+            android:id="@+id/notice"
+            android:layout_width="249dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center" />
+
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
