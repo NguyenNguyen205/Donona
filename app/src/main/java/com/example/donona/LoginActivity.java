@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultCallback;
@@ -131,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         TextView notice = (TextView) findViewById(R.id.notice);
-        notice.setText(Html.fromHtml("To continue, you need to <b>Hello world</b>"));
+        notice.setText(Html.fromHtml("To continue, you can review Company’s <b>privacy policy</b> and <b>terms of service</b>."));
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav);
         bottomNavigationView.setSelectedItemId(R.id.navigation_account);
@@ -176,6 +177,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText mEmail = (EditText)findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
         if (mEmail.getText().toString().isEmpty() || mPassword.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Please enter Email or Password", Toast.LENGTH_LONG).show();
             return;
         }
         mAuth.signInWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
@@ -183,11 +185,13 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Login successfully", Toast.LENGTH_LONG).show();
                             Log.d(TAG, "Login successfully");
                             FirebaseUser user = mAuth.getCurrentUser();
                             handleSuccessAuthentication(user);
                         }
                         else {
+                            Toast.makeText(LoginActivity.this, "Email or Password is wrong", Toast.LENGTH_LONG).show();
                             Log.d(TAG, "hello", task.getException());
                         }
                     }
