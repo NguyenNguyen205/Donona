@@ -8,6 +8,8 @@ plugins {
 android {
     namespace = "com.example.donona"
     compileSdk = 35
+//    ndkPath = "D:/Program Files/UnityEditor/2022.3.44f1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
+
 
     defaultConfig {
         applicationId = "com.example.donona"
@@ -123,6 +125,10 @@ dependencies {
 
     // Stripe
     implementation("com.stripe:stripe-android:20.51.1")
+
+    // Unity game
+//    implementation(project(":unityLibrary"))
+
 
 }
 
