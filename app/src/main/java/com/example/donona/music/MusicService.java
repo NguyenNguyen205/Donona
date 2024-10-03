@@ -88,4 +88,17 @@ public class MusicService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        // Dừng nhạc và giải phóng MediaPlayer khi ứng dụng bị tắt từ recent apps
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        stopSelf();  // Dừng hẳn service
+        super.onTaskRemoved(rootIntent);
+    }
+
 }
