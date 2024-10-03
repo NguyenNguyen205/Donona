@@ -19,4 +19,5 @@
     <color name="darker_gray">#AAA49E</color>
 
     <color name="orange">#FFA500</color>
+    <color name="card_background">#faeed9</color>
 </resources>

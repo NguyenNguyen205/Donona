@@ -118,8 +118,9 @@
             android:padding="10dp"
             android:src="@drawable/verified_24px"
             android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
-
+            app:tint="@color/quite_brown"
+            android:onClick="onClickSubscription"
+            />
         <ImageButton
             android:id="@+id/bookmark"
             android:layout_width="60dp"
@@ -231,7 +232,7 @@
             android:layout_height="match_parent"
             app:iss_auto_cycle="true"
             app:iss_corner_radius="20"
-            app:iss_delay="1000"
+            app:iss_delay="3000"
             app:iss_period="1000"
             app:iss_title_background="@drawable/gradient" />
 

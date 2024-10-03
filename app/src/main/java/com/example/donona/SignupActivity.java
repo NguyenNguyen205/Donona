@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +53,19 @@ public class SignupActivity extends AppCompatActivity {
 
         EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
+        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm);
+
+        // Handle password and confirm password
+        if(mPassword.equals(mPasswordConfirm)){
+            Toast.makeText(SignupActivity.this, "Please re-enter your password. The confirmation does not match.",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //Handle password is less than 8 character
+        if(mPassword.getTextSize() < 8){
+            Toast.makeText(SignupActivity.this, "Password must be more than 8 characters.",Toast.LENGTH_LONG).show();
+            return;
+        }
 
         mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -74,10 +89,7 @@ public class SignupActivity extends AppCompatActivity {
     private void handleSuccessAuthentication(FirebaseUser user) {
         // Get data
         EditText mUsername = (EditText) findViewById(R.id.editTextTextUsername);
-        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
-
-        // Handle password and confirm password
 
         // store user into database
         Map<String, Object> data = new HashMap<>();
@@ -85,12 +97,17 @@ public class SignupActivity extends AppCompatActivity {
         data.put("email", user.getEmail());
         data.put("userID", user.getUid());
         data.put("password", mPassword.getText().toString());
+        data.put("image", "No Image");
+        data.put("bookmarks", new ArrayList<String>());
 
         db.collection("user")
                 .add(data)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(SignupActivity.this, "Sign up successfully", Toast.LENGTH_LONG).show();
+                        // navigate to home page
+                        startActivity(new Intent(SignupActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         Log.d(TAG, "Document write successfull");
                     }
                 })
@@ -100,10 +117,6 @@ public class SignupActivity extends AppCompatActivity {
                         Log.d(TAG, "Document write fail");
                     }
                 });
-
-
-        // navigate to home page
-        startActivity(new Intent(SignupActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     private void handleFailAuthentication() {
