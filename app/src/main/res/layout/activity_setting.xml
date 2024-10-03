@@ -42,7 +42,7 @@
 
         <!-- Nút phát nhạc -->
         <Button
-            android:id="@+id/playMusicButton"
+            android:id="@+id/musicButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -53,8 +53,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Dark Mode" />
-
+            android:text="Dark Mode"
+            android:textSize="20sp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:padding="16dp" />
     </LinearLayout>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav"
