@@ -24,12 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class SettingActivity extends AppCompatActivity {
     private Button logoutButton;
 
-//    //Download and play music file
-//    private FirebaseStorage storage;
-//    private StorageReference storageReference;
-//    private MediaPlayer mediaPlayer;
-//    private File localFile;
-
     //Switch between dark and light mode
     private Switch switchTheme;
     private SharedPreferences sharedPreferences;
@@ -66,27 +60,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-//        // Khởi tạo FirebaseStorage và StorageReference
-//        storage = FirebaseStorage.getInstance();
-//        storageReference = storage.getReference();
-//
-//        // Tải file MP3 từ Firebase Storage về
-//        String fileName = "Music/beautyandabeat.mp3";
-//        downloadFile(fileName);
-//
-//        // Thiết lập sự kiện cho nút phát nhạc
-//        Button playMusicButton = findViewById(R.id.playMusicButton);
-//        playMusicButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (localFile != null && localFile.exists()) {
-//                    playAudio(localFile);  // Phát nhạc khi nhấn nút
-//                } else {
-//                    Log.e("MediaPlayer", "File nhạc chưa được tải về.");
-//                }
-//            }
-//        });
-
+        //Lấy nút và xử lý logic khi ấn nút nhạc
         Button musicButton = findViewById(R.id.musicButton);
         musicButton.setOnClickListener(v -> {
             // Gửi Intent để gọi toggleMusic trong MusicService
@@ -143,53 +117,4 @@ public class SettingActivity extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(SettingActivity.this, ProfileActivity.class));
     }
-
-//    private void downloadFile(String fileName) {
-//        // Tạo đường dẫn tạm thời trên thiết bị
-//        localFile = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), "my_song.mp3");
-//
-//        // Tải file từ Firebase Storage về
-//        storageReference.child(fileName).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-//                Log.d("Firebase", "Tải file thành công: " + localFile.getAbsolutePath());
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@androidx.annotation.NonNull Exception exception) {
-//                Log.e("Firebase", "Tải file thất bại", exception);
-//            }
-//        });
-//    }
-
-//    private void playAudio(File audioFile) {
-//        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-//            // Nếu nhạc đang phát, ngừng phát và giải phóng MediaPlayer
-//            mediaPlayer.stop();
-//            mediaPlayer.reset();  // Reset để sử dụng lại MediaPlayer
-//            Log.d("MediaPlayer", "Nhạc đã dừng");
-//        } else {
-//            // Nếu không có nhạc nào đang phát, khởi tạo và phát nhạc
-//            try {
-//                if (mediaPlayer == null) {
-//                    mediaPlayer = new MediaPlayer();
-//                }
-//                mediaPlayer.setDataSource(audioFile.getAbsolutePath());
-//                mediaPlayer.prepare();  // Chuẩn bị MediaPlayer
-//                mediaPlayer.start();    // Phát nhạc
-//                Log.d("MediaPlayer", "Đang phát nhạc: " + audioFile.getAbsolutePath());
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if (mediaPlayer != null) {
-//            mediaPlayer.release();  // Giải phóng MediaPlayer khi không sử dụng nữa
-//            mediaPlayer = null;
-//        }
-//    }
 }
