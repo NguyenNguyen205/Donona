@@ -4,13 +4,20 @@
     <string name="title_streaming">Streaming</string>
     <string name="title_account">Account</string>
     <string name="title_setting">Setting</string>
-    <string name="username_label">Username</string>
-    <string name="email_label">Email</string>
-    <string name="password_label">Password</string>
-    <string name="confirm_password_label">Confirm Password</string>
+    <string name="username_label"><b>Username</b></string>
+    <string name="email_label"><b>Email/Username</b></string>
+    <string name="password_label"><b>Password</b></string>
+    <string name="confirm_password_label"><b>Confirm Password</b></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="edit_avatar">Edit Avatar</string>
+    <string name="email"><b>Email</b></string>
+    <string name="forgot_pw">Forgot password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="or">OR</string>
+    <string name="sign_in_gg">Sign in with Google</string>
+    <string name="privacy">To continue, you can review Company’s privacy policy and terms of service.</string>
 
 </resources>

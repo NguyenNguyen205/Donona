@@ -7,32 +7,27 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".LoginActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="130dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="303dp"
-            android:layout_height="wrap_content"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:contentDescription="donona_logo"
             android:layout_marginTop="30dp"
+            android:contentDescription="donona_logo"
             app:srcCompat="@drawable/logo_text"
             tools:layout_editor_absoluteX="27dp"
             tools:layout_editor_absoluteY="29dp" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email_label"
-            android:labelFor="@id/editTextTextEmailAddress"
-            android:textSize="20sp"/>
-
+        <!--
         <EditText
             android:id="@+id/editTextTextEmailAddress"
             android:layout_width="match_parent"
@@ -40,87 +35,175 @@
             android:autofillHints="emailAddress"
             android:ems="10"
             android:inputType="textEmailAddress"
+            android:minHeight="50dp" /> />-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="60dp"
+            android:labelFor="@id/editTextTextEmailAddress"
+            android:text="@string/email_label"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/editTextTextEmailAddress"
+            android:layout_width="345dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:autofillHints="emailAddress"
+            android:background="@drawable/button"
+            android:ems="10"
+            android:inputType="textEmailAddress"
             android:minHeight="50dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/password_label"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
             android:labelFor="@id/editTextPassword"
-            android:textSize="20sp"/>
+            android:text="@string/password_label"
+            android:textSize="15sp" />
+        <!--
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:minHeight="50dp"
             android:autofillHints="emailAddress"
-            android:inputType="textPassword" />
+            android:ems="10"
+            android:inputType="textPassword" /> />-->
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="345dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:autofillHints="emailAddress"
+            android:background="@drawable/button"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:minHeight="50dp" />
+
+
+        <TextView
+            android:id="@+id/forgotPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="272dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/forgot_pw"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/login"
-            android:layout_width="match_parent"
+            android:layout_width="345dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
             android:backgroundTint="#A17246"
-            android:minHeight="50dp"
-            android:text="Sign in"
+            android:minHeight="48dp"
             android:onClick="onSignin"
-            />
+            android:text="@string/sign_in"
+            android:textSize="12sp" />
+
+        <!--        <com.google.android.gms.common.SignInButton-->
+        <!--            android:id="@+id/gmail_login"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:onClick="googleSignin"-->
+        <!--            />-->
 
         <Button
             android:id="@+id/button2"
-            android:layout_width="match_parent"
+            android:layout_width="345dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-4dp"
             android:backgroundTint="#ffffff"
-            android:textColor="#000000"
-            android:minHeight="50dp"
+            android:minHeight="48dp"
             android:onClick="onSignup"
-            android:text="Sign up" />
+            android:text="@string/sign_up"
+            android:textColor="#000000"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
             android:gravity="center"
-            android:textSize="20sp"
-            android:text="Or" />
+            android:text="@string/or"
+            android:textSize="12sp" />
 
-<!--        <com.google.android.gms.common.SignInButton-->
-<!--            android:id="@+id/gmail_login"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:onClick="googleSignin"-->
-<!--            />-->
+        <!--        Facebook login button-->
+        <!--        <com.facebook.login.widget.LoginButton-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:minHeight="50dp"-->
+        <!--            />-->
+
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/gmail_login"
+            android:layout_width="345dp"
             android:layout_height="wrap_content"
-            android:text="GOOGLE"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
             android:backgroundTint="@color/white"
+            android:minHeight="48dp"
+            android:onClick="googleSignin"
+            android:text="@string/sign_in_gg"
             android:textColor="@color/black"
-            android:onClick="googleSignin"/>
+            android:textSize="12sp"/>
 
-<!--        Facebook login button-->
-<!--        <com.facebook.login.widget.LoginButton-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:minHeight="50dp"-->
-<!--            />-->
+
+        <!-- <Button
+             android:id="@+id/facebook_login"
+             android:layout_width="345dp"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:layout_marginTop="-4dp"
+             android:backgroundTint="@color/blue_fb"
+             android:minHeight="48dp"
+             android:onClick="facebookSignin"
+             android:text="@string/sign_in_fb"
+             android:textColor="@color/white"
+             android:textSize="12sp" /> />-->
+
+        <!-- <Button
+             android:id="@+id/apple_login"
+             android:layout_width="345dp"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:layout_marginTop="-4dp"
+             android:backgroundTint="@color/black"
+             android:minHeight="48dp"
+             android:onClick="appleSignin"
+             android:text="@string/sign_in_apple"
+             android:textColor="@color/white"
+             android:textSize="12sp" /> />-->
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="match_parent"
-            android:layout_height="116dp"
+            android:layout_width="94dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="18dp"
             app:srcCompat="@drawable/logo" />
 
         <TextView
             android:id="@+id/notice"
-            android:layout_width="wrap_content"
+            android:layout_width="249dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"/>
-
+            android:layout_marginTop="10dp"
+            android:gravity="center" />
 
     </LinearLayout>
 
