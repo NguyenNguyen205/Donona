@@ -79,7 +79,7 @@
             android:backgroundTint="@color/white"
             android:contentDescription="hello"
             android:elevation="2dp"
-            android:onClick="onClickNearMe"
+            android:onClick="onClickSuggest"
             android:padding="10dp"
             android:src="@drawable/near_me_fill_24px"
             android:translationZ="2dp"
@@ -97,7 +97,7 @@
             android:contentDescription="hello"
             android:elevation="2dp"
             android:minHeight="50dp"
-            android:onClick="onClickSearchPlace"
+            android:onClick="onClickNearMe"
             android:padding="10dp"
             android:src="@drawable/map_fill_24px"
             android:translationZ="2dp"
@@ -155,7 +155,9 @@
             android:padding="10dp"
             android:src="@drawable/edit_note_24px"
             android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
+            app:tint="@color/quite_brown"
+            android:onClick="onClickPost"
+            />
 
         <ImageButton
             android:id="@+id/promotion"
