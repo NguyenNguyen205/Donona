@@ -48,6 +48,22 @@
             android:layout_gravity="center_horizontal"
             android:text="Play Music" />
 
+        <Button
+            android:id="@+id/openBrowserButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fanpage"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <Button
+            android:id="@+id/appInfor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_infor"
+            android:layout_gravity="center_horizontal"
+            />
+
         <Switch
             android:id="@+id/switch_theme"
             android:layout_width="wrap_content"

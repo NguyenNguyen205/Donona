@@ -19,5 +19,7 @@
     <string name="or">OR</string>
     <string name="sign_in_gg">Sign in with Google</string>
     <string name="privacy">To continue, you can review Company’s privacy policy and terms of service.</string>
+    <string name="app_infor">App Information</string>
+    <string name="fanpage">Fanpage</string>
 
 </resources>

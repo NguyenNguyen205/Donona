@@ -18,9 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Donona"
-        tools:targetApi="31"
         android:usesCleartextTraffic="true"
-        >
+        tools:targetApi="31">
+        <activity
+            android:name=".AppInforActivity"
+            android:exported="false" />
         <activity
             android:name=".SubscriptionActivity"
             android:exported="false" />
@@ -82,7 +84,6 @@
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="location" />
-
         <service android:name=".music.MusicService" />
     </application>
 
