@@ -274,7 +274,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="508dp"
-            android:text="Trending"
+            android:text="@string/trending"
             android:textColor="@color/brown"
             android:textSize="20dp"
             android:textStyle="bold"

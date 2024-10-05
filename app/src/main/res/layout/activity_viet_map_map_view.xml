@@ -33,7 +33,7 @@
                 android:id="@+id/search_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Searching"
+                android:hint="@string/searching"
                 android:layout_toRightOf="@+id/return_button"
                 android:layout_toLeftOf="@+id/search"
                 >
@@ -133,7 +133,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
-                                android:text="Hello world"
+                                android:text="@string/hello_world"
                                 android:textSize="30dp"
                                 />
 
@@ -142,7 +142,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="10dp"
-                                android:text="Address in Afterlife"
+                                android:text="@string/address_in_after_life"
                                 android:textSize="20dp"
                                 />
                         </LinearLayout>
