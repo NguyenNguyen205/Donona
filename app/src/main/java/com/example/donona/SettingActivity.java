@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
@@ -57,6 +58,9 @@ public class SettingActivity extends AppCompatActivity {
                     editor.putBoolean("NightMode", false);
                 }
                 editor.apply();  // Lưu trạng thái vào SharedPreferences
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
             }
         });
 
