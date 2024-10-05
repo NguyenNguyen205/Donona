@@ -1,158 +1,111 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="16dp"
-    android:background="@color/background"
-    android:layout_marginBottom="8dp"
-    android:elevation="4dp">
+    android:layout_margin="8dp"
+    android:background="@drawable/rounded_background"
+    android:elevation="8dp"
+    android:layout_marginBottom="8dp">
 
     <ImageView
         android:id="@+id/coffee_image"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="10dp"
         android:contentDescription="@string/app_name"
-        android:layout_marginBottom="12dp" />
-
-    <TextView
-        android:id="@+id/coffee_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coffee Shop Name"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/coffee_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Display Name: Placeholder Coffee Shop"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_address"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="123 Placeholder St."
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_street"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Street: Placeholder St."
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_ward"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ward: Placeholder Ward"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_district"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="District: Placeholder District"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_city"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="City: Placeholder City"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_price_range"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Price Range: $10 - $30"
-        android:textSize="14sp"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/coffee_hsNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="House Number: 123"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_lat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Latitude: 10.762622"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_lng"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Longitude: 106.660172"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/coffee_wifi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Wi-Fi: Available"
-        android:textSize="14sp"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/coffee_thumbnail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thumbnail: Not available"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="187dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="12dp">
+        android:layout_gravity="center_vertical"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/coffee_starttime"
+            android:id="@+id/coffee_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Opens: 8:00 AM"
-            android:textSize="14sp"
-            android:layout_marginRight="16dp" />
+            android:layout_marginBottom="8dp"
+            android:text="Coffee Shop Name"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/brown" />
 
         <TextView
-            android:id="@+id/coffee_endtime"
+            android:id="@+id/coffee_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Closes: 10:00 PM"
-            android:textSize="14sp" />
+            android:layout_marginBottom="4dp"
+            android:text="123 Placeholder St."
+            android:textSize="12sp"
+            android:textColor="@color/quite_brown" />
+
+        <TextView
+            android:id="@+id/coffee_price_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Price: $10-$30"
+            android:textSize="12sp"
+            android:textColor="@color/quite_brown" />
+
+        <TextView
+            android:id="@+id/coffee_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Wi-Fi: Available"
+            android:textSize="12sp"
+            android:textColor="@color/quite_brown" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/coffee_starttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="8:00 AM"
+                android:textSize="12sp"
+                android:textColor="@color/beige_brown" />
+
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="-"
+                android:textSize="12sp"
+                android:textColor="@color/beige_brown" />
+
+            <TextView
+                android:id="@+id/coffee_endtime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:00 PM"
+                android:textSize="12sp"
+                android:textColor="@color/beige_brown" />
+        </LinearLayout>
     </LinearLayout>
 
     <ImageButton
         android:id="@+id/near_me"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|center_horizontal"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/near_me_24px"
         android:padding="10dp"
-        android:layout_marginTop="12dp" />
+        android:src="@drawable/near_me_fill_24px"
+        android:contentDescription="Navigate"
+        app:tint="@color/beige_brown"/>
+
 
 </LinearLayout>

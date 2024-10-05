@@ -8,55 +8,106 @@
     android:background="@color/background"
     tools:context=".SettingActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="241dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="54dp"
+        android:contentDescription="donona_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_text" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="241dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="54dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="54dp"
-            android:contentDescription="donona_logo"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/rounded_line"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3"
+            app:layout_constraintVertical_bias="0.818" />
+
+        <View
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/rounded_line"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3"
+            app:layout_constraintVertical_bias="0.818" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:text="Setting"
+            android:textColor="@color/brown"
+            android:textSize="28dp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.145"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo_text" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Log out"
-            android:onClick="logout"
-            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Nút phát nhạc -->
-        <Button
-            android:id="@+id/playMusicButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Phát nhạc" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_setting_button"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="200dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:padding="15dp">
+
     </LinearLayout>
+
+
+
+    <!-- Nút phát nhạc -->
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="496dp"
+        android:onClick="logout"
+        android:text="Log out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
+
+    <Button
+        android:id="@+id/playMusicButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="416dp"
+        android:text="Phát nhạc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#ffebc9"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
