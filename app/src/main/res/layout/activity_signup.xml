@@ -43,11 +43,12 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:paddingLeft="12dp"
+            android:autofillHints="name"
             android:background="@drawable/button"
             android:ems="10"
-            android:minHeight="50dp"
             android:inputType="text"
-            android:autofillHints="name"/>
+            android:minHeight="50dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -64,6 +65,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:paddingLeft="12dp"
             android:background="@drawable/button"
             android:ems="10"
             android:minHeight="50dp"
@@ -85,6 +87,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:paddingLeft="12dp"
             android:background="@drawable/button"
             android:ems="10"
             android:minHeight="50dp"
@@ -107,6 +110,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:paddingLeft="12dp"
             android:background="@drawable/button"
             android:ems="10"
             android:minHeight="50dp"
@@ -122,6 +126,7 @@
             android:backgroundTint="#A17246"
             android:minHeight="48dp"
             android:text="@string/sign_up"
+            android:textAllCaps="false"
             android:onClick="onSignUp" />
 
         <Button
@@ -132,7 +137,8 @@
             android:backgroundTint="#ffffff"
             android:textColor="#000000"
             android:minHeight="48dp"
-            android:text="Sign in"
+            android:text="@string/sign_in"
+            android:textAllCaps="false"
             android:onClick="onSignIn" />
 
 

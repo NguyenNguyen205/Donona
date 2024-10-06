@@ -52,6 +52,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:paddingLeft="12dp"
             android:autofillHints="emailAddress"
             android:background="@drawable/button"
             android:ems="10"
@@ -82,6 +83,7 @@
             android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:paddingLeft="12dp"
             android:background="@drawable/button"
             android:minHeight="50dp"
             android:autofillHints="emailAddress"
@@ -108,7 +110,8 @@
             android:minHeight="48dp"
             android:onClick="onSignin"
             android:text="@string/sign_in"
-            android:textSize="12sp" />
+            android:textAllCaps="false"
+            android:textSize="13sp" />
 
         <!--        <com.google.android.gms.common.SignInButton-->
         <!--            android:id="@+id/gmail_login"-->
@@ -129,7 +132,8 @@
             android:onClick="onSignup"
             android:text="@string/sign_up"
             android:textColor="#000000"
-            android:textSize="12sp" />
+            android:textAllCaps="false"
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -160,7 +164,9 @@
             android:onClick="googleSignin"
             android:text="@string/sign_in_gg"
             android:textColor="@color/black"
-            android:textSize="12sp" />
+            android:drawableLeft="@drawable/google"
+            android:textAllCaps="false"
+            android:textSize="13sp" />
 
 
         <!-- <Button

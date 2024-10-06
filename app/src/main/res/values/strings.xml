@@ -14,10 +14,10 @@
     <string name="edit_avatar">Edit Avatar</string>
     <string name="email"><b>Email</b></string>
     <string name="forgot_pw">Forgot password</string>
-    <string name="sign_in">Sign in</string>
-    <string name="sign_up">Sign up</string>
+    <string name="sign_in"><b>Sign in</b></string>
+    <string name="sign_up"><b>Sign up</b></string>
     <string name="or">OR</string>
-    <string name="sign_in_gg">Sign in with Google</string>
+    <string name="sign_in_gg"><b>Sign in with Google</b></string>
     <string name="privacy">To continue, you can review Company’s privacy policy and terms of service.</string>
 
 </resources>
