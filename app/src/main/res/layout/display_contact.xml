@@ -47,12 +47,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/facebook"
                 android:text="@string/app_name"
                 android:textColor="@color/quite_brown"
                 android:textStyle="bold"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
             <ImageButton
                 android:id="@+id/fbButton"
                 android:layout_width="50dp"
@@ -61,7 +61,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/circle_button"
                 android:backgroundTint="@color/white"
-                android:layout_marginStart="240dp"
+                android:layout_marginStart="250dp"
                 android:layout_toEndOf="@+id/facebook"
                 android:src="@drawable/arrow_forward_ios_24px"
                 app:tint="@color/quite_brown"/>
@@ -83,12 +83,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/instagram"
                 android:text="@string/insta_id"
                 android:textColor="@color/quite_brown"
                 android:textStyle="bold"
-                android:textSize="18dp"/>
+                android:textSize="18sp"/>
             <ImageButton
                 android:id="@+id/insButton"
                 android:layout_width="50dp"
@@ -97,7 +97,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/circle_button"
                 android:backgroundTint="@color/white"
-                android:layout_marginStart="240dp"
+                android:layout_marginStart="250dp"
                 android:layout_toEndOf="@+id/instagram"
                 android:src="@drawable/arrow_forward_ios_24px"
                 app:tint="@color/quite_brown"/>
@@ -119,12 +119,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="15dp"
                 android:layout_toEndOf="@+id/mail"
                 android:text="@string/gmail"
                 android:textColor="@color/quite_brown"
                 android:textStyle="bold"
-                android:textSize="14dp"/>
+                android:textSize="15sp"/>
             <ImageButton
                 android:id="@+id/mailButton"
                 android:layout_width="50dp"
@@ -133,7 +133,7 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/circle_button"
                 android:backgroundTint="@color/white"
-                android:layout_marginStart="240dp"
+                android:layout_marginStart="250dp"
                 android:layout_toEndOf="@+id/mail"
                 android:src="@drawable/arrow_forward_ios_24px"
                 app:tint="@color/quite_brown"/>
