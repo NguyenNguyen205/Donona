@@ -5,12 +5,7 @@
     <gradient android:startColor="@color/white"
             android:endColor="@color/white"/>
     <corners android:radius="8dp"/>
-<<<<<<< HEAD
     <stroke android:color="@color/black"
             android:width="0.7dp"/>
-=======
-    <stroke android:color="@color/brown"
-            android:width="0.6dp"/>
->>>>>>> 84f493234df93427c61a7e15f53255d3ef39b1ac
 
 </shape>
