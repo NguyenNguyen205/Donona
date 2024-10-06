@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">donona</string>
+    <string name="app_name">Donona</string>
     <string name="title_home">Home</string>
     <string name="title_streaming">Streaming</string>
     <string name="title_account">Account</string>
@@ -14,10 +14,10 @@
     <string name="edit_avatar">Edit Avatar</string>
     <string name="email"><b>Email</b></string>
     <string name="forgot_pw">Forgot password</string>
-    <string name="sign_in"><b>Sign in</b></string>
-    <string name="sign_up"><b>Sign up</b></string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
     <string name="or">OR</string>
-    <string name="sign_in_gg"><b>Sign in with Google</b></string>
+    <string name="sign_in_gg">Sign in with Google</string>
     <string name="privacy">To continue, you can review Company’s privacy policy and terms of service.</string>
     <string name="app_infor">App Information</string>
     <string name="fanpage">Fanpage</string>
@@ -31,7 +31,7 @@
     <string name="email_hint">Email here</string>
     <string name="update">Update</string>
     <string name="log_out">Log out</string>
-    <string name="play_music">Play Music</string>
+    <string name="play_music">Music</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="upgrade_your_account">Upgrade Your Account</string>
     <string name="free_tier">Free Tier</string>
@@ -46,7 +46,11 @@
     <string name="address_in_after_life">Address in Afterlife</string>
     <string name="searching">Searching</string>
     <string name="coffee_shop_name">Coffee Shop Name</string>
-
+    <string name="intro">Donona là một chiếc app đáng yêu được phát triển bởi nhóm sinh viên năm cuối đang trong giai đoạn thực hiện môn Khởi nghiệp(EXE201).</string>
+    <string name="insta_id">donona.urcafeurway</string>
+    <string name="gmail">donona.urcafeurway@gmail.com</string>
+    <string name="contact">Contact</string>
+    <string name="app_info">Appliance Infomation</string>
 
 
 </resources>
