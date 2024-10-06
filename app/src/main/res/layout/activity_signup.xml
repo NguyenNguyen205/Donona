@@ -132,7 +132,7 @@
             android:backgroundTint="#ffffff"
             android:textColor="#000000"
             android:minHeight="48dp"
-            android:text="Sign in"
+            android:text="@string/sign_in"
             android:onClick="onSignIn" />
 
 

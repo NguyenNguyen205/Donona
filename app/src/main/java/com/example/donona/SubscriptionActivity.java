@@ -46,8 +46,8 @@ public class SubscriptionActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private String url = "http://10.0.2.2:5528/";
-    private String priceId = "price_1Q52n1RsoCurEVDXqdMZy2PK"; // will fetch database later on
-    private String stripePublicKey = "pk_test_51PSxSqRsoCurEVDXHObnzZlGaERCvJGTwR1MxNVxB7kjrCTBcsZVY6mVvkV39LUFjgq8NAkQxF0dDzi8VqatK1Yh00aOaQesFF";
+    private String priceId = "price_1Q6QGjRt4Jb0KcASHTGyC592"; // will fetch database later on
+    private String stripePublicKey = "pk_test_51PZTGERt4Jb0KcASqJvZReNwjK5oiWEzZvp27FpjQ8HadaXWg8WKlKO1kfoIcV7AyuI68Trx4ZdTOne1KPrnNP7e00RBCAu2mn";
     private String clientSecret = "";
     private String subscriptionId = "";
     private OkHttpClient client = new OkHttpClient();

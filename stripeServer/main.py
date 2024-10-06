@@ -6,7 +6,7 @@ import json
 app = Flask(__name__)
 cors = CORS(app=app)
 app.config['Access-Control-Allow-Origin'] = '*'
-stripe.api_key = "sk_test_51PSxSqRsoCurEVDXT1nXaQgwZ60fIhf3d2sGFVDoTzdUajfEVJ9h0iWwzDVU0jJNAVoEezzx6I6zOmG8RuTPHEgd00nBfA7YCE"
+stripe.api_key = "sk_test_51PZTGERt4Jb0KcASvnNu77y3c6lmQJNpLD3gvERz0vPLhPNERogsVubVaRuUb2xNYC6o4r0ZZ7ZH3eXh1jd715Ft00eh5S5EDO"
 
 @app.route('/create-customer', methods=['POST'])
 def create_customer():
