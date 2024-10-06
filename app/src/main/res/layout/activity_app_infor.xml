@@ -29,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/beige_brown"
         app:cardCornerRadius="20dp"
         >
         <TextView
@@ -42,7 +42,8 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:text="@string/intro"
-
+            android:textColor="@color/brown"
+            android:textStyle="bold"
             />
 
 

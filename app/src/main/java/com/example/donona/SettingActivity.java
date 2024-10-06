@@ -2,6 +2,7 @@ package com.example.donona;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,42 +39,22 @@ public class SettingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
 
-//        Button appInforButton = findViewById(R.id.appInfor);
-//        appInforButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(SettingActivity.this, AppInforActivity.class));
-//            }
-//        });
-//
-//        //Nút để mở fanpage
-//        Button openBrowserButton = findViewById(R.id.openBrowserButton);
-//        openBrowserButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // URL mà bạn muốn mở
-//                String url = "https://www.facebook.com/donona.urcafeurway"; // Thay đổi URL theo ý bạn
-//
-//                // Tạo Intent để mở trình duyệt
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse(url));
-//
-//                // Kiểm tra xem có ứng dụng nào có thể xử lý Intent này không
-//                if (intent.resolveActivity(getPackageManager()) != null) {
-//                    startActivity(intent); // Mở trình duyệt
-//                }
-//            }
-//        });
-//
-//
-//        ImageButton contactButton = findViewById(R.id.contactNavigate);
-//        openBrowserButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                startActivity(new Intent(SettingActivity.this, StreamingActivity.class));
-//            }
-//        });
+        ImageButton appInforButton = findViewById(R.id.appInfor);
+        appInforButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingActivity.this, AppInforActivity.class));
+            }
+        });
+
+        ImageButton contactButton = findViewById(R.id.contactNavigate);
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(SettingActivity.this, ContactActivity.class));
+            }
+        });
 
         // Nút để chuyển chế độ sáng tối
         switchTheme = findViewById(R.id.switch_theme);
