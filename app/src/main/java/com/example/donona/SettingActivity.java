@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
 
 import androidx.activity.EdgeToEdge;
@@ -24,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class SettingActivity extends AppCompatActivity {
-    private Button logoutButton;
+    private ImageButton logoutButton;
 
     //Switch between dark and light mode
     private Switch switchTheme;
@@ -37,32 +38,42 @@ public class SettingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
 
-        Button appInforButton = findViewById(R.id.appInfor);
-        appInforButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(SettingActivity.this, AppInforActivity.class));
-            }
-        });
-
-        //Nút để mở fanpage
-        Button openBrowserButton = findViewById(R.id.openBrowserButton);
-        openBrowserButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // URL mà bạn muốn mở
-                String url = "https://www.facebook.com/donona.urcafeurway"; // Thay đổi URL theo ý bạn
-
-                // Tạo Intent để mở trình duyệt
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(url));
-
-                // Kiểm tra xem có ứng dụng nào có thể xử lý Intent này không
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent); // Mở trình duyệt
-                }
-            }
-        });
+//        Button appInforButton = findViewById(R.id.appInfor);
+//        appInforButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(SettingActivity.this, AppInforActivity.class));
+//            }
+//        });
+//
+//        //Nút để mở fanpage
+//        Button openBrowserButton = findViewById(R.id.openBrowserButton);
+//        openBrowserButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // URL mà bạn muốn mở
+//                String url = "https://www.facebook.com/donona.urcafeurway"; // Thay đổi URL theo ý bạn
+//
+//                // Tạo Intent để mở trình duyệt
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setData(Uri.parse(url));
+//
+//                // Kiểm tra xem có ứng dụng nào có thể xử lý Intent này không
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(intent); // Mở trình duyệt
+//                }
+//            }
+//        });
+//
+//
+//        ImageButton contactButton = findViewById(R.id.contactNavigate);
+//        openBrowserButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                startActivity(new Intent(SettingActivity.this, StreamingActivity.class));
+//            }
+//        });
 
         // Nút để chuyển chế độ sáng tối
         switchTheme = findViewById(R.id.switch_theme);
@@ -94,7 +105,7 @@ public class SettingActivity extends AppCompatActivity {
         });
 
         //Lấy nút và xử lý logic khi ấn nút nhạc
-        Button musicButton = findViewById(R.id.musicButton);
+        ImageButton musicButton = findViewById(R.id.musicButton);
         musicButton.setOnClickListener(v -> {
             // Gửi Intent để gọi toggleMusic trong MusicService
             Intent toggleMusicIntent = new Intent(this, MusicService.class);

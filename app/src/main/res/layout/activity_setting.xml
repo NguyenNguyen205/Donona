@@ -193,7 +193,8 @@
                 android:layout_marginStart="240dp"
                 android:layout_toEndOf="@+id/contactIcon"
                 android:src="@drawable/arrow_forward_ios_24px"
-                app:tint="@color/quite_brown" />
+                app:tint="@color/quite_brown"
+                />
 
         </RelativeLayout>
 
@@ -255,6 +256,7 @@
                 android:textColor="@color/quite_brown"
                 android:textStyle="bold"
                 android:textSize="18dp"/>
+
             <ImageButton
                 android:id="@+id/logoutButton"
                 android:layout_width="50dp"
