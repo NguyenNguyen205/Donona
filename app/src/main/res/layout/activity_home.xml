@@ -6,13 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    tools:ignore="MissingConstraints">
+
 
     <!--    Navigation bar-->
+
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="241dp"
-        android:layout_height="64dp"
+        android:layout_width="227dp"
+        android:layout_height="66dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginStart="54dp"
         android:layout_marginTop="16dp"
@@ -34,107 +37,263 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/textInputLayout"-->
-<!--        android:layout_width="342dp"-->
-<!--        android:layout_height="25dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.6"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/imageView">-->
+    <!--    <com.google.android.material.textfield.TextInputLayout-->
+    <!--        android:id="@+id/textInputLayout"-->
+    <!--        android:layout_width="342dp"-->
+    <!--        android:layout_height="25dp"-->
+    <!--        android:layout_marginTop="10dp"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.6"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/imageView">-->
 
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
+    <!--        <com.google.android.material.textfield.TextInputEditText-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
 
-<!--            android:hint="Search" />-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+    <!--            android:hint="Search" />-->
+    <!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+
+    <!--   Card Slider  -->
+
     <GridLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:rowCount="3"
+        android:id="@+id/menu"
+        android:layout_width="392dp"
+        android:layout_height="169dp"
+        android:layout_marginTop="232dp"
         android:columnCount="4"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        >
+        android:rowCount="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView">
+
         <ImageButton
             android:id="@+id/near_me"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="0"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="0"
-            android:src="@drawable/near_me_24px"
-            />
+            android:layout_column="0"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:onClick="onClickSuggest"
+            android:padding="10dp"
+            android:src="@drawable/near_me_fill_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown" />
+
         <ImageButton
             android:id="@+id/map"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="0"
-            android:src="@drawable/map_24px"
+            android:layout_column="1"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:minHeight="50dp"
             android:onClick="onClickNearMe"
-            />
+            android:padding="10dp"
+            android:src="@drawable/map_fill_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown" />
+
         <ImageButton
             android:id="@+id/upgrade"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="0"
-            android:src="@drawable/sports_esports_24px"
+            android:layout_column="2"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            android:src="@drawable/verified_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown"
+            android:onClick="onClickSubscription"
             />
         <ImageButton
             android:id="@+id/bookmark"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="0"
-            android:src="@drawable/sports_esports_24px"
-            />
+            android:layout_column="3"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            android:src="@drawable/bookmarks_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown" />
+
         <ImageButton
             android:id="@+id/blog"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="0"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="1"
-            android:src="@drawable/post_add_24px"
+            android:layout_column="0"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            android:src="@drawable/edit_note_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown"
             android:onClick="onClickPost"
             />
+
         <ImageButton
             android:id="@+id/promotion"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="1"
-            android:src="@drawable/sports_esports_24px"
-            />
+            android:layout_column="1"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            android:scaleX="-1"
+            android:src="@drawable/sell_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown" />
+
         <ImageButton
             android:id="@+id/suggest"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="1"
-            android:src="@drawable/sports_esports_24px"
-            android:onClick="onClickSuggest"
-            />
+            android:layout_column="2"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            android:src="@drawable/stylus_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown" />
+
+
         <ImageButton
             android:id="@+id/game"
-            android:contentDescription="hello"
-            android:layout_marginLeft="10dp"
-            android:minHeight="50dp"
-            android:layout_column="3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_row="1"
-            android:src="@drawable/sports_esports_24px"
+            android:layout_column="3"
+            android:layout_margin="30dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="@color/white"
+            android:contentDescription="hello"
+            android:elevation="2dp"
+            android:minHeight="50dp"
             android:onClick="onClickGameLauncher"
-            />
+            android:padding="10dp"
+            android:src="@drawable/sports_esports_fill_24px"
+            android:translationZ="2dp"
+            app:tint="@color/quite_brown" />
     </GridLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imageslider"
+        android:layout_width="370dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="108dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/imageSlider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:iss_auto_cycle="true"
+            app:iss_corner_radius="20"
+            app:iss_delay="3000"
+            app:iss_period="1000"
+            app:iss_title_background="@drawable/gradient" />
+
+    </androidx.cardview.widget.CardView>
+
+
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/rounded_line"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3"/>
+
+        <View
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/rounded_line"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="508dp"
+            android:text="@string/trending"
+            android:textColor="@color/brown"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.145"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trendingRecyclerView"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/menu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/item_card_view_trending" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

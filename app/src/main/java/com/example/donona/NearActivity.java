@@ -13,9 +13,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,13 +34,26 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import com.example.donona.adapter.BlogAdapter;
+import com.example.donona.model.CoffeePlace;
 import com.example.donona.model.CurrentCenterPoint;
 import com.example.donona.util.IconUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.DirectionsRoute;
 import com.mapbox.geojson.Point;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,16 +118,16 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private MapView mapView;
     private VietMapGL vietMapGL;
 
-    private List<Polyline> polylines = null;
-    private ArrayList<PolylineOptions> polylineOptions = new ArrayList<>();
-    private Polygon polygon = null;
+//    private List<Polyline> polylines = null;
+//    private ArrayList<PolylineOptions> polylineOptions = new ArrayList<>();
+//    private Polygon polygon = null;
 
-    private static final String STATE_POLYLINE_OPTIONS = "polylineOptions";
-    private static final LatLng HOCHIMINH = new LatLng(10.791257, 106.669189);
- private LocationComponent locationComponent;
+//    private static final String STATE_POLYLINE_OPTIONS = "polylineOptions";
+//    private static final LatLng HOCHIMINH = new LatLng(10.791257, 106.669189);
+    private LocationComponent locationComponent;
     private LocationEngine locationEngine;
 
-    private List<String> suggesstionName = new ArrayList<>();
+    private List<String> suggestionName = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private OkHttpClient client = new OkHttpClient();
     private HashMap<String, String> suggestionMap = new HashMap<>();
@@ -121,6 +136,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private int tilt = 23;
     private HashMap<String, String> markerRefid = new HashMap<>();
     private Marker focusMarker = null;
+    private FirebaseFirestore db = null;
+    private boolean isMarkerCurrentlyFocus = false;
+    private FirebaseAuth auth;
 
     //Variables for startNavigation
     private boolean isOverviewing;
@@ -151,7 +169,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
         /// Initialization
         Vietmap.getInstance(this);
-        adapter = new ArrayAdapter<>(this, R.layout.list_place, suggesstionName);
+        adapter = new ArrayAdapter<>(this, R.layout.list_place, suggestionName);
         handler = new Handler();
 
         // Setting up layout
@@ -162,7 +180,10 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        
+
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+
         mapView = findViewById(R.id.vmMapView);
         mapView.onCreate(savedInstanceState);
 
@@ -174,6 +195,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         createMap();
     }
 
+    // Base activity operation
     @Override
     protected void onStart() {
         super.onStart();
@@ -204,6 +226,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         mapView.onDestroy();
     }
 
+    
     private Marker addMarker(LatLng position, String name, String address, boolean focus) {
         int color = R.color.orange;
         if (focus) {
@@ -225,6 +248,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     }
 
     private void setFocusMarker(Marker marker, boolean focus) {
+        isMarkerCurrentlyFocus = focus;
         handler.post(() -> {
             if (!focus) {
                 marker.setIcon(
@@ -274,7 +298,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         , style -> {
                             initLocationEngine();
                             enableLocationComponent(style);
-                            addNearPlace();
+                            populateMap();
                         });
 
                 // ?? about usefulness
@@ -299,6 +323,8 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         fetchRoute();
                     }
                 });
+
+                // Identify route
                 ImageButton routeButton = (ImageButton) findViewById(R.id.findRoute);
                 routeButton.setOnClickListener(new ImageButton.OnClickListener() {
                     @Override
@@ -308,6 +334,8 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         fetchRoute();
                     }
                 });
+
+                // Stop navigation
                 ImageButton closeButton = (ImageButton) findViewById(R.id.stopNavigation);
                 closeButton.setOnClickListener(new ImageButton.OnClickListener() {
                     @Override
@@ -322,20 +350,26 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 vietMapGL.setOnMarkerClickListener(new VietMapGL.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(@NonNull Marker marker) {
-                        if (focusMarker != null) {
-                            Log.d("TEST", "reset marker");
-                            setFocusMarker(focusMarker,false);
-                        }
+//                        if (focusMarker != null) {
+//                            Log.d("TEST", "reset marker");
+//                            setFocusMarker(focusMarker,false);
+//                        }
+                        stopNavigation();
 
                         focusMarker = marker;
                         setFocusMarker(focusMarker,true);
                         // if set a custom marker click listener handler, the tool tip will not display
-                        String key = marker.getTitle() + marker.getSnippet();
+                        String key = marker.getTitle() + " " + marker.getSnippet();
                         if (markerRefid.containsKey(key)) {
                             Log.d("TEST MARKER CLICK", markerRefid.get(key));
                             String refID = markerRefid.get(key);
-                            String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
-                            addMarkerToMap(url, "", true);
+                            if (refID.charAt(0) == 'f') {
+                                addMarkerToMap("", refID, true);
+                            }
+                            else {
+                                String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
+                                addMarkerToMap(url, "", true);
+                            }
                         }
                         else {
                             Log.d("TEST MARKER CLICK", "Can't find ID");
@@ -366,8 +400,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 // May cause exceed in API calls, focusing on ho chi minh city
                 String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + s.toString() + "&cityId=12";
                 // Limit the calling of API for now
-                getVietMapSuggestion(url, false);
-
+                getSearchSuggestion(url, s.toString(), false);
             }
 
             @Override
@@ -375,12 +408,17 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 return;
             }
         });
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("TEST", suggestionName.get(position));
+            }
+        });
     }
 
 
     public void onClickReturn(View view) {
-//        Intent intent = new Intent(NearActivity.this, HomeActivity.class);
-//        startActivity(intent);
         finish();
     }
 
@@ -397,16 +435,32 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         if (navigationMapRoute != null) {
             navigationMapRoute.removeRoute();
         }
+        stopNavigation();
         closeKeyboard();
         atct.clearFocus();
         String refID = suggestionMap.get(searchName);
         Log.d("TEST", refID);
         // Fetch api
         String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
-        addMarkerToMap(url, "", true);
+//        if (refID.charAt(0) != 'f') {
+//            refID = "";
+//        }
+        addMarkerToMap(url, refID, true);
     }
 
     private void addMarkerToMap(String url, String refId, boolean focus) {
+        if (refId.isEmpty()) {
+            addVietMapMarkerToMap(url, refId, focus);
+            return;
+        }
+        if (refId.charAt(0) != 'f') {
+            addVietMapMarkerToMap(url, refId, focus);
+            return;
+        }
+        addFireMarkerToMap(refId, focus);
+    }
+
+    private void addVietMapMarkerToMap(String url, String refId, boolean focus) {
         Request req = new Request.Builder()
                 .url(url)
                 .build();
@@ -429,10 +483,19 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
                     // Store ref Id for pre loaded marker
                     if (!refId.isEmpty()) {
-                        markerRefid.put(placeName + address, refId);
+                        markerRefid.put(placeName + " " + address, refId);
                     }
                     handler.post(() -> {
-                        addMarker(pos, placeName, address, focus);
+                        Marker mid = addMarker(pos, placeName, address, focus);
+                        if (focusMarker != null) {
+                            Log.d("TEST", "reset marker");
+                            setFocusMarker(focusMarker,false);
+                        }
+
+                        focusMarker = mid;
+                        if (focus) {
+                            setFocusMarker(mid,true);
+                        }
                         if (focus) focusCamera(pos);
                         if (focus) displayPlaceInfo(res);
                     });
@@ -440,10 +503,50 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 catch (Exception e) {
                     Log.e("ERROR", e.getMessage().toString());
                 }
-
             }
         });
+    }
 
+    private void addFireMarkerToMap(String refId, boolean focus) {
+        db.collection("coffeePlace")
+                .whereEqualTo("ref_id", refId)
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.d("TEST", "Get data failed");
+                            return;
+                        }
+                        if (task.getResult().isEmpty()) {
+                            Log.d("TEST", "Data is empty");
+                            return;
+                        }
+                        DocumentSnapshot res = task.getResult().getDocuments().get(0);
+                        Log.d("TEST", res.getString("address"));
+                        String placeName = res.getString("name");
+                        String address = res.getString("address");
+                        LatLng pos = new LatLng(res.getDouble("lat"), res.getDouble("lng"));
+                        destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                        // Store ref Id for pre loaded marker
+                        if (!refId.isEmpty()) {
+                            markerRefid.put(placeName + " " + address, refId);
+                        }
+                        handler.post(() -> {
+                            Marker mid = addMarker(pos, placeName, address, focus);
+                            if (focusMarker != null) {
+                                Log.d("TEST", "reset marker");
+                                setFocusMarker(focusMarker,false);
+                            }
+
+                            focusMarker = mid;
+                            if (focus) {
+                                setFocusMarker(mid,true);
+                            }
+                            if (focus) focusCamera(pos);
+                            if (focus) displayPlaceInfo(res);
+                        });
+                    }
+                });
     }
 
     private void focusCamera(LatLng location) {
@@ -463,6 +566,8 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         cardView.setVisibility(View.VISIBLE);
         TextView nameView = (TextView) findViewById(R.id.place_name);
         TextView addressView = (TextView) findViewById(R.id.place_address);
+        ImageView thumbnail = (ImageView) findViewById(R.id.coffee_thumbnail);
+
         String name = "";
         String address = "";
         try {
@@ -473,7 +578,25 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         }
         nameView.setText(name);
         addressView.setText(address);
+        thumbnail.setVisibility(View.INVISIBLE);
+
+
     }
+
+    private void displayPlaceInfo(DocumentSnapshot doc) {
+        CardView cardView = (CardView) findViewById(R.id.card_view);
+        cardView.setVisibility(View.VISIBLE);
+
+        TextView nameView = (TextView) findViewById(R.id.place_name);
+        TextView addressView = (TextView) findViewById(R.id.place_address);
+        ImageView thumbnail = (ImageView) findViewById(R.id.coffee_thumbnail);
+
+        nameView.setText(doc.getString("name"));
+        addressView.setText(doc.getString("address"));
+        thumbnail.setVisibility(View.VISIBLE);
+        Picasso.get().load(doc.getString("image")).resize(300, 0).into(thumbnail);
+    }
+
 
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
@@ -483,59 +606,108 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         }
     }
 
-    private void getVietMapSuggestion(String url, boolean placeMarker) {
-        if (suggesstionName.size() >= 10) {
-            return;
-        }
-        Request req = new Request.Builder()
-                .url(url)
-                .build();
-        Call call = client.newCall(req);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                return;
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                String body = response.body().string();
-                try {
-                    JSONArray res = new JSONArray(body);
-
-                    // If place marker is true, then just loop through the result and add marker to map
-                    if (placeMarker) {
-                        for (int i = 0; i < res.length(); i++) {
-                            JSONObject mid = res.getJSONObject(i);
-                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + mid.getString("ref_id");
-                            addMarkerToMap(placeUrl, mid.getString("ref_id"), false);
+    private void getSearchSuggestion(String url, String text, boolean placeMarker) {
+        if (suggestionName.size() >= 10) return;
+        if (text.isEmpty()) return;
+        db.collection("coffeePlace")
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+                            Log.d("TEST", "Result not valid");
+                            return;
                         }
-                        return;
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            String name = doc.getString("name");
+                            if (name.contains(text.trim())) {
+                                String key = doc.getString("name") + " " + doc.getString("address");
+                                suggestionName.add(key);
+                                suggestionMap.put(key, doc.getString("ref_id"));
+                            }
+                        }
+                        Log.d("TEST", suggestionName.toString());
+
+                        // Call vietmap api
+                        Request req = new Request.Builder()
+                                .url(url)
+                                .build();
+                        Call call = client.newCall(req);
+                        call.enqueue(new Callback() {
+                            @Override
+                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                                return;
+                            }
+
+                            @Override
+                            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                                String body = response.body().string();
+                                try {
+                                    JSONArray res = new JSONArray(body);
+
+                                    for (int i = 0; i < res.length(); i++) {
+                                        JSONObject mid = res.getJSONObject(i);
+                                        String name = mid.getString("name") + " " + mid.getString("address");
+                                        if (suggestionName.size() >= 10) {
+                                            break;
+                                        }
+                                        if (placeMarker) {
+                                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + mid.getString("ref_id");
+                                            addMarkerToMap(placeUrl, mid.getString("ref_id"), false);
+                                        }
+                                        // add name
+                                        suggestionName.add(name);
+                                        // add mapping
+                                        suggestionMap.put(name, mid.getString("ref_id"));
+                                    }
+
+                                } catch (JSONException e) {
+                                    Log.e("JSON", e.getMessage());
+                                }
+//                                Log.d("TEST", suggestionName.toString());
+
+                                handler.post(() -> {
+                                    // Notify changes in suggesstion
+                                    adapter.clear();
+                                    adapter.addAll(suggestionName);
+                                    adapter.notifyDataSetChanged ();
+                                });
+                            }
+                        });
+
                     }
-                    // loop through the result
-                    for (int i = 0; i < res.length(); i++) {
-                        JSONObject mid = res.getJSONObject(i);
-                        // add name
-                        suggesstionName.add(mid.getString("name"));
-                        // add mapping
-                        suggestionMap.put(mid.getString("name"), mid.getString("ref_id"));
-                    }
-                } catch (JSONException e) {
-                    Log.e("JSON", e.getMessage());
-                }
-                Log.d("TEST", String.valueOf(suggesstionName.size()));
-                handler.post(() -> {
-                    // Notify changes in suggesstion
-                    adapter.clear();
-                    adapter.addAll(suggesstionName);
-                    adapter.notifyDataSetChanged ();
                 });
 
 
-            }
-        });
+    }
+
+    // Add firebase coffee place to map as marker when first load
+    private void getFirebaseSuggesstion() {
+        db.collection("coffeePlace").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                CoffeePlace mid = new CoffeePlace();
+                                mid.setAddress(doc.getString("address"));
+                                addMarkerToMap("", doc.getString("ref_id"), false);
+//                                addMarker(new LatLng(doc.getDouble("lat"), doc.getDouble("lng")), doc.getString("display"), doc.getString("address"), false);
+//                                String name = doc.getString("display") + " " + doc.getString("address");
+//                                // add name
+//                                suggestionName.add(name);
+//                                // add mapping
+//                                suggestionMap.put(name, mid.getString("ref_id"));
+
+                            }
+                        }
+                        else {
+                            Log.e("TEST", "Can't get data");
+                        }
+                    }
+                });
 
     }
+
 
     private void askPermission() {
         ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -619,7 +791,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         locationEngine = led.getDefaultLocationEngine(this);
     }
 
-    private void addNearPlace() {
+    private void populateMap() {
         if (locationEngine == null) return;
         if (!checkPermission()) return;
         locationEngine.getLastLocation(new LocationEngineCallback<LocationEngineResult>() {
@@ -638,8 +810,11 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 String circleRadius = "200";
                 String circleCenter = focus;
                 String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + text + "&circle_center=" + circleCenter + "&circle_radius=" + circleRadius;
-                // fetch api
-                getVietMapSuggestion(url, true);
+                // Populate map with some bookmark
+                // Fetch data from firestore
+//                getFirebaseSuggesstion();
+                // Get search suggestion
+//                getSearchSuggestion(url, "Near me", true);
 
             }
 
@@ -771,11 +946,16 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
         zoom = 17;
         tilt = 23;
-        focusCamera(origin);
+//        focusCamera(origin);
 
+        if (focusMarker != null) {
+            Log.d("TEST", "reset marker");
+            setFocusMarker(focusMarker,false);
+        }
 
-
-
+        // Reset bookmark button
+        ImageButton btn = (ImageButton) findViewById(R.id.bookmark);
+        btn.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
 
@@ -792,7 +972,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     }
 
     private CameraUpdate buildResetCameraUpdate() {
-        CameraPosition resetPosition = new CameraPosition.Builder().tilt(0.0).bearing(0.0).build();
+        CameraPosition resetPosition = new CameraPosition.Builder().tilt(0).bearing(0.0).build();
         return CameraUpdateFactory.newCameraPosition(resetPosition);
     }
 
@@ -809,6 +989,97 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             latLngs.add(new LatLng(routePoint.latitude(), routePoint.longitude()));
         }
         return new LatLngBounds.Builder().includes(latLngs).build();
+    }
+
+    public void onClickgetMyLocation(View view) {
+        // Show current position if no focus marker
+        if (origin != null && !isMarkerCurrentlyFocus) {
+            focusCamera(origin);
+            return;
+        }
+        // Show current position with focus marker
+        isNavigationInProgress = false;
+        NavigationRoute.builder(NearActivity.this).apikey(apiKey)
+                .origin(Point.fromLngLat(origin.getLongitude(), origin.getLatitude()))
+                .destination(Point.fromLngLat(destination.getLongitude(), destination.getLatitude()))
+                .build().getRoute(new retrofit2.Callback<DirectionsResponse>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<DirectionsResponse> call, retrofit2.Response<DirectionsResponse> response) {
+                        if (response.body() == null) return;
+                        directionsRoutes = response.body().routes();
+                        currentRoute = directionsRoutes.get(0);
+
+                        // get route points
+                        isBuildingRoute = false;
+                        List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
+                        animateVietmapGLForRouteOverview(padding, routePoints);
+                    }
+
+                    @Override
+                    public void onFailure(retrofit2.Call<DirectionsResponse> call, Throwable t) {
+                        Log.d("TEST", "Fail to fetch route");
+                    }
+                });
+
+
+    }
+
+    public void bookmarkPlace(View view) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Reset color somehow
+        ImageButton btn = (ImageButton) findViewById(R.id.bookmark);
+        btn.setBackgroundColor(getResources().getColor(R.color.blue));
+        Log.d("TEST", focusMarker.getTitle());
+        
+        // Save to user bookmark
+        try {
+            String ref = markerRefid.get(focusMarker.getTitle() + " " + focusMarker.getSnippet());
+            Log.d("TEST", ref);
+            CollectionReference userColl = db.collection("user");
+            userColl
+                    .whereEqualTo("userID", user.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            ArrayList<String> bookmarks = (ArrayList<String>) doc.get("bookmarks");
+                            bookmarks.add(ref);
+                            userColl.document(doc.getId()).update("bookmarks", bookmarks);
+                        }
+                    });
+        } catch (Exception e) {
+            Log.d("TEST", markerRefid.toString() + "Hello world");
+        }
+    }
+
+    public void listBookmark(View view) {
+        Log.d("TEST", "List bookmark click");
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
+            return;
+        }
+        db.collection("user")
+                .whereEqualTo("userID", user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        DocumentSnapshot res = task.getResult().getDocuments().get(0);
+                        ArrayList<String> bookmarks = (ArrayList<String>) res.get("bookmarks");
+                        Log.d("TEST", bookmarks.toString());
+
+                        // Add marker to map
+                        for (String bookmark: bookmarks) {
+                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + bookmark;
+                            addMarkerToMap(placeUrl, bookmark, false);
+                        }
+                    }
+                });
     }
 
     @Override

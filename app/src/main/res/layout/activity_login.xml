@@ -84,11 +84,11 @@
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:paddingLeft="12dp"
-            android:background="@drawable/button"
-            android:minHeight="50dp"
-            android:autofillHints="emailAddress"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:autofillHints="emailAddress"
+            android:inputType="textPassword"
+            android:background="@drawable/button"
+            android:minHeight="50dp"/>
 
 
         <TextView
@@ -167,7 +167,6 @@
             android:drawableLeft="@drawable/google"
             android:textAllCaps="false"
             android:textSize="13sp" />
-
 
         <!-- <Button
              android:id="@+id/facebook_login"

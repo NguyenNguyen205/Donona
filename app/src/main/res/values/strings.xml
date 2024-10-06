@@ -19,5 +19,34 @@
     <string name="or">OR</string>
     <string name="sign_in_gg"><b>Sign in with Google</b></string>
     <string name="privacy">To continue, you can review Company’s privacy policy and terms of service.</string>
+    <string name="app_infor">App Information</string>
+    <string name="fanpage">Fanpage</string>
+
+    <string name="blog">Blog</string>
+    <string name="game">Game</string>
+    <string name="trending">Trending</string>
+    <string name="near_me_title">Near Me</string>
+    <string name="near_me_subtitle">Find the best coffee shops nearby</string>
+    <string name="username_hint">User name here</string>
+    <string name="email_hint">Email here</string>
+    <string name="update">Update</string>
+    <string name="log_out">Log out</string>
+    <string name="play_music">Play Music</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="upgrade_your_account">Upgrade Your Account</string>
+    <string name="free_tier">Free Tier</string>
+    <string name="basic">Basic</string>
+    <string name="basic_features">Searching store \n Rating \n Bookmark \n Arcade game</string>
+    <string name="standard_price">30.000VND</string>
+    <string name="standard">Standard</string>
+    <string name="standard_features">Searching store Pro \n Rating Pro \n Bookmark Pro \n Arcade game Pro \n No ads Pro</string>
+    <string name="buy_standard">Buy Standard</string>
+    <string name="checkout">Check Out</string>
+    <string name="hello_world">Hello world</string>
+    <string name="address_in_after_life">Address in Afterlife</string>
+    <string name="searching">Searching</string>
+    <string name="coffee_shop_name">Coffee Shop Name</string>
+
+
 
 </resources>

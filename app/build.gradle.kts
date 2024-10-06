@@ -2,11 +2,14 @@ plugins {
     alias(libs.plugins.android.application)
 
     id("com.google.gms.google-services")
+//    id("com.android.application")
 }
 
 android {
     namespace = "com.example.donona"
     compileSdk = 35
+//    ndkPath = "D:/Program Files/UnityEditor/2022.3.44f1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
+
 
     defaultConfig {
         applicationId = "com.example.donona"
@@ -119,6 +122,14 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:3.2.0")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.0.0-beta4")
+    // Auto Image Slider in Homepage
+    implementation ("com.github.denzcoskun:ImageSlideshow:0.1.0")
+    // Stripe
+    implementation("com.stripe:stripe-android:20.51.1")
 
+    // Unity game
+//    implementation(project(":unityLibrary"))
 }
+
+
 

@@ -79,8 +79,7 @@ public class BlogPostActivity extends AppCompatActivity {
 
     public void onClickReturn(View view) {
         Log.d("TEST", "Return button click");
-        Intent intent = new Intent(BlogPostActivity.this, HomeActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     private void onBlogRead(Blog blog) {

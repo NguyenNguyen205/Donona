@@ -34,6 +34,49 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/logo_text" />
 
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/log_out"
+            android:onClick="logout"
+            />
+
+        <!-- Nút phát nhạc -->
+        <Button
+            android:id="@+id/musicButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/play_music" />
+
+        <Button
+            android:id="@+id/openBrowserButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fanpage"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <Button
+            android:id="@+id/appInfor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_infor"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <Switch
+            android:id="@+id/switch_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/dark_mode"
+            android:textSize="20sp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:padding="16dp" />
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -47,14 +90,6 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:onClick="logout"
-        android:text="Log out"
-        tools:layout_editor_absoluteX="146dp"
-        tools:layout_editor_absoluteY="140dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

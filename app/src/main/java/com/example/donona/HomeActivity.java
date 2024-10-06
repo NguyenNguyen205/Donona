@@ -14,13 +14,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.donona.adapter.CoffeePlaceAdapter;
+import com.example.donona.adapter.TrendingCoffeeAdapter;
+import com.example.donona.databinding.ActivityHomeBinding;
+import com.example.donona.databinding.ActivityNearMeBinding;
+import com.example.donona.model.CoffeePlace;
+import com.example.donona.music.MusicService;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+//Auto Image Slider in homepage
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.models.SlideModel;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -28,18 +43,43 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String TAG = "TEST";
 
+    private FirebaseAuth mAuth;
+    private List<CoffeePlace> coffeePlaceList;
+    private ActivityHomeBinding binding;
+    private TrendingCoffeeAdapter trendingCoffeeAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home);
+        //setContentView(R.layout.activity_home);
+        setContentView(binding.getRoot());
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        // Khởi tạo danh sách
+        coffeePlaceList = new ArrayList<>();
+        binding.trendingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Khởi tạo adapter
+        trendingCoffeeAdapter = new TrendingCoffeeAdapter(coffeePlaceList);
+        binding.trendingRecyclerView.setAdapter(trendingCoffeeAdapter); // Đặt adapter vào RecyclerView
+
+
+        // Khởi động MusicService để phát nhạc
+        Intent musicIntent = new Intent(this, MusicService.class);
+        startService(musicIntent);
+
+        //Get instance from Firebase
         db = FirebaseFirestore.getInstance();
+
+        //fetch data from Firebase
+        fetchCoffeePlaces();
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
@@ -67,8 +107,42 @@ public class HomeActivity extends AppCompatActivity {
             return false;
         });
 
+        ImageSlider imageSlider = findViewById(R.id.imageSlider);
+        ArrayList<SlideModel> slideModels = new ArrayList<>();
+
+        slideModels.add(new SlideModel(R.drawable.image1, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.image2, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.image3, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.image4, ScaleTypes.FIT));
+        slideModels.add(new SlideModel(R.drawable.image5, ScaleTypes.FIT));
+
+        imageSlider.setImageList(slideModels, ScaleTypes.FIT);
+
     }
 
+    private void fetchCoffeePlaces() {
+        db.collection("coffeePlace")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d("Task", "isSuccess: " + task.isSuccessful());
+                        if (task.isSuccessful()) {
+                            coffeePlaceList.clear(); // Clear old data
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Document", "DocumentCoffeePlace: " + document.toString());
+                                CoffeePlace coffeePlace = document.toObject(CoffeePlace.class);
+                                Log.d("CoffeePlace", "CoffeePlace: " + coffeePlace.toString());
+                                coffeePlaceList.add(coffeePlace); // Add new data
+                                Log.d("CoffeePlaceList", "Size: " + coffeePlaceList.size());
+                            }
+                            trendingCoffeeAdapter.notifyDataSetChanged(); // Update RecyclerView
+                        } else {
+                            Log.w("Firestore", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
 
     @Override
     protected void onStart() {
@@ -123,6 +197,12 @@ public class HomeActivity extends AppCompatActivity {
     public void onClickPost(View view) {
         Log.d(TAG, "Post page launch");
         Intent intent = new Intent(HomeActivity.this, BlogPostActivity.class);
+        startActivity(intent);
+    }
+
+    public void onClickSubscription(View view) {
+        Log.d(TAG, "Subscription page launch");
+        Intent intent = new Intent(HomeActivity.this, SubscriptionActivity.class);
         startActivity(intent);
     }
 }

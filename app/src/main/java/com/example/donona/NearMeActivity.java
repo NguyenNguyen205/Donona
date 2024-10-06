@@ -51,11 +51,7 @@ public class NearMeActivity extends AppCompatActivity {
         coffeePlaceList = new ArrayList<>();
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
+
         // Khởi tạo adapter
         coffeePlaceAdapter = new CoffeePlaceAdapter(coffeePlaceList);
         binding.recyclerView.setAdapter(coffeePlaceAdapter); // Đặt adapter vào RecyclerView
