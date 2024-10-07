@@ -33,8 +33,9 @@ public class TrendingCoffeeAdapter extends RecyclerView.Adapter<TrendingCoffeeAd
         CoffeePlace coffeePlace = coffeePlaceList.get(position);
         Picasso.get().load(coffeePlace.getImage()).into(holder.binding.trendingImage);
         holder.binding.title.setText(coffeePlace.getName());
-        holder.binding.openingHours.setText(coffeePlace.getStartTime());
-        holder.binding.closingHours.setText(coffeePlace.getEndtime());
+        holder.binding.coffeePriceRange.setText("Price:" + coffeePlace.getPriceRange());
+        holder.binding.openingHours.setText(coffeePlace.getStartTime() + " A.M.");
+        holder.binding.closingHours.setText(coffeePlace.getEndtime() + " P.M.");
         holder.binding.location.setText(coffeePlace.getAddress());
 
     }
