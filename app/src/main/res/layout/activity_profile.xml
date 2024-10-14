@@ -30,6 +30,7 @@
             tools:layout_editor_absoluteX="27dp"
             tools:layout_editor_absoluteY="29dp" />
 
+        <!--        User profile here-->
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="125dp"
@@ -39,7 +40,6 @@
             android:background="@drawable/rounded_button"
             android:scaleType="centerCrop" />
 
-        <!--        User profile here-->
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="140dp"
