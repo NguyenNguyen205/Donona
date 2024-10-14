@@ -53,7 +53,7 @@ public class NearMeActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Khởi tạo adapter
-        coffeePlaceAdapter = new CoffeePlaceAdapter(coffeePlaceList);
+        coffeePlaceAdapter = new CoffeePlaceAdapter(coffeePlaceList, this::onClickNearMe);
         binding.recyclerView.setAdapter(coffeePlaceAdapter); // Đặt adapter vào RecyclerView
 
         fetchCoffeePlaces();
@@ -88,4 +88,14 @@ public class NearMeActivity extends AppCompatActivity {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
     }
+
+    private void onClickNearMe(CoffeePlace coffeePlace) {
+        Intent intent = new Intent(NearMeActivity.this, NearActivity.class);
+        String key = coffeePlace.getName() + " " + coffeePlace.getAddress();
+        String refId = coffeePlace.getRef_id();
+        intent.putExtra("key", key);
+        intent.putExtra("refId", refId);
+        startActivity(intent);
+    }
+
 }

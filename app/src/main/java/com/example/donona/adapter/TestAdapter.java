@@ -27,25 +27,9 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestViewHolder
     private ArrayList<String> suggestion;
     private OnSearchListener onSearchListener;
 
-
-//    public interface OnReadBlogListener {
-//        void onBlogRead(Blog blog);
-//    }
-
     public interface OnSearchListener {
         void onSearch(String place);
     }
-
-//    public TestAdapter(ArrayList<Blog> blogs, OnReadBlogListener onReadBlogListener) {
-//        this.suggestion = blogs;
-//        this.onReadBlogListener = onReadBlogListener;
-//
-//    }
-
-
-//    public void setBlogs(ArrayList<Blog> blogs) {
-//        this.blogs = blogs;
-//    }
 
     public TestAdapter(ArrayList<String> suggestion, OnSearchListener onSearchListener) {
         this.suggestion = suggestion;

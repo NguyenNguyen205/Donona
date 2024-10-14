@@ -17,6 +17,7 @@ public class CoffeePlace {
     private String thumbnail;
     private String ward;
     private boolean wifi;
+    private String ref_id;
 
     // Constructor không đối số (cần thiết cho Firebase)
     public CoffeePlace() {
@@ -172,5 +173,12 @@ public class CoffeePlace {
     public void setWifi(boolean wifi) {
         this.wifi = wifi;
     }
+
+    private void setRef_id(String refId) {
+        this.ref_id = refId;
+    }
+
+    public String getRef_id() { return this.ref_id; }
+
 }
 

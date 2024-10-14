@@ -1,6 +1,8 @@
 package com.example.donona.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,9 +20,15 @@ import java.util.List;
 
 public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.CoffeePlaceViewHolder> {
     private List<CoffeePlace> coffeePlaceList;
+    private OnClickNearMeListener onClickNearMeListener;
 
-    public CoffeePlaceAdapter(List<CoffeePlace> coffeePlaceList) {
+    public interface OnClickNearMeListener {
+        void onClickNearMe(CoffeePlace coffeePlace);
+    }
+
+    public CoffeePlaceAdapter(List<CoffeePlace> coffeePlaceList, OnClickNearMeListener onClickNearMeListener) {
         this.coffeePlaceList = coffeePlaceList;
+        this.onClickNearMeListener = onClickNearMeListener;
     }
 
     @NonNull
@@ -50,6 +58,13 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
 //        holder.binding.coffeeLng.setText(String.valueOf("Longitude:" + coffeePlace.getLng()));
         boolean hasWifi = coffeePlace.isWifi();
         holder.binding.coffeeWifi.setText(hasWifi ? "Wifi: Yes" : "Wifi: No");
+        holder.binding.nearMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TEST", "View place clicked");
+                onClickNearMeListener.onClickNearMe(coffeePlace);
+            }
+        });
 //        holder.binding.coffeeThumbnail.setText(coffeePlace.getThumbnail());
     }
 
