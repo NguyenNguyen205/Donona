@@ -30,6 +30,7 @@
             tools:layout_editor_absoluteX="27dp"
             tools:layout_editor_absoluteY="29dp" />
 
+        <!--        User profile here-->
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="125dp"
@@ -39,7 +40,6 @@
             android:background="@drawable/rounded_button"
             android:scaleType="centerCrop" />
 
-        <!--        User profile here-->
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="140dp"
@@ -61,7 +61,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:hint="@string/username_hint"
                 android:layout_column="1"
                 android:layout_row="0"
                 android:layout_columnWeight="1">
@@ -89,7 +88,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:hint="@string/email_hint"
                 android:layout_column="1"
                 android:layout_row="1"
                 android:layout_columnWeight="1"

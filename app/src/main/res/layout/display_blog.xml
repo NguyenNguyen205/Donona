@@ -8,37 +8,39 @@
     android:orientation="vertical"
     tools:context=".ReadBlogActivity"
     >
-<!--    <ImageButton-->
-<!--        android:id="@+id/return_from_read_blog"-->
-<!--        android:onClick="onClickReturnFromBlogRead"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:src="@drawable/keyboard_return_24px"-->
-<!--        android:contentDescription="back"/>-->
+    <ImageButton
+        android:id="@+id/return_from_read_blog"
+        android:onClick="onClickReturnFromBlogRead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/keyboard_return_24px"
+        android:contentDescription="back"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <View
-            android:layout_width="320dp"
+            android:layout_width="263dp"
             android:layout_height="5dp"
             android:background="@drawable/rounded_line"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1"
             app:layout_constraintStart_toEndOf="@+id/textView3"
             app:layout_constraintTop_toTopOf="@+id/textView3"
             app:layout_constraintVertical_bias="0.818" />
 
         <View
-            android:layout_width="50dp"
+            android:layout_width="79dp"
             android:layout_height="5dp"
             android:layout_marginEnd="4dp"
             android:background="@drawable/rounded_line"
             app:layout_constraintBottom_toBottomOf="@+id/textView3"
             app:layout_constraintEnd_toStartOf="@+id/textView3"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView3"
             app:layout_constraintVertical_bias="0.818" />
@@ -50,10 +52,10 @@
             android:layout_marginTop="10dp"
             android:text="Blog"
             android:textColor="@color/brown"
-            android:textSize="28dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.144"
+            app:layout_constraintHorizontal_bias="0.24"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,15 +63,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="50dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="16dp"
                 android:background="@drawable/rounded_background"
                 android:orientation="vertical">
 
@@ -77,18 +81,28 @@
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="25dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/text"
+                    android:textSize="20dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/content"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="12dp"
+                    android:textColor="@color/quite_brown" />
 
                 <ImageView
                     android:id="@+id/thumbnail"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="14dp"/>
 
 
             </LinearLayout>
