@@ -49,6 +49,15 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/quite_brown" />
 
+            <TextView
+                android:id="@+id/coffee_price_range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="Price: $10-$30"
+                android:textSize="12sp"
+                android:textColor="@color/quite_brown" />
+
             <!-- Operating hours -->
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -43,8 +43,8 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
 //        holder.binding.coffeeDistrict.setText("District:" + coffeePlace.getDistrict());
 //        holder.binding.coffeeCity.setText("City:" + coffeePlace.getCity());
         holder.binding.coffeePriceRange.setText("Price:" + coffeePlace.getPriceRange());
-        holder.binding.coffeeStarttime.setText("Opening Hours:" + coffeePlace.getStartTime());
-        holder.binding.coffeeEndtime.setText("Closing Hours:" + coffeePlace.getEndtime());
+        holder.binding.coffeeStarttime.setText(coffeePlace.getStartTime() + " A.M.");
+        holder.binding.coffeeEndtime.setText(coffeePlace.getEndtime() + " P.M.");
 //        holder.binding.coffeeHsNum.setText("Hs Number:" + coffeePlace.getHs_num());
 //        holder.binding.coffeeLat.setText(String.valueOf("Latitude:" + coffeePlace.getLat()));
 //        holder.binding.coffeeLng.setText(String.valueOf("Longitude:" + coffeePlace.getLng()));

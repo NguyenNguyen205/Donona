@@ -46,7 +46,7 @@
     <string name="address_in_after_life">Address in Afterlife</string>
     <string name="searching">Searching</string>
     <string name="coffee_shop_name">Coffee Shop Name</string>
-    <string name="intro">Donona là một chiếc app đáng yêu được phát triển bởi nhóm sinh viên năm cuối đang trong giai đoạn thực hiện môn Khởi nghiệp(EXE201).</string>
+    <string name="intro">Donona là một chiếc app đáng yêu được phát triển bởi nhóm sinh viên năm cuối đang trong giai đoạn thực hiện môn Khởi nghiệp(EXE201) tại trường đại học FPT.Ứng dụng cho phép người dùng có thể tìm kiếm quán cafe ở gần vị trí hiện tại sử dung VietMap Người dùng có thể đăng nhập bằng Google, và nhiều tính năng khác</string>
     <string name="insta_id">donona.urcafeurway</string>
     <string name="gmail">donona.urcafeurway@gmail.com</string>
     <string name="contact">Contact</string>
