@@ -8,12 +8,11 @@ plugins {
 android {
     namespace = "com.example.donona"
     compileSdk = 35
-//    ndkPath = "D:/Program Files/UnityEditor/2022.3.44f1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
-
+    ndkPath = "D:/Program Files/UnityEditor/2022.3.44f1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
 
     defaultConfig {
         applicationId = "com.example.donona"
-        minSdk = 27
+        minSdk = 31
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -126,9 +125,12 @@ dependencies {
     implementation ("com.github.denzcoskun:ImageSlideshow:0.1.0")
     // Stripe
     implementation("com.stripe:stripe-android:20.51.1")
-
+    // Splash screen
+    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:1.2.0-alpha02")
     // Unity game
 //    implementation(project(":unityLibrary"))
+
 }
 
 

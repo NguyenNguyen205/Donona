@@ -13,4 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
-UnityGame
+# UnityGame
+unityLibrary/build
+unityLibrary/symbols

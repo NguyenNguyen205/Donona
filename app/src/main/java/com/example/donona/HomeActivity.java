@@ -89,11 +89,11 @@ public class HomeActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_home) {
                 return true;
             }
-            if (itemId == R.id.navigation_streaming) {
-                startActivity(new Intent(HomeActivity.this, StreamingActivity.class));
-                finish();
-                return true;
-            }
+//            if (itemId == R.id.navigation_streaming) {
+//                startActivity(new Intent(HomeActivity.this, StreamingActivity.class));
+//                finish();
+//                return true;
+//            }
             if (itemId == R.id.navigation_account) {
                 startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
                 finish();
@@ -179,6 +179,7 @@ public class HomeActivity extends AppCompatActivity {
     public void onClickNearMe(View view) {
         Log.d(TAG, "Near me button click");
         Intent intent = new Intent(HomeActivity.this, NearActivity.class);
+//        Intent intent = new Intent(HomeActivity.this, TestActivity.class);
         startActivity(intent);
     }
 

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.donona.BlogPostActivity;
 import com.example.donona.ReadBlogActivity;
 import com.example.donona.databinding.ListBlogBinding;
+import com.example.donona.databinding.ListPlaceBinding;
 import com.example.donona.model.Blog;
 import com.example.donona.transformation.CircleTransform;
 import com.squareup.picasso.Picasso;

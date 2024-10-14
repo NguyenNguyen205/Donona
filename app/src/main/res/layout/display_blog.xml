@@ -8,13 +8,13 @@
     android:orientation="vertical"
     tools:context=".ReadBlogActivity"
     >
-    <ImageButton
-        android:id="@+id/return_from_read_blog"
-        android:onClick="onClickReturnFromBlogRead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/keyboard_return_24px"
-        android:contentDescription="back"/>
+<!--    <ImageButton-->
+<!--        android:id="@+id/return_from_read_blog"-->
+<!--        android:onClick="onClickReturnFromBlogRead"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/keyboard_return_24px"-->
+<!--        android:contentDescription="back"/>-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

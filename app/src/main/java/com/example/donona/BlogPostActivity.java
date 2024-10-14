@@ -42,7 +42,6 @@ public class BlogPostActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         db = FirebaseFirestore.getInstance();
 
         // Init recycler view
@@ -77,10 +76,10 @@ public class BlogPostActivity extends AppCompatActivity {
         });
     }
 
-    public void onClickReturn(View view) {
-        Log.d("TEST", "Return button click");
-        finish();
-    }
+//    public void onClickReturn(View view) {
+//        Log.d("TEST", "Return button click");
+//        finish();
+//    }
 
     private void onBlogRead(Blog blog) {
         Intent intent = new Intent(BlogPostActivity.this, ReadBlogActivity.class);

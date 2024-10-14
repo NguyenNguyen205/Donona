@@ -118,11 +118,11 @@ public class SettingActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_setting) {
                 return true;
             }
-            if (itemId == R.id.navigation_streaming) {
-                startActivity(new Intent(SettingActivity.this, StreamingActivity.class));
-                finish();
-                return true;
-            }
+//            if (itemId == R.id.navigation_streaming) {
+//                startActivity(new Intent(SettingActivity.this, StreamingActivity.class));
+//                finish();
+//                return true;
+//            }
             if (itemId == R.id.navigation_account) {
                 startActivity(new Intent(SettingActivity.this, ProfileActivity.class));
                 finish();

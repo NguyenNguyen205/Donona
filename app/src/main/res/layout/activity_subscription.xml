@@ -13,12 +13,12 @@
         android:orientation="vertical"
         android:background="@color/background"
         >
-        <ImageButton
-            android:onClick="onClickReturn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/keyboard_return_24px"
-            />
+<!--        <ImageButton-->
+<!--            android:onClick="onClickReturn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/keyboard_return_24px"-->
+<!--            />-->
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="200dp"
@@ -120,11 +120,12 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
         <Button
-            android:id="@+id/checkout"
+            android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/checkout"/>
+            android:backgroundTint="@color/red"
+            android:text="Cancel subscription"/>
 
 
 

@@ -1,0 +1,6 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/logodonona_01_artboard_1"
+    android:insetLeft="@dimen/icon_inset_size"
+    android:insetRight="@dimen/icon_inset_size"
+    android:insetTop="@dimen/icon_inset_size"
+    android:insetBottom="@dimen/icon_inset_size"/>

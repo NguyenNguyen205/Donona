@@ -54,7 +54,7 @@ public class SubscriptionActivity extends AppCompatActivity {
     private final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
     private PaymentSheet paymentSheet;
-    private Button checkout;
+    private Button cancel;
     private String userDocId = "";
 
     @Override
@@ -86,15 +86,11 @@ public class SubscriptionActivity extends AppCompatActivity {
             }
         });
 
-        checkout = (Button) findViewById(R.id.checkout);
-        checkout.setOnClickListener(new View.OnClickListener() {
+        cancel = (Button) findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (clientSecret.isEmpty()) {
-                    Log.d("TEST", "Client secret is empty");
-                    return;
-                }
-               displayPayment(clientSecret);
+                onCancelSubscription();
             }
         });
 
@@ -113,15 +109,15 @@ public class SubscriptionActivity extends AppCompatActivity {
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                         if(!task.isSuccessful() || task.getResult().isEmpty()) {
-                             return;
-                         }
-                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                         if (doc.getString("tier").equals("standard")) {
-                             Toast.makeText(SubscriptionActivity.this, "You are already a pro", Toast.LENGTH_SHORT).show();
-                             return;
-                         }
-                         userDocId = doc.getId();
+                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+                            return;
+                        }
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        if (doc.getString("tier").equals("standard")) {
+                            Toast.makeText(SubscriptionActivity.this, "You are already a pro", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        userDocId = doc.getId();
                         getStripeData(doc.getString("username"), doc.getString("email"));
 
                     }
@@ -189,7 +185,8 @@ public class SubscriptionActivity extends AppCompatActivity {
                     JSONObject res = new JSONObject(body);
                     clientSecret = res.getString("clientSecret");
                     subscriptionId = res.getString("subscriptionId");
-                }catch (Exception e) {
+                    displayPayment(clientSecret);
+                } catch (Exception e) {
                     Log.d("TEST", e.toString());
                 }
             }
@@ -210,17 +207,90 @@ public class SubscriptionActivity extends AppCompatActivity {
             Log.d("TEST", "Payment successful");
             db.collection("user")
                     .document(userDocId)
-                    .update("tier", "standard");
+                    .update("tier", "standard",
+                            "subscriptionId", subscriptionId);
 
-        }
-        else if (res instanceof PaymentSheetResult.Canceled) {
+
+        } else if (res instanceof PaymentSheetResult.Canceled) {
             Log.d("TEST", "Cancel payment");
         }
     }
 
+    private void onCancelSubscription() {
+        Log.d("TESTING", "Cancel sub clicked");
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(SubscriptionActivity.this, "You need to login", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // check user current tier
+        db.collection("user")
+                .whereEqualTo("userID", user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+                            return;
+                        }
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        if (doc.getString("tier").equals("free")) {
+                            Toast.makeText(SubscriptionActivity.this, "You don't have subscription", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        userDocId = doc.getId();
+                        cancelSubscription(doc.getString("subscriptionId"));
+                    }
+                });
+    }
 
-    public void onClickReturn(View view) {
-        Log.d("TEST", "Return button click");
-        finish();
+    private void cancelSubscription(String subId) {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("subscriptionId", subId);
+        } catch (Exception e) {
+            Log.d("TEST", "Failed to establish body");
+        }
+
+        RequestBody body = RequestBody.create(data.toString(), JSON);
+        Request req = new Request.Builder()
+                .url(url + "cancel-subscription")
+                .post(body)
+                .build();
+        Call call = client.newCall(req);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                return;
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String body = response.body().string();
+                Log.d("TESTING", body);
+                try {
+                    JSONObject res = new JSONObject(body);
+                    if (res.getString("status").equals("canceled")) {
+                        Log.d("TESTING", "1");
+
+                        // Update firebase
+                        db.collection("user").document(userDocId).update("tier", "free",
+                                "subscriptionId", "")
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d("TESTING", "2");
+
+                                        if (task.isSuccessful()) {
+                                            Log.d("TESTING", "Cancel subscription successfuly");
+                                        }
+                                    }
+                                });
+                    }
+                } catch (Exception e) {
+                    Log.d("TEST", e.toString());
+                }
+            }
+        });
+
     }
 }

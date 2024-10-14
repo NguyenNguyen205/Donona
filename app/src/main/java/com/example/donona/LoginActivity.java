@@ -142,11 +142,11 @@ public class LoginActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_account) {
                 return true;
             }
-            if (itemId == R.id.navigation_streaming) {
-                startActivity(new Intent(LoginActivity.this, StreamingActivity.class));
-                finish();
-                return true;
-            }
+//            if (itemId == R.id.navigation_streaming) {
+//                startActivity(new Intent(LoginActivity.this, StreamingActivity.class));
+//                finish();
+//                return true;
+//            }
             if (itemId == R.id.navigation_setting) {
                 startActivity(new Intent(LoginActivity.this, SettingActivity.class));
                 finish();

@@ -47,8 +47,8 @@ public class ReadBlogActivity extends AppCompatActivity {
 
     }
 
-    public void onClickReturnFromBlogRead(View view) {
-        Log.d("TEST", "Return button click");
-        finish();
-    }
+//    public void onClickReturnFromBlogRead(View view) {
+//        Log.d("TEST", "Return button click");
+//        finish();
+//    }
 }

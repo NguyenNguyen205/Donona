@@ -32,4 +32,4 @@ include(":app")
 
 // Unity
 //include(":unityLibrary")
-//project(":unityLibrary").projectDir = file(".\\UnityGame\\unityLibrary")
+//project(":unityLibrary").projectDir = file(".\\unityLibrary")

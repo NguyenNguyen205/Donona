@@ -26,15 +26,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 
 import com.example.donona.adapter.BlogAdapter;
+import com.example.donona.adapter.TestAdapter;
+import com.example.donona.databinding.ActivityVietMapMapViewBinding;
 import com.example.donona.model.CoffeePlace;
 import com.example.donona.model.CurrentCenterPoint;
 import com.example.donona.util.IconUtils;
@@ -63,6 +67,7 @@ import java.io.IOException;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import okhttp3.Call;
@@ -113,6 +118,7 @@ import vn.vietmap.vietmapsdk.maps.VietMapGL;
 import vn.vietmap.vietmapsdk.maps.VietMapGLOptions;
 
 
+
 // To do next: set up proper onmarker click listener
 public class NearActivity extends AppCompatActivity implements NavigationEventListener, FasterRouteListener, ProgressChangeListener, MilestoneEventListener, OffRouteListener {
     private MapView mapView;
@@ -127,9 +133,10 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private LocationComponent locationComponent;
     private LocationEngine locationEngine;
 
-    private List<String> suggestionName = new ArrayList<>();
+    private ArrayList<String> suggestionName = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private OkHttpClient client = new OkHttpClient();
+    private Call call;
     private HashMap<String, String> suggestionMap = new HashMap<>();
     private Handler handler;
     private int zoom = 17;
@@ -139,6 +146,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private FirebaseFirestore db = null;
     private boolean isMarkerCurrentlyFocus = false;
     private FirebaseAuth auth;
+    private ActivityVietMapMapViewBinding binding;
+    private TestAdapter testAdapter;
+    private String searchApi = "http://10.0.2.2:5528/api/search?text=";
 
     //Variables for startNavigation
     private boolean isOverviewing;
@@ -169,12 +179,18 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
         /// Initialization
         Vietmap.getInstance(this);
-        adapter = new ArrayAdapter<>(this, R.layout.list_place, suggestionName);
+
+        // Search featr
+//        adapter = new ArrayAdapter<>(this, R.layout.list_place, new ArrayList<>());
+//        adapter.setNotifyOnChange(true);
+
+
         handler = new Handler();
 
         // Setting up layout
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_viet_map_map_view);
+        binding = ActivityVietMapMapViewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -186,6 +202,13 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
         mapView = findViewById(R.id.vmMapView);
         mapView.onCreate(savedInstanceState);
+
+        // Recycler view
+        testAdapter = new TestAdapter(suggestionName, this::onSearch);
+        binding.recyclerView2.setAdapter(testAdapter);
+        binding.recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+        binding.searchResult.setOnClickListener(this::onSearchResultClick);
+
 
         // Ask for map permission
         if (!checkPermission()) {
@@ -199,6 +222,29 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     @Override
     protected void onStart() {
         super.onStart();
+        testAdapter.setSuggestion(suggestionName);
+        testAdapter.notifyItemInserted(testAdapter.getItemCount() - 1);
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                submitSearchRequest(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                suggestionName.clear();
+                testAdapter.notifyDataSetChanged();
+                if (call != null) {
+                    Log.d("TESTINGHELLO", "Cancel request");
+                    call.cancel();
+                }
+                binding.loading.setVisibility(View.VISIBLE);
+                String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + newText + "&cityId=12";
+                getSearchSuggestion(url, newText, false);
+                return true;
+            }
+        });
         mapView.onStart();
     }
 
@@ -381,72 +427,114 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
             }
         });
+//        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.search_bar);
+//        autoCompleteTextView.setThreshold(1);
+//        autoCompleteTextView.setAdapter(adapter);
 
-        // Set autocomplete place, which is empty when first started
-        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) findViewById(R.id.search_bar);
-        autoCompleteTextView.setThreshold(1);
-        autoCompleteTextView.setAdapter(adapter);
-        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                return;
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() < 6) {
-                    return;
-                }
+//        autoCompleteTextView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                return;
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.toString().length() < 6) {
+//                    return;
+//                }
                 // May cause exceed in API calls, focusing on ho chi minh city
-                String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + s.toString() + "&cityId=12";
-                // Limit the calling of API for now
-                getSearchSuggestion(url, s.toString(), false);
+//                suggestionName.clear();
+//                suggestionMap.clear();
+//                adapter.clear();
+//                Log.d("TESTHELLO", s.toString());
+//                if (call != null) call.cancel();
+//                String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + s.toString() + "&cityId=12";
+//                getSearchSuggestion(url, s.toString(), false);
             }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                return;
-            }
-        });
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                return;
+//            }
+//        });
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("TEST", suggestionName.get(position));
-            }
-        });
-    }
+//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.d("TEST", suggestionName.get(position));
+//            }
+//        });
+//    }
 
+//    public void onClickSearch(View view) {
+//        Log.d("TEST", "Search button click");
+//        AutoCompleteTextView atct = (AutoCompleteTextView) findViewById(R.id.search_bar);
+//        String searchName = atct.getText().toString();
+//        Log.d("TEST", searchName);
+//        if (!suggestionMap.containsKey(searchName)) {
+//            closeKeyboard();
+//            atct.clearFocus();
+//            return;
+//        }
+//        if (navigationMapRoute != null) {
+//            navigationMapRoute.removeRoute();
+//        }
+//        stopNavigation();
+//        closeKeyboard();
+//        atct.clearFocus();
+//        String refID = suggestionMap.get(searchName);
+//        Log.d("TEST", refID);
+//        // Fetch api
+//        String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
+//        addMarkerToMap(url, refID, true);
+//    }
 
-    public void onClickReturn(View view) {
-        finish();
-    }
-
-    public void onClickSearch(View view) {
-        Log.d("TEST", "Search button click");
-        AutoCompleteTextView atct = (AutoCompleteTextView) findViewById(R.id.search_bar);
-        String searchName = atct.getText().toString();
-        Log.d("TEST", searchName);
-        if (!suggestionMap.containsKey(searchName)) {
-            closeKeyboard();
-            atct.clearFocus();
+    private void getSearchSuggestion(String url, String text, boolean placeMarker) {
+        if (text.isEmpty()) {
+            suggestionName.clear();
+            testAdapter.notifyDataSetChanged();
+            binding.loading.setVisibility(View.INVISIBLE);
             return;
         }
-        if (navigationMapRoute != null) {
-            navigationMapRoute.removeRoute();
-        }
-        stopNavigation();
-        closeKeyboard();
-        atct.clearFocus();
-        String refID = suggestionMap.get(searchName);
-        Log.d("TEST", refID);
-        // Fetch api
-        String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
-//        if (refID.charAt(0) != 'f') {
-//            refID = "";
-//        }
-        addMarkerToMap(url, refID, true);
+        Request req = new Request.Builder()
+                .url(searchApi + text)
+                .build();
+        call = client.newCall(req);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                return;
+            }
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String body = response.body().string();
+
+                try {
+                    JSONObject res = new JSONObject(body);
+                    Iterator<String> keys = res.keys();
+                    while (true) {
+                        try {
+                            String key = keys.next();
+                            suggestionName.add(key);
+                            suggestionMap.put(key, res.getString(key));
+                        } catch (Exception e) {
+                            break;
+                        }
+                    }
+                    handler.post(() -> {
+                        binding.loading.setVisibility(View.INVISIBLE);
+                        testAdapter.notifyDataSetChanged();
+                    });
+
+                }
+                catch (Exception e) {
+                    Log.d("TESTING", e.toString());
+                }
+
+            }
+        });
     }
+
 
     private void addMarkerToMap(String url, String refId, boolean focus) {
         if (refId.isEmpty()) {
@@ -606,79 +694,94 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         }
     }
 
-    private void getSearchSuggestion(String url, String text, boolean placeMarker) {
-        if (suggestionName.size() >= 10) return;
-        if (text.isEmpty()) return;
-        db.collection("coffeePlace")
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
-                            Log.d("TEST", "Result not valid");
-                            return;
-                        }
-                        for (QueryDocumentSnapshot doc : task.getResult()) {
-                            String name = doc.getString("name");
-                            if (name.contains(text.trim())) {
-                                String key = doc.getString("name") + " " + doc.getString("address");
-                                suggestionName.add(key);
-                                suggestionMap.put(key, doc.getString("ref_id"));
-                            }
-                        }
-                        Log.d("TEST", suggestionName.toString());
-
-                        // Call vietmap api
-                        Request req = new Request.Builder()
-                                .url(url)
-                                .build();
-                        Call call = client.newCall(req);
-                        call.enqueue(new Callback() {
-                            @Override
-                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                                return;
-                            }
-
-                            @Override
-                            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                                String body = response.body().string();
-                                try {
-                                    JSONArray res = new JSONArray(body);
-
-                                    for (int i = 0; i < res.length(); i++) {
-                                        JSONObject mid = res.getJSONObject(i);
-                                        String name = mid.getString("name") + " " + mid.getString("address");
-                                        if (suggestionName.size() >= 10) {
-                                            break;
-                                        }
-                                        if (placeMarker) {
-                                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + mid.getString("ref_id");
-                                            addMarkerToMap(placeUrl, mid.getString("ref_id"), false);
-                                        }
-                                        // add name
-                                        suggestionName.add(name);
-                                        // add mapping
-                                        suggestionMap.put(name, mid.getString("ref_id"));
-                                    }
-
-                                } catch (JSONException e) {
-                                    Log.e("JSON", e.getMessage());
-                                }
-//                                Log.d("TEST", suggestionName.toString());
-
-                                handler.post(() -> {
-                                    // Notify changes in suggesstion
-                                    adapter.clear();
-                                    adapter.addAll(suggestionName);
-                                    adapter.notifyDataSetChanged ();
-                                });
-                            }
-                        });
-
-                    }
-                });
-
-
-    }
+//    private void getSearchSuggestion(String url, String text, boolean placeMarker) {
+//        if (text.isEmpty()) return;
+//        db.collection("coffeePlace")
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+//                            Log.d("TEST", "Result not valid");
+//                            return;
+//                        }
+//
+//                        for (QueryDocumentSnapshot doc : task.getResult()) {
+//                            if (suggestionName.size() >= 10) break;
+//                            String name = doc.getString("name");
+//                            if (name.toLowerCase().contains(text.toLowerCase().trim())) {
+//                                String key = doc.getString("name") + " " + doc.getString("address");
+//                                if (suggestionMap.containsKey(key)) continue;
+////                                adapter.add(key);
+//                                suggestionName.add(key);
+//                                suggestionMap.put(key, doc.getString("ref_id"));
+//                            }
+//                        }
+//
+//                        // Call vietmap api
+//                        Request req = new Request.Builder()
+//                                .url(url)
+//                                .build();
+//                        call = client.newCall(req);
+//                        call.enqueue(new Callback() {
+//                            @Override
+//                            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+//                                return;
+//                            }
+//
+//                            @Override
+//                            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//                                String body = response.body().string();
+//                                try {
+//                                    JSONArray res = new JSONArray(body);
+//                                    Log.d("TESTHELLO", "3");
+//
+//                                    for (int i = 0; i < res.length(); i++) {
+//
+//                                        if (suggestionName.size() >= 10) {
+//                                            break;
+//                                        }
+//
+//
+//                                        JSONObject mid = res.getJSONObject(i);
+//                                        String name = mid.getString("name") + " " + mid.getString("address");
+//                                        if (placeMarker) {
+//                                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + mid.getString("ref_id");
+//                                            addMarkerToMap(placeUrl, mid.getString("ref_id"), false);
+//                                        }
+//                                        if (suggestionMap.containsKey(name)) continue;
+//                                        Log.d("TESTHELLO1", String.valueOf(adapter.getCount()));
+////                                        adapter.addAll(suggestionName);
+////                                        adapter.notifyDataSetChanged();
+//                                        Log.d("TESTHELLO1", String.valueOf(adapter.getCount()));
+//                                        suggestionName.add(name);
+//                                        suggestionMap.put(name, mid.getString("ref_id"));
+//                                    }
+//
+//
+//                                } catch (JSONException e) {
+//                                    Log.e("JSON", e.getMessage());
+//                                }
+//
+////                                handler.post(() -> {
+////                                    // Notify changes in suggesstion
+////                                    Log.d("TESTHELLO", text);
+////                                    Log.d("TESTHELLO", adapter.toString());
+//////                                    adapter.clear();
+//////                                    adapter.addAll(suggestionName);
+////                                });
+//                                Log.d("TESTHELLO", "2");
+//                                Log.d("TESTHELLO", String.valueOf(adapter.getCount()));
+//                                adapter.clear();
+//                                adapter.addAll(suggestionName);
+//                                adapter.notifyDataSetChanged ();
+//                                Log.d("TESTHELLO", String.valueOf(adapter.getCount()));
+//                            }
+//                        });
+//                    }
+//                });
+//
+//
+//    }
 
     // Add firebase coffee place to map as marker when first load
     private void getFirebaseSuggesstion() {
@@ -691,13 +794,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                                 CoffeePlace mid = new CoffeePlace();
                                 mid.setAddress(doc.getString("address"));
                                 addMarkerToMap("", doc.getString("ref_id"), false);
-//                                addMarker(new LatLng(doc.getDouble("lat"), doc.getDouble("lng")), doc.getString("display"), doc.getString("address"), false);
-//                                String name = doc.getString("display") + " " + doc.getString("address");
-//                                // add name
-//                                suggestionName.add(name);
-//                                // add mapping
-//                                suggestionMap.put(name, mid.getString("ref_id"));
-
                             }
                         }
                         else {
@@ -705,7 +801,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         }
                     }
                 });
-
     }
 
 
@@ -746,10 +841,10 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         locationComponent = vietMapGL.getLocationComponent();
         LocationComponentOptions customIcon = LocationComponentOptions.builder(this)
                 .foregroundDrawable(R.drawable.logo)
+                .minZoomIconScale((float) 0.1)
                 .build();
 
         if (locationComponent != null) {
-//            Log.d("TEST", "OH HI");
             locationComponent.activateLocationComponent(
                     LocationComponentActivationOptions.builder(
                             this, style
@@ -770,12 +865,14 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     }
 
     private void updateMyLocationTrackingMode() {
-        int[] vietmapTrackingMode = {CameraMode.NONE, CameraMode.TRACKING, CameraMode.TRACKING_COMPASS, CameraMode.TRACKING_GPS};
+//        int[] vietmapTrackingMode = {CameraMode.NONE, CameraMode.TRACKING, CameraMode.TRACKING_COMPASS, CameraMode.TRACKING_GPS};
+        int[] vietmapTrackingMode = {CameraMode.NONE, CameraMode.TRACKING, CameraMode.TRACKING_GPS};
         locationComponent.setCameraMode(vietmapTrackingMode[0]);
     }
 
     private void updateMyLocationRenderMode() {
-        int[] vietmapRenderMode = {RenderMode.NORMAL, RenderMode.COMPASS, RenderMode.GPS};
+//        int[] vietmapRenderMode = {RenderMode.NORMAL, RenderMode.COMPASS, RenderMode.GPS};
+        int[] vietmapRenderMode = {RenderMode.NORMAL, RenderMode.GPS};
         locationComponent.setRenderMode(vietmapRenderMode[0]);
 
     }
@@ -804,15 +901,16 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 LatLng userLoc = new LatLng(location.getLatitude(), location.getLongitude());
                 origin = new LatLng(location.getLatitude(), location.getLongitude()); // store user location as origin
 
+                // Populate map
+                getFirebaseSuggesstion();
+
                 // find near coffee place (update find near place method later)
-                String text = "coffee";
-                String focus = String.valueOf(userLoc.getLatitude()) + "," + String.valueOf(userLoc.getLongitude());
-                String circleRadius = "200";
-                String circleCenter = focus;
-                String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + text + "&circle_center=" + circleCenter + "&circle_radius=" + circleRadius;
-                // Populate map with some bookmark
+//                String text = "coffee";
+//                String focus = String.valueOf(userLoc.getLatitude()) + "," + String.valueOf(userLoc.getLongitude());
+//                String circleRadius = "200";
+//                String circleCenter = focus;
+//                String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + text + "&circle_center=" + circleCenter + "&circle_radius=" + circleRadius;
                 // Fetch data from firestore
-//                getFirebaseSuggesstion();
                 // Get search suggestion
 //                getSearchSuggestion(url, "Near me", true);
 
@@ -916,8 +1014,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         if (isNavigationInProgress) {
                             startNavigation();
                         }
-
-
                     }
 
                     @Override
@@ -953,9 +1049,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             setFocusMarker(focusMarker,false);
         }
 
-        // Reset bookmark button
-        ImageButton btn = (ImageButton) findViewById(R.id.bookmark);
-        btn.setBackgroundColor(getResources().getColor(R.color.white));
     }
 
 
@@ -1020,67 +1113,44 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         Log.d("TEST", "Fail to fetch route");
                     }
                 });
-
-
     }
 
-    public void bookmarkPlace(View view) {
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
+    private void onSearch(String val) {
+        binding.search.setQuery(val, true);
+    }
+
+
+    private void submitSearchRequest(String val) {
+        if (!suggestionMap.containsKey(val)) {
+            Log.d("TESTINGHELLO", suggestionMap.toString());
+             closeKeyboard();
             return;
         }
-
-        // Reset color somehow
-        ImageButton btn = (ImageButton) findViewById(R.id.bookmark);
-        btn.setBackgroundColor(getResources().getColor(R.color.blue));
-        Log.d("TEST", focusMarker.getTitle());
-        
-        // Save to user bookmark
-        try {
-            String ref = markerRefid.get(focusMarker.getTitle() + " " + focusMarker.getSnippet());
-            Log.d("TEST", ref);
-            CollectionReference userColl = db.collection("user");
-            userColl
-                    .whereEqualTo("userID", user.getUid())
-                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
-                            ArrayList<String> bookmarks = (ArrayList<String>) doc.get("bookmarks");
-                            bookmarks.add(ref);
-                            userColl.document(doc.getId()).update("bookmarks", bookmarks);
-                        }
-                    });
-        } catch (Exception e) {
-            Log.d("TEST", markerRefid.toString() + "Hello world");
+        if (navigationMapRoute != null) {
+            navigationMapRoute.removeRoute();
         }
+        stopNavigation();
+        closeKeyboard();
+
+        binding.search.setVisibility(View.INVISIBLE);
+        binding.recyclerView2.setVisibility(View.INVISIBLE);
+        binding.loading.setVisibility(View.INVISIBLE);
+        binding.searchResult.setVisibility(View.VISIBLE);
+        binding.searchResult.setText(val);
+//        Log.d("TESTINGHELLO", suggestionMap.get(val));
+
+        // Add marker to map
+        String refID = suggestionMap.get(val);
+        String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
+        addMarkerToMap(url, refID, true);
     }
 
-    public void listBookmark(View view) {
-        Log.d("TEST", "List bookmark click");
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
-            return;
-        }
-        db.collection("user")
-                .whereEqualTo("userID", user.getUid())
-                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        DocumentSnapshot res = task.getResult().getDocuments().get(0);
-                        ArrayList<String> bookmarks = (ArrayList<String>) res.get("bookmarks");
-                        Log.d("TEST", bookmarks.toString());
-
-                        // Add marker to map
-                        for (String bookmark: bookmarks) {
-                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + bookmark;
-                            addMarkerToMap(placeUrl, bookmark, false);
-                        }
-                    }
-                });
+    private void onSearchResultClick(View view) {
+        binding.search.setVisibility(View.VISIBLE);
+        binding.recyclerView2.setVisibility(View.VISIBLE);
+        binding.searchResult.setVisibility(View.INVISIBLE);
     }
+
 
     @Override
     public void onRunning(boolean b) {

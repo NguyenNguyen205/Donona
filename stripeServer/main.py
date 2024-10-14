@@ -2,11 +2,18 @@ import stripe
 from flask import Flask, Response, request, make_response, jsonify
 from flask_cors import CORS, cross_origin
 import json
+import firebase_admin
+from firebase_admin import credentials, firestore
+import requests
 
 app = Flask(__name__)
 cors = CORS(app=app)
 app.config['Access-Control-Allow-Origin'] = '*'
-stripe.api_key = "sk_test_51PZTGERt4Jb0KcASvnNu77y3c6lmQJNpLD3gvERz0vPLhPNERogsVubVaRuUb2xNYC6o4r0ZZ7ZH3eXh1jd715Ft00eh5S5EDO"
+stripe.api_key = "sk_test_51PSxSqRsoCurEVDXT1nXaQgwZ60fIhf3d2sGFVDoTzdUajfEVJ9h0iWwzDVU0jJNAVoEezzx6I6zOmG8RuTPHEgd00nBfA7YCE"
+vietmapkey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d"
+cred = credentials.Certificate("serviceKey.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 @app.route('/create-customer', methods=['POST'])
 def create_customer():
@@ -53,6 +60,16 @@ def create_subscription():
     except Exception as e:
         return jsonify(error={'message': e.user_message}), 400
 
+@app.route('/cancel-subscription', methods=['POST'])
+def cancelSubscription():
+    data = json.loads(request.data)
+    try:
+         # Cancel the subscription by deleting it
+        deletedSubscription = stripe.Subscription.delete(data['subscriptionId'])
+        return jsonify(deletedSubscription)
+    except Exception as e:
+        return jsonify(error=str(e)), 403
+
 # No webhook for now
 @app.route('/webhook', methods=['POST'])
 def webhook_received():
@@ -98,6 +115,58 @@ def webhook_received():
     print(data)
 
   return jsonify({'status': 'success'})
+
+@app.route('/api/search')
+def search():
+
+      
+    # suggestion = []
+    # suggestionMap = []
+    text = request.args.get('text')
+    # docs = db.collection("coffeePlace").stream()
+    # # print(len(docs))
+    # for doc in docs:
+    #   if (len(suggestion) < 10): 
+    #     break
+    if (text == ""):
+      return Response("No text provided", status = 200)
+
+
+
+
+    # return Response(res, status=200)
+    suggestion = []
+    suggestionMap = {}
+    url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + vietmapkey + "&text=" + text + "&cityId=12"
+
+    docs = db.collection("coffeePlace").stream()
+    mid = {}
+    key = ""
+    value = ""
+    # print(len(docs))
+    for doc in docs:
+        if (len(suggestion) >= 10): 
+            break
+        mid = doc.to_dict()
+        if (text.lower().strip() in mid['name'].lower()):
+            key = mid['name'] + " " + mid["address"]
+            # if (suggestionMap[key])
+            suggestion.append(key)
+            suggestionMap[key] = mid["ref_id"]
+        
+    ## Call vietmap api
+    res = requests.get(url)
+    vals = res.json()
+    for place in vals:
+        if (len(suggestion) >= 10):
+            break
+        key = place["name"] + " " + place["address"]
+        suggestion.append(key)
+        suggestionMap[key] = place["ref_id"]
+
+    return Response(json.dumps(suggestionMap, indent = 4), status = 200)
+
+
 
 
 @app.route('/api')

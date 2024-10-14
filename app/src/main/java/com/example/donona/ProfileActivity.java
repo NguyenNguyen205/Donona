@@ -99,11 +99,11 @@ public class ProfileActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_account) {
                 return true;
             }
-            if (itemId == R.id.navigation_streaming) {
-                startActivity(new Intent(ProfileActivity.this, StreamingActivity.class));
-                finish();
-                return true;
-            }
+//            if (itemId == R.id.navigation_streaming) {
+//                startActivity(new Intent(ProfileActivity.this, StreamingActivity.class));
+//                finish();
+//                return true;
+//            }
             if (itemId == R.id.navigation_home) {
                 startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
                 finish();
