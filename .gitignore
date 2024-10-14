@@ -16,3 +16,4 @@ local.properties
 # UnityGame
 unityLibrary/build
 unityLibrary/symbols
+stripeServer/serviceKey.json
