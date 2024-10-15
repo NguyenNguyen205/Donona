@@ -137,7 +137,8 @@
             android:padding="10dp"
             android:src="@drawable/bookmarks_24px"
             android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
+            app:tint="@color/quite_brown"
+            android:onClick="onClickBookMark"/>
 
         <ImageButton
             android:id="@+id/blog"
@@ -176,7 +177,8 @@
             android:scaleX="-1"
             android:src="@drawable/sell_24px"
             android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
+            app:tint="@color/quite_brown"
+            android:onClick="onClickPromotion"/>
 
         <ImageButton
             android:id="@+id/suggest"
@@ -194,7 +196,8 @@
             android:padding="10dp"
             android:src="@drawable/stylus_24px"
             android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
+            app:tint="@color/quite_brown"
+            android:onClick="onClickSuggestReal"/>
 
 
         <ImageButton

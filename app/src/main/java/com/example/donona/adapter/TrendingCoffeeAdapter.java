@@ -1,6 +1,8 @@
 package com.example.donona.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -15,9 +17,11 @@ import java.util.List;
 
 public class TrendingCoffeeAdapter extends RecyclerView.Adapter<TrendingCoffeeAdapter.TrendingCoffeeViewHolder> {
     private List<CoffeePlace> coffeePlaceList;
+    private CoffeePlaceAdapter.OnClickNearMeListener onClickNearMeListener;
 
-    public TrendingCoffeeAdapter(List<CoffeePlace> coffeePlaceList) {
+    public TrendingCoffeeAdapter(List<CoffeePlace> coffeePlaceList, CoffeePlaceAdapter.OnClickNearMeListener onClickNearMeListener) {
         this.coffeePlaceList = coffeePlaceList;
+        this.onClickNearMeListener = onClickNearMeListener;
     }
 
     @NonNull
@@ -37,7 +41,13 @@ public class TrendingCoffeeAdapter extends RecyclerView.Adapter<TrendingCoffeeAd
         holder.binding.openingHours.setText(coffeePlace.getStartTime() + " A.M.");
         holder.binding.closingHours.setText(coffeePlace.getEndtime() + " P.M.");
         holder.binding.location.setText(coffeePlace.getAddress());
-
+        holder.binding.nearMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TEST", "View place clicked");
+                onClickNearMeListener.onClickNearMe(coffeePlace);
+            }
+        });
     }
 
     @Override
