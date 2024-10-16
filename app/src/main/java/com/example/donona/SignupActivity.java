@@ -58,19 +58,6 @@ public class SignupActivity extends AppCompatActivity {
 
         EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
-        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm);
-
-        // Handle password and confirm password
-        if(mPassword.equals(mPasswordConfirm)){
-            Toast.makeText(SignupActivity.this, "Please re-enter your password. The confirmation does not match.",Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        //Handle password is less than 8 character
-        if(mPassword.getTextSize() < 8){
-            Toast.makeText(SignupActivity.this, "Password must be more than 8 characters.",Toast.LENGTH_LONG).show();
-            return;
-        }
 
         mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -94,7 +81,31 @@ public class SignupActivity extends AppCompatActivity {
     private void handleSuccessAuthentication(FirebaseUser user) {
         // Get data
         EditText mUsername = (EditText) findViewById(R.id.editTextTextUsername);
+        EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
+        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm); // Trường mới cho password confirm
+
+        String email = mEmail.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        String passwordConfirm = mPasswordConfirm.getText().toString().trim();
+
+        // Kiểm tra mật khẩu dưới 6 ký tự
+        if (password.length() < 6) {
+            Toast.makeText(SignupActivity.this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        // Kiểm tra mật khẩu và xác nhận mật khẩu có trùng nhau không
+        if (!password.equals(passwordConfirm)) {
+            Toast.makeText(SignupActivity.this, "Mật khẩu xác nhận không trùng khớp", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        // Kiểm tra định dạng email
+        if (!email.endsWith("@gmail.com")) {
+            Toast.makeText(SignupActivity.this, "Email phải có định dạng @gmail.com", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
 
         // store user into database
         Map<String, Object> data = new HashMap<>();
@@ -125,7 +136,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void handleFailAuthentication() {
-        startActivity(new Intent(SignupActivity.this, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        Toast.makeText(SignupActivity.this, "Đăng ký thất bại", Toast.LENGTH_LONG).show();
     }
 
     public void onSignIn(View view) {

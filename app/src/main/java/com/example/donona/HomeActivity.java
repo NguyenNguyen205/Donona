@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
@@ -67,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
         binding.trendingRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Khởi tạo adapter
-        trendingCoffeeAdapter = new TrendingCoffeeAdapter(coffeePlaceList);
+        trendingCoffeeAdapter = new TrendingCoffeeAdapter(coffeePlaceList, this::onClickNearMe);
         binding.trendingRecyclerView.setAdapter(trendingCoffeeAdapter); // Đặt adapter vào RecyclerView
 
 
@@ -204,5 +205,26 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "Subscription page launch");
         Intent intent = new Intent(HomeActivity.this, SubscriptionActivity.class);
         startActivity(intent);
+    }
+
+    private void onClickNearMe(CoffeePlace coffeePlace) {
+        Intent intent = new Intent(HomeActivity.this, NearActivity.class);
+        String key = coffeePlace.getName() + " " + coffeePlace.getAddress();
+        String refId = coffeePlace.getRef_id();
+        intent.putExtra("key", key);
+        intent.putExtra("refId", refId);
+        startActivity(intent);
+    }
+
+    public void onClickSuggestReal(View view) {
+        Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
+    }
+
+    public void onClickPromotion(View view) {
+        Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
+    }
+
+    public void onClickBookMark(View view) {
+        Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
     }
 }
