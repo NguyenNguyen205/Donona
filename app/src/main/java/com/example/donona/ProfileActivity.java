@@ -197,7 +197,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Không làm gì cả khi người dùng nhấn nút back
+        startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
