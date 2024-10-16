@@ -195,6 +195,11 @@ public class ProfileActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
     }
 
+    @Override
+    public void onBackPressed() {
+        // Không làm gì cả khi người dùng nhấn nút back
+    }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
