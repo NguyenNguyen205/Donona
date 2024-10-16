@@ -553,7 +553,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         String placeName = res.getString("name");
                         String address = res.getString("address");
                         LatLng pos = new LatLng(res.getDouble("lat"), res.getDouble("lng"));
-                        destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                        if (focus) {
+                            destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                        }
                         // Store ref Id for pre loaded marker
                         if (!refId.isEmpty()) {
                             markerRefid.put(placeName + " " + address, refId);
@@ -751,8 +753,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 LatLng userLoc = new LatLng(location.getLatitude(), location.getLongitude());
                 origin = new LatLng(location.getLatitude(), location.getLongitude()); // store user location as origin
 
-                // Populate map
-                getFirebaseSuggesstion();
 
                 // Check if there is any data in intent
                 Intent intent = getIntent();
@@ -763,6 +763,8 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     binding.search.setIconified(false);
                     onSearch(intent.getStringExtra("key"));
                 }
+                // Populate map
+                getFirebaseSuggesstion();
             }
 
             @Override
