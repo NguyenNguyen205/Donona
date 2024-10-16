@@ -144,6 +144,42 @@
                 android:src="@drawable/play_circle_40px"
                 android:text="@string/play_music"
                 app:tint="@color/quite_brown" />
+        </RelativeLayout>
+
+        <!--SwitchLang-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/switchLangIcon"
+                android:layout_height="50dp"
+                android:src="@drawable/language_24px"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/switchLangIcon"
+                android:text="@string/switch_lang"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+
+            <Switch
+                android:id="@+id/switch_lang"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="210dp"
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@+id/switchLangIcon"
+                android:paddingStart="20dp"
+                app:tint="@color/quite_brown"
+                android:scaleX="1.5"
+                android:scaleY="1.5" />
+
 
         </RelativeLayout>
 

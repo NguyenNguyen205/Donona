@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Donona</string>
+    <string name="title_home">Trang chủ</string>
+    <string name="title_streaming">Phát trực tuyến</string>
+    <string name="title_account">Tài khoản</string>
+    <string name="title_setting">Cài đặt</string>
+    <string name="username_label"><b>Tên người dùng</b></string>
+    <string name="email_label"><b>Email/Tên người dùng</b></string>
+    <string name="password_label"><b>Mật khẩu</b></string>
+    <string name="confirm_password_label"><b>Xác nhận mật khẩu</b></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Xin chào, phân đoạn trống</string>
+    <string name="title_activity_profile">Trang cá nhân</string>
+    <string name="edit_avatar">Chỉnh sửa hình đại diện</string>
+    <string name="email"><b>Email</b></string>
+    <string name="forgot_pw">Quên mật khẩu</string>
+    <string name="sign_in">Đăng nhập</string>
+    <string name="sign_up">Đăng ký</string>
+    <string name="or">HOẶC</string>
+    <string name="sign_in_gg">Đăng nhập bằng Google</string>
+    <string name="privacy">Để tiếp tục, bạn có thể xem chính sách bảo mật và điều khoản dịch vụ của công ty.</string>
+    <string name="game_view_content_description" translatable="false">Giao diện trò chơi</string>
+    <string name="app_infor">Thông tin ứng dụng</string>
+    <string name="fanpage">Trang fanpage</string>
+
+    <string name="blog">Blog</string>
+    <string name="game">Trò chơi</string>
+    <string name="trending">Xu hướng</string>
+    <string name="near_me_title">Gần tôi</string>
+    <string name="near_me_subtitle">Tìm những quán cà phê tốt nhất gần đây</string>
+    <string name="username_hint">Tên người dùng ở đây</string>
+    <string name="email_hint">Email ở đây</string>
+    <string name="update">Cập nhật</string>
+    <string name="log_out">Đăng xuất</string>
+    <string name="play_music">Nhạc</string>
+    <string name="dark_mode">Chế độ tối</string>
+    <string name="upgrade_your_account">Nâng cấp tài khoản của bạn</string>
+    <string name="free_tier">Cấp miễn phí</string>
+    <string name="basic">Cơ bản</string>
+    <string name="basic_features">Tìm kiếm cửa hàng \n Đánh giá \n Đánh dấu \n Trò chơi arcade</string>
+    <string name="standard_price">30.000 VND</string>
+    <string name="standard">Tiêu chuẩn</string>
+    <string name="standard_features">Tìm kiếm cửa hàng Pro \n Đánh giá Pro \n Đánh dấu Pro \n Trò chơi arcade Pro \n Không quảng cáo Pro</string>
+    <string name="buy_standard">Mua Tiêu chuẩn</string>
+    <string name="checkout">Thanh toán</string>
+    <string name="hello_world">Xin chào thế giới</string>
+    <string name="address_in_after_life">Địa chỉ trong kiếp sau</string>
+    <string name="searching">Đang tìm kiếm</string>
+    <string name="coffee_shop_name">Tên quán cà phê</string>
+    <string name="intro">Donona là một ứng dụng đáng yêu được phát triển bởi một nhóm sinh viên năm cuối đang trong quá trình hoàn thành môn Khởi nghiệp (EXE201) tại trường đại học FPT. Ứng dụng cho phép người dùng tìm kiếm các quán cà phê gần vị trí hiện tại của họ sử dụng VietMap. Người dùng có thể đăng nhập bằng Google và tận hưởng nhiều tính năng khác.</string>
+    <string name="insta_id">donona.urcafeurway</string>
+    <string name="gmail">donona.urcafeurway@gmail.com</string>
+    <string name="contact">Liên hệ</string>
+    <string name="app_info">Thông tin ứng dụng</string>
+    <string name="switch_lang">Chuyển đổi ngôn ngữ</string>
+
+</resources>

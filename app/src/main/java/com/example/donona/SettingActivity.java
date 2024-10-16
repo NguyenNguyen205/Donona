@@ -2,6 +2,7 @@ package com.example.donona;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Locale;
+
 
 public class SettingActivity extends AppCompatActivity {
     private ImageButton logoutButton;
@@ -32,6 +35,9 @@ public class SettingActivity extends AppCompatActivity {
     private Switch switchTheme;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+
+    //Switch language
+    private Switch switchLang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +110,32 @@ public class SettingActivity extends AppCompatActivity {
             logoutButton.setVisibility(View.GONE);
         }
 
+        //Lấy nút chuyển của ngôn ngữ
+        switchLang = findViewById(R.id.switch_lang);
+
+        // Đặt trạng thái ban đầu cho switch (có thể lưu trong SharedPreferences)
+        switchLang.setChecked(isVietnameseLanguage()); // Hàm kiểm tra ngôn ngữ hiện tại
+
+        // Trong phương thức onCreate
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        switchLang.setChecked(preferences.getBoolean("isVietnamese", false));
+
+        switchLang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setLocale("vi");
+                } else {
+                    setLocale("en");
+                }
+
+                // Lưu trạng thái ngôn ngữ
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("isVietnamese", isChecked);
+                editor.apply();
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -141,5 +173,21 @@ public class SettingActivity extends AppCompatActivity {
         Log.d("TEST", "Logging out...");
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(SettingActivity.this, ProfileActivity.class));
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+
+        // Khởi động lại Activity để áp dụng ngôn ngữ mới
+        recreate();
+    }
+
+    private boolean isVietnameseLanguage() {
+        // Kiểm tra ngôn ngữ hiện tại
+        return Locale.getDefault().getLanguage().equals("vi");
     }
 }
