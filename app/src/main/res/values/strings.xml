@@ -53,5 +53,6 @@
     <string name="contact">Contact</string>
     <string name="app_info">Appliance Infomation</string>
     <string name="switch_lang">Switch Language</string>
+    <string name="book_mark">Book Mark</string>
 
 </resources>

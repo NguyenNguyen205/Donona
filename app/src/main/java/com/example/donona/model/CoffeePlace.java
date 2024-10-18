@@ -18,6 +18,7 @@ public class CoffeePlace {
     private String ward;
     private boolean wifi;
     private String ref_id;
+    private boolean isBookMark;
 
     // Constructor không đối số (cần thiết cho Firebase)
     public CoffeePlace() {
@@ -26,7 +27,7 @@ public class CoffeePlace {
     // Constructor đầy đủ đối số
     public CoffeePlace(String address, String city, String display, String district, String endtime, String hs_num,
                       String image, double lat, double lng, String name, String priceRange, String startTime, String street,
-                      String thumbnail, String ward, boolean wifi) {
+                      String thumbnail, String ward, boolean wifi, boolean isBookMark) {
         this.address = address;
         this.city = city;
         this.display = display;
@@ -43,6 +44,7 @@ public class CoffeePlace {
         this.thumbnail = thumbnail;
         this.ward = ward;
         this.wifi = wifi;
+        this.isBookMark = isBookMark;
     }
 
     // Getters và Setters cho tất cả các thuộc tính
@@ -179,6 +181,14 @@ public class CoffeePlace {
     }
 
     public String getRef_id() { return this.ref_id; }
+
+    public boolean isBookMark() {
+        return isBookMark;
+    }
+
+    public void setBookMark(boolean isBookMark) {
+        this.isBookMark = isBookMark;
+    }
 
 }
 

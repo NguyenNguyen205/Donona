@@ -14,6 +14,7 @@ import com.example.donona.R;
 import com.example.donona.databinding.ItemCoffeePlaceBinding;
 import com.example.donona.model.CoffeePlace;
 import com.example.donona.transformation.CircleTransform;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,14 +22,21 @@ import java.util.List;
 public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.CoffeePlaceViewHolder> {
     private List<CoffeePlace> coffeePlaceList;
     private OnClickNearMeListener onClickNearMeListener;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private OnBookmarkClickListener onBookmarkClickListener;
 
     public interface OnClickNearMeListener {
         void onClickNearMe(CoffeePlace coffeePlace);
     }
 
-    public CoffeePlaceAdapter(List<CoffeePlace> coffeePlaceList, OnClickNearMeListener onClickNearMeListener) {
+    public interface OnBookmarkClickListener {
+        void onBookmarkClick(int position, boolean isBookmarked);
+    }
+
+    public CoffeePlaceAdapter(List<CoffeePlace> coffeePlaceList, OnClickNearMeListener onClickNearMeListener, OnBookmarkClickListener onBookmarkClickListener) {
         this.coffeePlaceList = coffeePlaceList;
         this.onClickNearMeListener = onClickNearMeListener;
+        this.onBookmarkClickListener = onBookmarkClickListener;
     }
 
     @NonNull
@@ -66,6 +74,48 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
             }
         });
 //        holder.binding.coffeeThumbnail.setText(coffeePlace.getThumbnail());
+
+        if (coffeePlace.isBookMark()) {
+            holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50_selected); // Tô đậm
+        } else {
+            holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50); // Sáng
+        }
+
+        holder.binding.bookmarkButton.setOnClickListener(v -> {
+            String refId = coffeePlace.getRef_id().replace("fb:", "");  // Loại bỏ "fb:" khỏi ref_id
+            boolean currentBookMarkState = coffeePlace.isBookMark();    // Lấy trạng thái hiện tại
+            boolean newBookMarkState = !currentBookMarkState;           // Đảo ngược trạng thái isBookMark
+
+            Log.d("Bookmark", "Current state: " + currentBookMarkState);  // Log trạng thái hiện tại
+            Log.d("Bookmark", "New state: " + newBookMarkState);         // Log trạng thái sau khi đảo ngược
+
+            // Cập nhật trạng thái cục bộ ngay lập tức
+            coffeePlace.setBookMark(newBookMarkState);
+            notifyItemChanged(position);
+
+            // Gọi listener để thông báo cho Activity về sự thay đổi
+            if (onBookmarkClickListener != null) {
+                onBookmarkClickListener.onBookmarkClick(position, newBookMarkState);
+            }
+
+            // Cập nhật Firestore với trạng thái mới
+            db.collection("coffeePlace")
+                    .document(refId)
+                    .update("isBookMark", newBookMarkState)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("Firestore", "Bookmark updated successfully");
+
+                        // Cập nhật lại trạng thái cục bộ sau khi Firestore thành công
+                        coffeePlace.setBookMark(newBookMarkState);  // Cập nhật lại trạng thái cục bộ
+                        Log.d("Bookmark", "Updated state locally: " + coffeePlace.isBookMark());
+
+                        notifyItemChanged(position);  // Cập nhật lại RecyclerView sau khi thay đổi
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w("Firestore", "Error updating bookmark", e);
+                    });
+        });
+
     }
 
     @Override

@@ -101,25 +101,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/bookmark_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"  />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="50dp" />
-
-        <ImageButton
-            android:id="@+id/near_me"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="10dp"
-            android:src="@drawable/near_me_fill_24px"
-            android:contentDescription="Navigate"
-            app:tint="@color/beige_brown"/>
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/near_me"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Navigate"
+        android:padding="10dp"
+        android:src="@drawable/near_me_fill_24px"
+        app:tint="@color/beige_brown" />
 
 </LinearLayout>

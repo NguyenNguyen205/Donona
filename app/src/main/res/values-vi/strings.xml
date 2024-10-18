@@ -54,5 +54,7 @@
     <string name="contact">Liên hệ</string>
     <string name="app_info">Thông tin ứng dụng</string>
     <string name="switch_lang">Chuyển đổi ngôn ngữ</string>
+    <string name="book_mark">Đánh Dấu</string>
+
 
 </resources>

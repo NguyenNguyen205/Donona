@@ -11,43 +11,34 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.donona.adapter.BookMarkAdapter;
 import com.example.donona.adapter.CoffeePlaceAdapter;
+import com.example.donona.databinding.ActivityBookMarkBinding;
 import com.example.donona.databinding.ActivityNearMeBinding;
 import com.example.donona.model.CoffeePlace;
-import com.example.donona.transformation.CircleTransform;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NearMeActivity extends AppCompatActivity {
+public class BookMarkActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private List<CoffeePlace> coffeePlaceList;
-    private ActivityNearMeBinding binding;
-    private CoffeePlaceAdapter coffeePlaceAdapter;
-    String refId ;
-
+    private ActivityBookMarkBinding binding;
+    private BookMarkAdapter bookMarkAdapter;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    private String currentDocumentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityNearMeBinding.inflate(getLayoutInflater());
+        binding = ActivityBookMarkBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
 
@@ -57,14 +48,15 @@ public class NearMeActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Khởi tạo adapter
-        coffeePlaceAdapter = new CoffeePlaceAdapter(coffeePlaceList, this::onClickNearMe, this::onBookmarkClick);
-        binding.recyclerView.setAdapter(coffeePlaceAdapter); // Đặt adapter vào RecyclerView
+        bookMarkAdapter = new BookMarkAdapter(coffeePlaceList, this::onClickNearMe);
+        binding.recyclerView.setAdapter(bookMarkAdapter); // Đặt adapter vào RecyclerView
 
         fetchCoffeePlaces();
     }
 
     private void fetchCoffeePlaces() {
         db.collection("coffeePlace")
+                .whereEqualTo("isBookMark", true) // Lọc theo isBookMark = true
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -79,13 +71,14 @@ public class NearMeActivity extends AppCompatActivity {
                                 coffeePlaceList.add(coffeePlace); // Add new data
                                 Log.d("CoffeePlaceList", "Size: " + coffeePlaceList.size());
                             }
-                            coffeePlaceAdapter.notifyDataSetChanged(); // Update RecyclerView
+                            bookMarkAdapter.notifyDataSetChanged(); // Update RecyclerView
                         } else {
                             Log.w("Firestore", "Error getting documents.", task.getException());
                         }
                     }
                 });
     }
+
 
     @Override
     public void onStart() {
@@ -94,30 +87,11 @@ public class NearMeActivity extends AppCompatActivity {
     }
 
     private void onClickNearMe(CoffeePlace coffeePlace) {
-        Intent intent = new Intent(NearMeActivity.this, NearActivity.class);
+        Intent intent = new Intent(BookMarkActivity.this, NearActivity.class);
         String key = coffeePlace.getName() + " " + coffeePlace.getAddress();
-        refId = coffeePlace.getRef_id();
+        String refId = coffeePlace.getRef_id();
         intent.putExtra("key", key);
         intent.putExtra("refId", refId);
         startActivity(intent);
     }
-
-    public void onBookmarkClick(int position, boolean isBookmarked) {
-        // Cập nhật trạng thái trên Firebase
-        CoffeePlace coffeePlace = coffeePlaceList.get(position);
-        updateBookmarkInFirebase(coffeePlace.getRef_id(), isBookmarked);
-    }
-
-    private void updateBookmarkInFirebase(String coffeePlaceId, boolean isBookmarked) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference coffeePlaceRef = db.collection("coffeePlaces").document(coffeePlaceId);
-        coffeePlaceRef.update("isBookMark", isBookmarked)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Firebase", "Bookmark updated successfully.");
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firebase", "Error updating bookmark", e);
-                });
-    }
-
 }

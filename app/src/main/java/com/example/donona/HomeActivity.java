@@ -225,6 +225,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickBookMark(View view) {
-        Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
-    }
+        Log.d(TAG, "Bookmark page launch");
+        Intent intent = new Intent(HomeActivity.this, BookMarkActivity.class);
+        startActivity(intent);    }
 }
