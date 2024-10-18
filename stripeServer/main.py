@@ -116,23 +116,12 @@ def webhook_received():
 
   return jsonify({'status': 'success'})
 
-@app.route('/api/search')
-def search():
-
-      
-    # suggestion = []
-    # suggestionMap = []
+# Map API
+@app.route('/api/search') 
+def search():      
     text = request.args.get('text')
-    # docs = db.collection("coffeePlace").stream()
-    # # print(len(docs))
-    # for doc in docs:
-    #   if (len(suggestion) < 10): 
-    #     break
     if (text == ""):
       return Response("No text provided", status = 200)
-
-
-
 
     # return Response(res, status=200)
     suggestion = []
@@ -143,14 +132,13 @@ def search():
     mid = {}
     key = ""
     value = ""
-    # print(len(docs))
+
     for doc in docs:
         if (len(suggestion) >= 10): 
             break
         mid = doc.to_dict()
         if (text.lower().strip() in mid['name'].lower()):
             key = mid['name'] + " " + mid["address"]
-            # if (suggestionMap[key])
             suggestion.append(key)
             suggestionMap[key] = mid["ref_id"]
         
@@ -164,10 +152,8 @@ def search():
         suggestion.append(key)
         suggestionMap[key] = place["ref_id"]
 
+    ## May need to change format to include distance
     return Response(json.dumps(suggestionMap, indent = 4), status = 200)
-
-
-
 
 @app.route('/api')
 def home():

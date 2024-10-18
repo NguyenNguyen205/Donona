@@ -63,7 +63,51 @@
                     app:layout_constraintTop_toBottomOf="@+id/loading" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            <RadioGroup
+                android:id="@+id/mapIcon"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:background="@color/background"
+                android:layout_alignParentRight="true"
+                android:layout_above="@+id/my_location"
+                android:layout_marginBottom="100dp"
+                android:visibility="invisible"
+                android:translationZ="10dp"
+                >
 
+                <RadioButton
+                    android:id="@+id/freeIcon"
+                    android:button="@null"
+                    android:background="@drawable/logo"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:checked="true"
+                    android:text="freeIcon"
+                    android:textColor="#00000000"
+                    />
+
+                <RadioButton
+                    android:id="@+id/standardIcon"
+                    android:button="@null"
+                    android:background="@drawable/logo_legend"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:text="standardIcon"
+                    android:textColor="#00000000"
+                    />
+
+                <RadioButton
+                    android:id="@+id/kawaIcon"
+                    android:button="@null"
+                    android:background="@drawable/logo_kawa"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:checked="true"
+                    android:text="kawaIcon"
+                    android:textColor="#00000000"
+                    />
+            </RadioGroup>
             <ImageButton
                 android:id="@+id/my_location"
                 android:layout_width="wrap_content"
@@ -73,6 +117,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/card_view"
                 android:onClick="onClickgetMyLocation"
+                android:layout_marginTop="-40dp"
                 />
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
@@ -151,6 +196,15 @@
                                 android:text="@string/address_in_after_life"
                                 android:textSize="20dp"
                                 />
+                            <TextView
+                                android:id="@+id/place_distance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="100dp"
+                                android:text="@string/address_in_after_life"
+                                android:textSize="20dp"
+                                />
+
                         </LinearLayout>
                     </LinearLayout>
 

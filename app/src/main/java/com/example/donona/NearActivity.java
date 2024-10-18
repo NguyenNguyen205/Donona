@@ -18,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +64,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.security.Permission;
@@ -104,6 +107,7 @@ import vn.vietmap.vietmapsdk.geometry.LatLngBounds;
 import vn.vietmap.vietmapsdk.location.LocationComponent;
 import vn.vietmap.vietmapsdk.location.LocationComponentActivationOptions;
 import vn.vietmap.vietmapsdk.location.LocationComponentOptions;
+import vn.vietmap.vietmapsdk.location.OnLocationClickListener;
 import vn.vietmap.vietmapsdk.location.engine.LocationEngine;
 import vn.vietmap.vietmapsdk.location.engine.LocationEngineCallback;
 import vn.vietmap.vietmapsdk.location.engine.LocationEngineDefault;
@@ -124,12 +128,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private MapView mapView;
     private VietMapGL vietMapGL;
 
-//    private List<Polyline> polylines = null;
-//    private ArrayList<PolylineOptions> polylineOptions = new ArrayList<>();
-//    private Polygon polygon = null;
-
-//    private static final String STATE_POLYLINE_OPTIONS = "polylineOptions";
-//    private static final LatLng HOCHIMINH = new LatLng(10.791257, 106.669189);
     private LocationComponent locationComponent;
     private LocationEngine locationEngine;
 
@@ -169,9 +167,11 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private NavigationMapRoute navigationMapRoute = null;
     private boolean isBuildingRoute = false;
     private int[] padding = {150, 500, 150, 500};
+    private LocationComponentOptions customeIcon;
+    private Style style;
+
 
     private String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,11 +179,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
         /// Initialization
         Vietmap.getInstance(this);
-
-        // Search featr
-//        adapter = new ArrayAdapter<>(this, R.layout.list_place, new ArrayList<>());
-//        adapter.setNotifyOnChange(true);
-
 
         handler = new Handler();
 
@@ -345,6 +340,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                             initLocationEngine();
                             enableLocationComponent(style);
                             populateMap();
+                            NearActivity.this.style = style;
                         });
 
                 // ?? about usefulness
@@ -366,7 +362,14 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     public void onClick(View v) {
                         Log.d("TEST", "Navigation start");
                         isNavigationInProgress = true;
-                        fetchRoute();
+//                        fetchRoute(true);
+                        if (navigationMapRoute != null && currentRoute != null) {
+                            navigationMapRoute.addRoute(currentRoute);
+                            List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
+                            animateVietmapGLForRouteOverview(padding, routePoints);
+                            startNavigation();
+                        }
+
                     }
                 });
 
@@ -377,7 +380,12 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     public void onClick(View v) {
                         Log.d("TEST", "Find route");
                         isNavigationInProgress = false;
-                        fetchRoute();
+//                        fetchRoute();
+                        if (navigationMapRoute != null && currentRoute != null) {
+                            navigationMapRoute.addRoute(currentRoute);
+                            List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
+                            animateVietmapGLForRouteOverview(padding, routePoints);
+                        }
                     }
                 });
 
@@ -396,10 +404,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 vietMapGL.setOnMarkerClickListener(new VietMapGL.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(@NonNull Marker marker) {
-//                        if (focusMarker != null) {
-//                            Log.d("TEST", "reset marker");
-//                            setFocusMarker(focusMarker,false);
-//                        }
+
                         stopNavigation();
 
                         focusMarker = marker;
@@ -423,8 +428,40 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         return true;
                     }
                 });
+
+                RadioGroup radioGroup = findViewById(R.id.mapIcon);
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        updateUserIcon(checkedId);
+                    }
+                });
             }
         });
+    }
+
+    private void updateUserIcon(int id) {
+        if (style == null) {
+            Log.d("TESTING", "map hasn't been initialized");
+        }
+        HashMap<String, Integer> mapper = new HashMap<String, Integer>() {{
+           put("freeIcon", R.drawable.logo);
+           put("standardIcon", R.drawable.logo_legend);
+           put("kawaIcon", R.drawable.logo_kawa);
+        }};
+        RadioButton button = findViewById(id);
+        int icon = mapper.get(button.getText());
+        customeIcon = LocationComponentOptions.builder(NearActivity.this)
+                                .foregroundDrawable(icon)
+                                .minZoomIconScale((float) 0.1)
+                                .build();
+        locationComponent.activateLocationComponent(
+                LocationComponentActivationOptions.builder(
+                                NearActivity.this, style
+                        ).locationComponentOptions(customeIcon)
+                        .build()
+        );
+        binding.mapIcon.setVisibility(View.INVISIBLE);
     }
 
 
@@ -523,6 +560,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         if (focus) {
                             setFocusMarker(mid,true);
                         }
+                        if (focus) fetchRoute(false);
                         if (focus) focusCamera(pos);
                         if (focus) displayPlaceInfo(res);
                     });
@@ -571,6 +609,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                             if (focus) {
                                 setFocusMarker(mid,true);
                             }
+                            if (focus) fetchRoute(false);
                             if (focus) focusCamera(pos);
                             if (focus) displayPlaceInfo(res);
                         });
@@ -595,21 +634,23 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         cardView.setVisibility(View.VISIBLE);
         TextView nameView = (TextView) findViewById(R.id.place_name);
         TextView addressView = (TextView) findViewById(R.id.place_address);
+//        TextView distanceView = (TextView) findViewById(R.id.place_distance);
         ImageView thumbnail = (ImageView) findViewById(R.id.coffee_thumbnail);
 
         String name = "";
         String address = "";
+//        Double distance = 0.0;
         try {
             name = data.getString("name");
             address = data.getString("address");
+//            distance = data.getDouble("distance");
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
         nameView.setText(name);
         addressView.setText(address);
+//        distanceView.setText(String.format("%1$,.2f", distance) + "m");
         thumbnail.setVisibility(View.INVISIBLE);
-
-
     }
 
     private void displayPlaceInfo(DocumentSnapshot doc) {
@@ -635,6 +676,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         }
     }
 
+
     // Add firebase coffee place to map as marker when first load
     private void getFirebaseSuggesstion() {
         db.collection("coffeePlace").get()
@@ -653,6 +695,37 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         }
                     }
                 });
+    }
+
+    private void getVietmapSuggestion() {
+        String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&circle_center=" + String.valueOf(origin.getLatitude()) + "," + String.valueOf(origin.getLongitude()) + "&circle_radius=500" + "&text=ca phe";
+        Request req = new Request.Builder()
+                .url(url)
+                .build();
+        Call call = client.newCall(req);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                return;
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String body = response.body().string();
+                Log.d("HELLOWORLDTE", body);
+                try {
+                    JSONArray res = new JSONArray(body);
+                    for (int i = 0; i < res.length(); i++) {
+                        Log.d("HELLOWORLDTE", "Hello w");
+                        JSONObject mid = res.getJSONObject(i);
+                        String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + mid.getString("ref_id");
+                        addMarkerToMap(placeUrl, mid.getString("ref_id"), false);
+                    }
+                } catch (Exception e) {
+                    Log.d("TEST", "Can't get vietmap suggestion");
+                }
+            }
+        });
     }
 
 
@@ -691,6 +764,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
     private void enableLocationComponent(Style style) {
         locationComponent = vietMapGL.getLocationComponent();
+        // Standard component
         LocationComponentOptions customIcon = LocationComponentOptions.builder(this)
                 .foregroundDrawable(R.drawable.logo)
                 .minZoomIconScale((float) 0.1)
@@ -703,6 +777,13 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     ).locationComponentOptions(customIcon)
                     .build()
             );
+            locationComponent.addOnLocationClickListener(new OnLocationClickListener() {
+                @Override
+                public void onLocationComponentClick() {
+                    Log.d("TEST", "Legend clicked");
+                    binding.mapIcon.setVisibility(View.VISIBLE);
+                }
+            });
             if (!checkPermission()) return;
             locationComponent.setLocationComponentEnabled(true);
             locationComponent.setCameraMode(
@@ -764,7 +845,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     onSearch(intent.getStringExtra("key"));
                 }
                 // Populate map
-                getFirebaseSuggesstion();
+//                getFirebaseSuggesstion();
+                getVietmapSuggestion();
+
             }
 
             @Override
@@ -830,7 +913,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         }
     }
 
-    private void fetchRoute() {
+    private void fetchRoute(boolean animate) {
         if (origin == null || destination == null) {
             return;
         }
@@ -852,19 +935,25 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         }
 
                         navigationMapRoute = new NavigationMapRoute(mapView, vietMapGL);
-                        navigationMapRoute.addRoute(currentRoute);
-
                         // allow user to choose route ??
+                        Log.d("TESTINGHELLO", String.valueOf(currentRoute.distance()));
 
                         // get route points
                         isBuildingRoute = false;
-                        List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
-                        animateVietmapGLForRouteOverview(padding, routePoints);
+                        if (animate) {
+                            List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
+                            animateVietmapGLForRouteOverview(padding, routePoints);
+                        }
+
+                        // Display route info in cardview
+                        binding.placeDistance.setText(String.format("%1$,.2f", currentRoute.distance()) + "m");
 
                         // start navigation
                         if (isNavigationInProgress) {
                             startNavigation();
                         }
+
+
                     }
 
                     @Override
