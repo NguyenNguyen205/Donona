@@ -182,11 +182,11 @@ public class CoffeePlace {
 
     public String getRef_id() { return this.ref_id; }
 
-    public boolean isBookMark() {
+    public boolean isIsBookMark() {
         return isBookMark;
     }
 
-    public void setBookMark(boolean isBookMark) {
+    public void setIsBookMark(boolean isBookMark) {
         this.isBookMark = isBookMark;
     }
 

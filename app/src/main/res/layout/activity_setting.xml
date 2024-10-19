@@ -319,6 +319,6 @@
         android:layout_gravity="bottom"
         android:background="#ffebc9"
         app:menu="@menu/bottom_nav_menu"
-        android:layout_marginTop="221dp"/>
+        android:layout_marginTop="195dp"/>
 
 </LinearLayout>

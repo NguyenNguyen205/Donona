@@ -1,8 +1,10 @@
 package com.example.donona;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -124,15 +126,19 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    setLocale("vi");
+                    setLocale(SettingActivity.this, "vi");
                 } else {
-                    setLocale("en");
+                    setLocale(SettingActivity.this, "en");
                 }
 
                 // Lưu trạng thái ngôn ngữ
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putBoolean("isVietnamese", isChecked);
+//                Intent intent = getIntent();
+//                finish();
+//                startActivity(intent);
                 editor.apply();
+//                editor.commit();
             }
         });
 
@@ -175,12 +181,16 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(new Intent(SettingActivity.this, ProfileActivity.class));
     }
 
-    private void setLocale(String lang) {
+    private void setLocale(Activity activity, String lang) {
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
+        Resources resources = activity.getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
         // Khởi động lại Activity để áp dụng ngôn ngữ mới
         recreate();

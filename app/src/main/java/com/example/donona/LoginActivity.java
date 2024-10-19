@@ -1,6 +1,10 @@
 package com.example.donona;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -45,6 +49,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
@@ -133,6 +138,16 @@ public class LoginActivity extends AppCompatActivity {
 
         TextView notice = (TextView) findViewById(R.id.notice);
         notice.setText(Html.fromHtml("To continue, you can review Company’s <b>privacy policy</b> and <b>terms of service</b>."));
+
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        boolean isVietnamese = preferences.getBoolean("isVietnamese", false);
+
+        // Áp dụng ngôn ngữ
+        if (isVietnamese) {
+            setLocale(this, "vi");
+        } else {
+            setLocale(this, "en");
+        }
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav);
         bottomNavigationView.setSelectedItemId(R.id.navigation_account);
@@ -225,6 +240,16 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         signInLauncher.launch(signInIntent);
 
+    }
+
+    // Phương thức để thay đổi ngôn ngữ
+    protected void setLocale(Activity activity, String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Resources resources = activity.getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
 
 }

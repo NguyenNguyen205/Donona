@@ -75,22 +75,22 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
         });
 //        holder.binding.coffeeThumbnail.setText(coffeePlace.getThumbnail());
 
-        if (coffeePlace.isBookMark()) {
+        if (coffeePlace.isIsBookMark()) {
             holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50_selected); // Tô đậm
         } else {
             holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50); // Sáng
         }
-
+        Log.d("BookmarkTest", "Current state: " + coffeePlace.isIsBookMark());
         holder.binding.bookmarkButton.setOnClickListener(v -> {
             String refId = coffeePlace.getRef_id().replace("fb:", "");  // Loại bỏ "fb:" khỏi ref_id
-            boolean currentBookMarkState = coffeePlace.isBookMark();    // Lấy trạng thái hiện tại
+            boolean currentBookMarkState = coffeePlace.isIsBookMark();    // Lấy trạng thái hiện tại
             boolean newBookMarkState = !currentBookMarkState;           // Đảo ngược trạng thái isBookMark
 
             Log.d("Bookmark", "Current state: " + currentBookMarkState);  // Log trạng thái hiện tại
             Log.d("Bookmark", "New state: " + newBookMarkState);         // Log trạng thái sau khi đảo ngược
 
             // Cập nhật trạng thái cục bộ ngay lập tức
-            coffeePlace.setBookMark(newBookMarkState);
+            coffeePlace.setIsBookMark(newBookMarkState);
             notifyItemChanged(position);
 
             // Gọi listener để thông báo cho Activity về sự thay đổi
@@ -106,8 +106,8 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
                         Log.d("Firestore", "Bookmark updated successfully");
 
                         // Cập nhật lại trạng thái cục bộ sau khi Firestore thành công
-                        coffeePlace.setBookMark(newBookMarkState);  // Cập nhật lại trạng thái cục bộ
-                        Log.d("Bookmark", "Updated state locally: " + coffeePlace.isBookMark());
+                        coffeePlace.setIsBookMark(newBookMarkState);  // Cập nhật lại trạng thái cục bộ
+                        Log.d("Bookmark", "Updated state locally: " + coffeePlace.isIsBookMark());
 
                         notifyItemChanged(position);  // Cập nhật lại RecyclerView sau khi thay đổi
                     })

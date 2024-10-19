@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Donona"
         android:usesCleartextTraffic="true"
+        android:configChanges = "locale"
         tools:targetApi="31">
         <activity
             android:name=".BookMarkActivity"
