@@ -54,5 +54,15 @@
     <string name="app_info">Appliance Infomation</string>
     <string name="switch_lang">Switch Language</string>
     <string name="book_mark">Book Mark</string>
+    <string name="near_me_ps">Book Mark</string>
+    <string name="map_ps">Map</string>
+    <string name="upgrade_ps">Upgrade</string>
+    <string name="book_mark_ps">Book Mark</string>
+    <string name="blog_ps">Blog</string>
+    <string name="promotion_ps">Promotion</string>
+    <string name="suggest_ps">Suggest</string>
+    <string name="game_ps">Game</string>
+
+
 
 </resources>

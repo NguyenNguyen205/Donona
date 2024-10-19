@@ -95,7 +95,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Near Me"
+                android:text="@string/near_me_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
@@ -128,7 +128,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Map"
+                android:text="@string/map_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
@@ -161,7 +161,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Upgrade"
+                android:text="@string/upgrade_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
@@ -195,7 +195,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bookmark"
+                android:text="@string/book_mark_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
@@ -229,7 +229,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Blog"
+                android:text="@string/blog_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
@@ -264,7 +264,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Promotion"
+                android:text="@string/promotion_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
@@ -298,7 +298,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Suggest"
+                android:text="@string/suggest_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
@@ -331,7 +331,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Game"
+                android:text="@string/game_ps"
                 android:textColor="@color/black"
                 android:textSize="14sp"
                 android:gravity="center"/>
