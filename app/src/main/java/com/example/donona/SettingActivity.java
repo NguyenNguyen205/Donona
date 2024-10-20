@@ -46,6 +46,7 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
+        Log.d("HELLOTESTING", Locale.getDefault().getLanguage());
 
         ImageButton appInforButton = findViewById(R.id.appInfor);
         appInforButton.setOnClickListener(new View.OnClickListener() {
@@ -112,35 +113,7 @@ public class SettingActivity extends AppCompatActivity {
             logoutButton.setVisibility(View.GONE);
         }
 
-        //Lấy nút chuyển của ngôn ngữ
-        switchLang = findViewById(R.id.switch_lang);
 
-        // Đặt trạng thái ban đầu cho switch (có thể lưu trong SharedPreferences)
-        switchLang.setChecked(isVietnameseLanguage()); // Hàm kiểm tra ngôn ngữ hiện tại
-
-        // Trong phương thức onCreate
-        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
-        switchLang.setChecked(preferences.getBoolean("isVietnamese", false));
-
-        switchLang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    setLocale(SettingActivity.this, "vi");
-                } else {
-                    setLocale(SettingActivity.this, "en");
-                }
-
-                // Lưu trạng thái ngôn ngữ
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("isVietnamese", isChecked);
-//                Intent intent = getIntent();
-//                finish();
-//                startActivity(intent);
-                editor.apply();
-//                editor.commit();
-            }
-        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -175,6 +148,38 @@ public class SettingActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Lấy nút chuyển của ngôn ngữ
+        switchLang = findViewById(R.id.switch_lang);
+
+        // Đặt trạng thái ban đầu cho switch (có thể lưu trong SharedPreferences)
+        switchLang.setChecked(isVietnameseLanguage()); // Hàm kiểm tra ngôn ngữ hiện tại
+        Log.d("HELLOTESTING", String.valueOf(isVietnameseLanguage()));
+
+        // Trong phương thức onCreate
+        SharedPreferences preferences = getSharedPreferences("AppSettingsPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        switchLang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setLocale(SettingActivity.this, "vi");
+                } else {
+                    setLocale(SettingActivity.this, "en");
+                }
+
+                // Lưu trạng thái ngôn ngữ
+                editor.putBoolean("isVietnamese", isChecked);
+                editor.apply();
+                editor.commit();
+            }
+        });
+
+    }
+
     public void logout(View view) {
         Log.d("TEST", "Logging out...");
         FirebaseAuth.getInstance().signOut();
@@ -187,13 +192,16 @@ public class SettingActivity extends AppCompatActivity {
         Resources resources = activity.getResources();
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 //        Configuration config = new Configuration();
 //        config.locale = locale;
-//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        createConfigurationContext(config);
 
         // Khởi động lại Activity để áp dụng ngôn ngữ mới
         recreate();
+//        finish();
+//        startActivity(getIntent());
     }
 
     private boolean isVietnameseLanguage() {

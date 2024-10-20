@@ -37,6 +37,7 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -56,6 +57,8 @@ public class HomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         //setContentView(R.layout.activity_home);
         setContentView(binding.getRoot());
+        Log.d("HELLOTESTING", Locale.getDefault().getLanguage());
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

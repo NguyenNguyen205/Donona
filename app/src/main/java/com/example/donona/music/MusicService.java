@@ -23,7 +23,7 @@ public class MusicService extends Service {
     public void onCreate() {
         super.onCreate();
         // Tải nhạc từ Firebase Storage và phát nhạc
-        downloadFileFromFirebase("Music/ball.mp3");
+//        downloadFileFromFirebase("Music/ball.mp3");
     }
 
     private void downloadFileFromFirebase(String fileName) {

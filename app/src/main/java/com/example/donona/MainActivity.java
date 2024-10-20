@@ -1,6 +1,7 @@
 package com.example.donona;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -48,4 +49,5 @@ public class MainActivity extends Activity {
         super.onStart();
         startActivity(new Intent(MainActivity.this, HomeActivity.class));
     }
+
 }
