@@ -119,6 +119,14 @@
                 android:onClick="onClickgetMyLocation"
                 android:layout_marginTop="-40dp"
                 />
+<!--            <ImageButton-->
+<!--                android:id="@+id/list_bookmark"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/bookmark_24px"-->
+<!--                android:layout_below="@+id/my_location"-->
+<!--                android:onClick="listBookmark"-->
+<!--                />-->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
                 android:layout_width="match_parent"
@@ -147,17 +155,17 @@
                             android:id="@+id/startNavigation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/near_me_24px"
                             android:layout_toRightOf="@+id/findRoute"
+                            android:src="@drawable/near_me_24px" />
+                        <ImageButton
+                            android:id="@+id/bookmarkPlace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/bookmark_24px"
+                            android:layout_toRightOf="@+id/startNavigation"
+                            android:onClick="bookmarkPlace"
                             />
-<!--                        <ImageButton-->
-<!--                            android:id="@+id/bookmark"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:src="@drawable/bookmark_24px"-->
-<!--                            android:layout_toRightOf="@+id/startNavigation"-->
-<!--                            android:onClick="bookmarkPlace"-->
-<!--                            />-->
+
                         <ImageButton
                             android:id="@+id/stopNavigation"
                             android:layout_width="wrap_content"

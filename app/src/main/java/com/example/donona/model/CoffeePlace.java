@@ -176,7 +176,7 @@ public class CoffeePlace {
         this.wifi = wifi;
     }
 
-    private void setRef_id(String refId) {
+    public void setRef_id(String refId) {
         this.ref_id = refId;
     }
 

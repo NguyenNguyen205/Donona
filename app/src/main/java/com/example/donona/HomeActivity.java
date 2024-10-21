@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -49,6 +50,7 @@ public class HomeActivity extends AppCompatActivity {
     private List<CoffeePlace> coffeePlaceList;
     private ActivityHomeBinding binding;
     private TrendingCoffeeAdapter trendingCoffeeAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //Get instance from Firebase
         db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         //fetch data from Firebase
         fetchCoffeePlaces();
@@ -228,6 +231,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickBookMark(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Bookmark page launch");
         Intent intent = new Intent(HomeActivity.this, BookMarkActivity.class);
         startActivity(intent);    }

@@ -70,6 +70,7 @@ import java.io.IOException;
 import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -419,7 +420,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                             }
                             else {
                                 String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
-                                addMarkerToMap(url, "", true);
+                                addMarkerToMap(url, refID, true);
                             }
                         }
                         else {
@@ -551,18 +552,17 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     }
                     handler.post(() -> {
                         Marker mid = addMarker(pos, placeName, address, focus);
-                        if (focusMarker != null) {
+                        if (focusMarker != null && focus) {
                             Log.d("TEST", "reset marker");
                             setFocusMarker(focusMarker,false);
                         }
-
-                        focusMarker = mid;
                         if (focus) {
-                            setFocusMarker(mid,true);
+                            focusMarker = mid;
+                            setFocusMarker(mid, true);
+                            fetchRoute(false);
+                            focusCamera(pos);
+                            displayPlaceInfo(res, refId);
                         }
-                        if (focus) fetchRoute(false);
-                        if (focus) focusCamera(pos);
-                        if (focus) displayPlaceInfo(res);
                     });
                 }
                 catch (Exception e) {
@@ -611,7 +611,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                             }
                             if (focus) fetchRoute(false);
                             if (focus) focusCamera(pos);
-                            if (focus) displayPlaceInfo(res);
+                            if (focus) displayPlaceInfo(res, refId);
                         });
                     }
                 });
@@ -629,31 +629,34 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
     }
 
-    private void displayPlaceInfo(JSONObject data) {
+    private void displayPlaceInfo(JSONObject data, String ref_id) {
         CardView cardView = (CardView) findViewById(R.id.card_view);
         cardView.setVisibility(View.VISIBLE);
         TextView nameView = (TextView) findViewById(R.id.place_name);
         TextView addressView = (TextView) findViewById(R.id.place_address);
-//        TextView distanceView = (TextView) findViewById(R.id.place_distance);
         ImageView thumbnail = (ImageView) findViewById(R.id.coffee_thumbnail);
 
         String name = "";
         String address = "";
-//        Double distance = 0.0;
         try {
             name = data.getString("name");
             address = data.getString("address");
-//            distance = data.getDouble("distance");
+
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
         nameView.setText(name);
         addressView.setText(address);
-//        distanceView.setText(String.format("%1$,.2f", distance) + "m");
         thumbnail.setVisibility(View.INVISIBLE);
+        try {
+            isBookmark(ref_id);
+        }
+        catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
     }
 
-    private void displayPlaceInfo(DocumentSnapshot doc) {
+    private void displayPlaceInfo(DocumentSnapshot doc, String ref_id) {
         CardView cardView = (CardView) findViewById(R.id.card_view);
         cardView.setVisibility(View.VISIBLE);
 
@@ -665,6 +668,12 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         addressView.setText(doc.getString("address"));
         thumbnail.setVisibility(View.VISIBLE);
         Picasso.get().load(doc.getString("image")).resize(300, 0).into(thumbnail);
+        try {
+            isBookmark(ref_id);
+        }
+        catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
     }
 
 
@@ -838,8 +847,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 // Check if there is any data in intent
                 Intent intent = getIntent();
                 if (intent.getStringExtra("key") != null) {
-//                    Log.d("TESTINGHELLO", intent.getStringExtra("key"));
-//                    Log.d("TESTINGHELLO", intent.getStringExtra("refId"));
                     suggestionMap.put(intent.getStringExtra("key"), intent.getStringExtra("refId"));
                     binding.search.setIconified(false);
                     onSearch(intent.getStringExtra("key"));
@@ -1091,6 +1098,104 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         binding.searchResult.setVisibility(View.INVISIBLE);
         stopNavigation();
     }
+
+//    public void listBookmark(View view) {
+//        Log.d("TEST", "List bookmark click");
+//        FirebaseUser user = auth.getCurrentUser();
+//        if (user == null) {
+//            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        db.collection("user")
+//                .whereEqualTo("userID", user.getUid())
+//                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        DocumentSnapshot res = task.getResult().getDocuments().get(0);
+//                        ArrayList<String> bookmarks = (ArrayList<String>) res.get("bookmarks");
+//                        Log.d("TEST", bookmarks.toString());
+//
+//                        // Add marker to map
+//                        for (String bookmark: bookmarks) {
+//                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + bookmark;
+//                            addMarkerToMap(placeUrl, bookmark, false);
+//                        }
+//                    }
+//                });
+//    }
+
+    public void bookmarkPlace(View view) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        // Save to user bookmark
+        try {
+            String ref = markerRefid.get(focusMarker.getTitle() + " " + focusMarker.getSnippet());
+            Log.d("TEST", ref);
+            CollectionReference userColl = db.collection("user");
+            userColl
+                    .whereEqualTo("userID", user.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            ArrayList<String> bookmarks = (ArrayList<String>) doc.get("bookmarks");
+                            HashSet<String> bookmarkSet = new HashSet<>();
+                            bookmarkSet.addAll(bookmarks);
+                            if (bookmarkSet.contains(ref)) {
+                                bookmarkSet.remove(ref);
+                                binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.white));
+                            }
+                            else {
+                                bookmarkSet.add(ref);
+                                binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.blue));
+                            }
+                            userColl.document(doc.getId()).update("bookmarks", new ArrayList<>(bookmarkSet));
+                        }
+                    });
+        } catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
+    }
+
+    private void isBookmark(String refId) {
+        FirebaseUser currUser = auth.getCurrentUser();
+        if (currUser == null) {
+            return;
+        }
+        try {
+            String ref = markerRefid.get(focusMarker.getTitle() + " " + focusMarker.getSnippet());
+            Log.d("TEST", ref);
+            CollectionReference userColl = db.collection("user");
+            userColl
+                    .whereEqualTo("userID", currUser.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            ArrayList<String> bookmarks = (ArrayList<String>) doc.get("bookmarks");
+                            for (int i = 0; i < bookmarks.size(); i++) {
+                                if (bookmarks.get(i).equals(refId)) {
+                                    Log.d("TESTING", "true");
+                                    binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.blue));
+                                    return;
+                                }
+                            }
+                            Log.d("TESTING", "" + refId);
+                            Log.d("TESTING", "" + bookmarks.toString());
+
+                            binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.white));
+                        }
+                    });
+        } catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
+
+    }
+
 
 
     @Override
