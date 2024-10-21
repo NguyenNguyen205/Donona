@@ -184,7 +184,9 @@
                 android:paddingStart="20dp"
                 app:tint="@color/quite_brown"
                 android:scaleX="1.5"
-                android:scaleY="1.5" />
+                android:scaleY="1.5"
+                android:enabled="false"
+                />
 
 
         </RelativeLayout>
