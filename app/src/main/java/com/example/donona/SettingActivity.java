@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -134,11 +131,7 @@ public class SettingActivity extends AppCompatActivity {
                 // Lưu trạng thái ngôn ngữ
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putBoolean("isVietnamese", isChecked);
-//                Intent intent = getIntent();
-//                finish();
-//                startActivity(intent);
                 editor.apply();
-//                editor.commit();
             }
         });
 
@@ -156,11 +149,6 @@ public class SettingActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_setting) {
                 return true;
             }
-//            if (itemId == R.id.navigation_streaming) {
-//                startActivity(new Intent(SettingActivity.this, StreamingActivity.class));
-//                finish();
-//                return true;
-//            }
             if (itemId == R.id.navigation_account) {
                 startActivity(new Intent(SettingActivity.this, ProfileActivity.class));
                 finish();
@@ -188,9 +176,6 @@ public class SettingActivity extends AppCompatActivity {
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
         // Khởi động lại Activity để áp dụng ngôn ngữ mới
         recreate();

@@ -164,9 +164,6 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(ProfileActivity.this, "Update user name successfully", Toast.LENGTH_LONG).show();
                         Log.d("TAG", "Updated successfully");
-//                        finish();
-//                        startActivity(getIntent());
-//                        updateAvatar();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
