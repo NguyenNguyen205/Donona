@@ -60,170 +60,289 @@
     <GridLayout
         android:id="@+id/menu"
         android:layout_width="392dp"
-        android:layout_height="169dp"
-        android:layout_marginTop="232dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="195dp"
         android:columnCount="4"
         android:rowCount="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-        <ImageButton
-            android:id="@+id/near_me"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+        <!-- Near Me -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="0"
             android:layout_column="0"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:onClick="onClickSuggest"
-            android:padding="10dp"
-            android:src="@drawable/near_me_fill_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
+            android:layout_marginLeft="30dp">
 
-        <ImageButton
-            android:id="@+id/map"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            <ImageButton
+                android:id="@+id/near_me"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Near Me"
+                android:elevation="2dp"
+                android:onClick="onClickSuggest"
+                android:padding="10dp"
+                android:src="@drawable/near_me_fill_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/near_me_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Item 2 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="0"
             android:layout_column="1"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:minHeight="50dp"
-            android:onClick="onClickNearMe"
-            android:padding="10dp"
-            android:src="@drawable/map_fill_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
+            android:layout_marginLeft="30dp">
 
-        <ImageButton
-            android:id="@+id/upgrade"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            <ImageButton
+                android:id="@+id/map"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Map"
+                android:elevation="2dp"
+                android:onClick="onClickNearMe"
+                android:padding="10dp"
+                android:src="@drawable/map_fill_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/map_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Item 3 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="0"
             android:layout_column="2"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:minHeight="50dp"
-            android:padding="10dp"
-            android:src="@drawable/verified_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown"
-            android:onClick="onClickSubscription"
-            />
-        <ImageButton
-            android:id="@+id/bookmark"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_marginLeft="30dp">
+
+            <ImageButton
+                android:id="@+id/upgrade"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Upgrade"
+                android:elevation="2dp"
+                android:onClick="onClickSubscription"
+                android:padding="10dp"
+                android:src="@drawable/verified_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/upgrade_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Item 4: Bookmark -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="0"
             android:layout_column="3"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:minHeight="50dp"
-            android:padding="10dp"
-            android:src="@drawable/bookmarks_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown"
-            android:onClick="onClickBookMark"/>
+            android:layout_marginRight="30dp">
 
-        <ImageButton
-            android:id="@+id/blog"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            <ImageButton
+                android:id="@+id/bookmark"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Bookmark"
+                android:elevation="2dp"
+                android:onClick="onClickBookMark"
+                android:padding="10dp"
+                android:src="@drawable/bookmarks_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/book_mark_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Item 5: Blog -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="1"
             android:layout_column="0"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:minHeight="50dp"
-            android:padding="10dp"
-            android:src="@drawable/edit_note_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown"
-            android:onClick="onClickPost"
-            />
+            android:layout_marginTop="30dp">
 
-        <ImageButton
-            android:id="@+id/promotion"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            <ImageButton
+                android:id="@+id/blog"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Blog"
+                android:elevation="2dp"
+                android:onClick="onClickPost"
+                android:padding="10dp"
+                android:src="@drawable/edit_note_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/blog_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Item 6: Promotion -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="1"
             android:layout_column="1"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:minHeight="50dp"
-            android:padding="10dp"
-            android:scaleX="-1"
-            android:src="@drawable/sell_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown"
-            android:onClick="onClickPromotion"/>
+            android:layout_marginTop="30dp">
 
-        <ImageButton
-            android:id="@+id/suggest"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            <ImageButton
+                android:id="@+id/promotion"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Promotion"
+                android:elevation="2dp"
+                android:onClick="onClickPromotion"
+                android:padding="10dp"
+                android:scaleX="-1"
+                android:src="@drawable/sell_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/promotion_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Item 7: Suggest -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="1"
             android:layout_column="2"
             android:layout_marginLeft="30dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:minHeight="50dp"
-            android:padding="10dp"
-            android:src="@drawable/stylus_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown"
-            android:onClick="onClickSuggestReal"/>
+            android:layout_marginTop="30dp">
 
+            <ImageButton
+                android:id="@+id/suggest"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Suggest"
+                android:elevation="2dp"
+                android:onClick="onClickSuggestReal"
+                android:padding="10dp"
+                android:src="@drawable/stylus_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
 
-        <ImageButton
-            android:id="@+id/game"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/suggest_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Item 8: Game -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_row="1"
             android:layout_column="3"
-            android:layout_margin="30dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/white"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:minHeight="50dp"
-            android:onClick="onClickGameLauncher"
-            android:padding="10dp"
-            android:src="@drawable/sports_esports_fill_24px"
-            android:translationZ="2dp"
-            app:tint="@color/quite_brown" />
+            android:layout_margin="30dp">
+
+            <ImageButton
+                android:id="@+id/game"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/rounded_button"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Game"
+                android:elevation="2dp"
+                android:onClick="onClickGameLauncher"
+                android:padding="10dp"
+                android:src="@drawable/sports_esports_fill_24px"
+                android:translationZ="2dp"
+                app:tint="@color/quite_brown" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/game_ps"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
     </GridLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/imageslider"
         android:layout_width="370dp"
         android:layout_height="190dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="80dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -278,13 +397,13 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="500dp"
+            android:layout_marginTop="480dp"
             android:text="@string/trending"
             android:textColor="@color/brown"
             android:textSize="28dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.145"
+            app:layout_constraintHorizontal_bias="0.134"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -57,5 +57,14 @@
     <string name="book_mark">Đánh Dấu</string>
     <string name="loading">Đang tải …</string>
     <string name="cancel">Huỷ đăng kí</string>
+    <string name="near_me_ps">Gần đây</string>
+    <string name="map_ps">Map</string>
+    <string name="upgrade_ps">Nâng cấp</string>
+    <string name="book_mark_ps">Đánh dấu</string>
+    <string name="blog_ps">Bài viết</string>
+    <string name="promotion_ps">Giảm giá</string>
+    <string name="suggest_ps">Gợi ý</string>
+    <string name="game_ps">Trò chơi</string>
+
 
 </resources>
