@@ -37,9 +37,9 @@
             android:padding="10dp"
             >
             <ImageButton
-                android:layout_width="300dp"
-                android:layout_height="250dp"
-                android:src="@drawable/gamescreen"
+                android:layout_width="500dp"
+                android:layout_height="300dp"
+                android:src="@drawable/game_launcher"
                 android:layout_gravity="center_horizontal"
                 android:onClick="launchGame"
                 />
