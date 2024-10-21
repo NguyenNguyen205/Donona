@@ -10,9 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.donona.R;
 import com.example.donona.databinding.ItemBookMarkBinding;
-import com.example.donona.databinding.ItemCoffeePlaceBinding;
 import com.example.donona.model.CoffeePlace;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -20,7 +18,6 @@ import java.util.List;
 public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.BookMarkViewHolder> {
     private List<CoffeePlace> coffeePlaceList;
     private BookMarkAdapter.OnClickNearMeListener onClickNearMeListener;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public interface OnClickNearMeListener {
         void onClickNearMe(CoffeePlace coffeePlace);
@@ -66,31 +63,7 @@ public class BookMarkAdapter extends RecyclerView.Adapter<BookMarkAdapter.BookMa
             }
         });
 
-//        holder.binding.bookmarkButton.setOnClickListener(v -> {
-//            String refId = coffeePlace.getRef_id().replace("fb:", "");  // Loại bỏ "fb:" khỏi ref_id
-//            boolean currentBookMarkState = coffeePlace.isBookMark();    // Lấy trạng thái hiện tại
-//            boolean newBookMarkState = !currentBookMarkState;           // Đảo ngược trạng thái isBookMark
-//
-//            Log.d("Bookmark", "Current state: " + currentBookMarkState);  // Log trạng thái hiện tại
-//            Log.d("Bookmark", "New state: " + newBookMarkState);         // Log trạng thái sau khi đảo ngược
-//
-//            // Cập nhật Firestore với trạng thái mới
-//            db.collection("coffeePlace")
-//                    .document(refId)
-//                    .update("isBookMark", newBookMarkState)
-//                    .addOnSuccessListener(aVoid -> {
-//                        Log.d("Firestore", "Bookmark updated successfully");
-//
-//                        // Cập nhật lại trạng thái cục bộ sau khi Firestore thành công
-//                        coffeePlace.setBookMark(newBookMarkState);  // Cập nhật lại trạng thái cục bộ
-//                        Log.d("Bookmark", "Updated state locally: " + coffeePlace.isBookMark());
-//
-//                        notifyItemChanged(position);  // Cập nhật lại RecyclerView sau khi thay đổi
-//                    })
-//                    .addOnFailureListener(e -> {
-//                        Log.w("Firestore", "Error updating bookmark", e);
-//                    });
-//        });
+
     }
 
     @Override

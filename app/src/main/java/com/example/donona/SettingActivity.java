@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -46,7 +43,6 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_setting);
-        Log.d("HELLOTESTING", Locale.getDefault().getLanguage());
 
         ImageButton appInforButton = findViewById(R.id.appInfor);
         appInforButton.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +109,31 @@ public class SettingActivity extends AppCompatActivity {
             logoutButton.setVisibility(View.GONE);
         }
 
+        //Lấy nút chuyển của ngôn ngữ
+        switchLang = findViewById(R.id.switch_lang);
 
+        // Đặt trạng thái ban đầu cho switch (có thể lưu trong SharedPreferences)
+        switchLang.setChecked(isVietnameseLanguage()); // Hàm kiểm tra ngôn ngữ hiện tại
+
+        // Trong phương thức onCreate
+        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
+        switchLang.setChecked(preferences.getBoolean("isVietnamese", false));
+
+        switchLang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    setLocale(SettingActivity.this, "vi");
+                } else {
+                    setLocale(SettingActivity.this, "en");
+                }
+
+                // Lưu trạng thái ngôn ngữ
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("isVietnamese", isChecked);
+                editor.apply();
+            }
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -129,11 +149,6 @@ public class SettingActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_setting) {
                 return true;
             }
-//            if (itemId == R.id.navigation_streaming) {
-//                startActivity(new Intent(SettingActivity.this, StreamingActivity.class));
-//                finish();
-//                return true;
-//            }
             if (itemId == R.id.navigation_account) {
                 startActivity(new Intent(SettingActivity.this, ProfileActivity.class));
                 finish();
@@ -192,10 +207,11 @@ public class SettingActivity extends AppCompatActivity {
         Resources resources = activity.getResources();
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 //        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 //        Configuration config = new Configuration();
 //        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+//        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 //        createConfigurationContext(config);
 
         // Khởi động lại Activity để áp dụng ngôn ngữ mới

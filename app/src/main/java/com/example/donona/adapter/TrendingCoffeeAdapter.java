@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.donona.databinding.ItemCardViewTrendingBinding;
-import com.example.donona.databinding.ItemCoffeePlaceBinding;
 import com.example.donona.model.CoffeePlace;
 import com.squareup.picasso.Picasso;
 

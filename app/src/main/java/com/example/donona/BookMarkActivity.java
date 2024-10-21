@@ -8,15 +8,10 @@ import android.util.Log;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.donona.adapter.BookMarkAdapter;
-import com.example.donona.adapter.CoffeePlaceAdapter;
 import com.example.donona.databinding.ActivityBookMarkBinding;
-import com.example.donona.databinding.ActivityNearMeBinding;
 import com.example.donona.model.CoffeePlace;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -8,14 +8,10 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -53,7 +49,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -64,10 +59,8 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,7 +73,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import vn.vietmap.services.android.navigation.ui.v5.camera.CameraOverviewCancelableCallback;
-import vn.vietmap.services.android.navigation.ui.v5.listeners.NavigationListener;
 import vn.vietmap.services.android.navigation.v5.location.replay.ReplayRouteLocationEngine;
 import vn.vietmap.services.android.navigation.v5.milestone.Milestone;
 import vn.vietmap.services.android.navigation.v5.milestone.MilestoneEventListener;
@@ -97,9 +89,7 @@ import vn.vietmap.services.android.navigation.v5.snap.SnapToRoute;
 import vn.vietmap.vietmapsdk.Vietmap;
 import vn.vietmap.vietmapsdk.annotations.Marker;
 import vn.vietmap.vietmapsdk.annotations.MarkerOptions;
-import vn.vietmap.vietmapsdk.annotations.Polygon;
 import vn.vietmap.vietmapsdk.annotations.Polyline;
-import vn.vietmap.vietmapsdk.annotations.PolylineOptions;
 import vn.vietmap.vietmapsdk.camera.CameraPosition;
 import vn.vietmap.vietmapsdk.camera.CameraUpdate;
 import vn.vietmap.vietmapsdk.camera.CameraUpdateFactory;
@@ -115,7 +105,6 @@ import vn.vietmap.vietmapsdk.location.engine.LocationEngineDefault;
 import vn.vietmap.vietmapsdk.location.engine.LocationEngineResult;
 import vn.vietmap.vietmapsdk.location.modes.CameraMode;
 import vn.vietmap.vietmapsdk.location.modes.RenderMode;
-import vn.vietmap.vietmapsdk.maps.Image;
 import vn.vietmap.vietmapsdk.maps.MapView;
 import vn.vietmap.vietmapsdk.maps.OnMapReadyCallback;
 import vn.vietmap.vietmapsdk.maps.Style;
@@ -623,7 +612,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     String placeName = res.getString("name");
                     String address = res.getString("hs_num") + " " + res.getString("street") + " " + res.getString("city") + " " + res.getString("district") + res.getString("ward");
                     LatLng pos = new LatLng(res.getDouble("lat"), res.getDouble("lng"));
-                    destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                    if (focus) {
+                        destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                    }
                     // Store ref Id for pre loaded marker
                     if (!refId.isEmpty()) {
                         markerRefid.put(placeName + " " + address, refId);
