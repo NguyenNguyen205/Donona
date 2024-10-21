@@ -183,6 +183,11 @@ public class HomeActivity extends AppCompatActivity {
 //    }
 
     public void onClickNearMe(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Near me button click");
         Intent intent = new Intent(HomeActivity.this, NearActivity.class);
 //        Intent intent = new Intent(HomeActivity.this, TestActivity.class);
@@ -190,12 +195,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickGameLauncher(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Game launcher button click");
         Intent intent = new Intent(HomeActivity.this, GameLauncherActivity.class);
         startActivity(intent);
     }
 
     public void onClickSuggest(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Near me test button click");
         Intent intent = new Intent(HomeActivity.this, NearMeActivity.class);
         startActivity(intent);
@@ -229,12 +244,22 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickSubscription(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Subscription page launch");
         Intent intent = new Intent(HomeActivity.this, SubscriptionActivity.class);
         startActivity(intent);
     }
 
     private void onClickNearMe(CoffeePlace coffeePlace) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Intent intent = new Intent(HomeActivity.this, NearActivity.class);
         String key = coffeePlace.getName() + " " + coffeePlace.getAddress();
         String refId = coffeePlace.getRef_id();
@@ -244,10 +269,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickSuggestReal(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
     }
 
     public void onClickPromotion(View view) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
     }
 
