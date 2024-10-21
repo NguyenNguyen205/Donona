@@ -170,6 +170,18 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private int[] padding = {150, 500, 150, 500};
     private LocationComponentOptions customeIcon;
     private Style style;
+    private ArrayList<Integer> freeLogo = new ArrayList<Integer>() {{
+        add(R.drawable.logo);
+        add(R.drawable.logo_angry_thor);
+    }};
+    private ArrayList<Integer> standardLogo = new ArrayList<Integer>() {{
+        add(R.drawable.logo);
+        add(R.drawable.logo_angry_thor);
+        add(R.drawable.logo_angry_phone);
+        add(R.drawable.logo_kawa);
+        add(R.drawable.logo_kitsune);
+        add(R.drawable.logo_legend);
+    }};
 
 
     private String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
@@ -177,7 +189,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         /// Initialization
         Vietmap.getInstance(this);
 
@@ -242,6 +253,8 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             }
         });
         mapView.onStart();
+        // Init tier vision
+        checkUsertier();
     }
 
     @Override
@@ -401,6 +414,14 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     }
                 });
 
+                // Bookmark place
+                binding.bookmarkPlace.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bookmarkPlace(v);
+                    }
+                });
+
                 // Custom marker click event handler
                 vietMapGL.setOnMarkerClickListener(new VietMapGL.OnMarkerClickListener() {
                     @Override
@@ -441,19 +462,76 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         });
     }
 
+    private void checkUsertier() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            displayFreeTier();
+            return;
+        }
+        db.collection("user")
+                .whereEqualTo("userID", user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+                            return;
+                        }
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        if (doc.getString("tier").equals("free")) {
+                            displayFreeTier();
+                            return;
+                        }
+                        displayStandardTier();
+                    }
+                });
+    }
+
+    private void displayFreeTier() {
+        binding.bookmarkPlace.setVisibility(View.INVISIBLE);
+        binding.bookmarkPlace.setEnabled(false);
+        for (int i = 0; i < freeLogo.size(); i++) {
+            RadioButton btn = new RadioButton(NearActivity.this);
+            btn.setId(i);
+            btn.setBackgroundResource(freeLogo.get(i));
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(240,240);
+            btn.setLayoutParams(params);
+            btn.setButtonDrawable(null);
+//            btn.setText("standardIcon");
+            btn.setTextColor(Color.TRANSPARENT);
+            btn.setTag(freeLogo.get(i));
+            binding.mapIcon.addView(btn);
+        }
+    }
+
+    private void displayStandardTier() {
+        binding.bookmarkPlace.setVisibility(View.VISIBLE);
+        binding.bookmarkPlace.setEnabled(true);
+        for (int i = 0; i < standardLogo.size(); i++) {
+            RadioButton btn = new RadioButton(NearActivity.this);
+            btn.setId(i);
+            btn.setBackgroundResource(standardLogo.get(i));
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(240,240);
+            btn.setLayoutParams(params);
+            btn.setButtonDrawable(null);
+            btn.setTextColor(Color.TRANSPARENT);
+            btn.setTag(standardLogo.get(i));
+            binding.mapIcon.addView(btn);
+        }
+    }
+
     private void updateUserIcon(int id) {
         if (style == null) {
             Log.d("TESTING", "map hasn't been initialized");
         }
-        HashMap<String, Integer> mapper = new HashMap<String, Integer>() {{
-           put("freeIcon", R.drawable.logo);
-           put("standardIcon", R.drawable.logo_legend);
-           put("kawaIcon", R.drawable.logo_kawa);
-        }};
+//        HashMap<String, Integer> mapper = new HashMap<String, Integer>() {{
+//           put("freeIcon", R.drawable.logo);
+//           put("standardIcon", R.drawable.logo_legend);
+//           put("kawaIcon", R.drawable.logo_kawa);
+//        }};
         RadioButton button = findViewById(id);
-        int icon = mapper.get(button.getText());
+//        int icon = mapper.get(button.getText());
         customeIcon = LocationComponentOptions.builder(NearActivity.this)
-                                .foregroundDrawable(icon)
+                                .foregroundDrawable(Integer.parseInt(button.getTag().toString()))
                                 .minZoomIconScale((float) 0.1)
                                 .build();
         locationComponent.activateLocationComponent(
@@ -1099,8 +1177,8 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         stopNavigation();
     }
 
-//    public void listBookmark(View view) {
-//        Log.d("TEST", "List bookmark click");
+
+//    private void bookmark(View view) {
 //        FirebaseUser user = auth.getCurrentUser();
 //        if (user == null) {
 //            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
@@ -1111,20 +1189,19 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 //                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 //                    @Override
 //                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        DocumentSnapshot res = task.getResult().getDocuments().get(0);
-//                        ArrayList<String> bookmarks = (ArrayList<String>) res.get("bookmarks");
-//                        Log.d("TEST", bookmarks.toString());
-//
-//                        // Add marker to map
-//                        for (String bookmark: bookmarks) {
-//                            String placeUrl = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + bookmark;
-//                            addMarkerToMap(placeUrl, bookmark, false);
+//                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+//                            return;
 //                        }
+//                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+//                        if (doc.getString("tier").equals("free")) {
+//                            Toast.makeText(NearActivity.this, "You must upgrade your account to use bookmark", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+////                        bookmarkPlace(user);
 //                    }
 //                });
 //    }
-
-    public void bookmarkPlace(View view) {
+    private void bookmarkPlace(View view) {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
@@ -1160,6 +1237,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             Log.d("TEST", e.toString());
         }
     }
+
 
     private void isBookmark(String refId) {
         FirebaseUser currUser = auth.getCurrentUser();

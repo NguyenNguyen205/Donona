@@ -202,9 +202,30 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickPost(View view) {
-        Log.d(TAG, "Post page launch");
-        Intent intent = new Intent(HomeActivity.this, BlogPostActivity.class);
-        startActivity(intent);
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
+        db.collection("user")
+                .whereEqualTo("userID", user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+                            return;
+                        }
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        if (doc.getString("tier").equals("free")) {
+                            Toast.makeText(HomeActivity.this, "Upgrade your account to read blog", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Log.d(TAG, "Post page launch");
+                        Intent intent = new Intent(HomeActivity.this, BlogPostActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
     }
 
     public void onClickSubscription(View view) {
@@ -236,7 +257,24 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
             return;
         }
-        Log.d(TAG, "Bookmark page launch");
-        Intent intent = new Intent(HomeActivity.this, BookMarkActivity.class);
-        startActivity(intent);    }
+        db.collection("user")
+                        .whereEqualTo("userID", user.getUid())
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+                            return;
+                        }
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        if (doc.getString("tier").equals("free")) {
+                            Toast.makeText(HomeActivity.this, "Upgrade your account to use bookmark", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Log.d(TAG, "Bookmark page launch");
+                        Intent intent = new Intent(HomeActivity.this, BookMarkActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+    }
 }
