@@ -2,6 +2,7 @@ package com.example.donona;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -522,7 +524,13 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                return;
+                Log.d("TESTINGHELLO", e.getMessage());
+                if (e.getMessage().equals("Socket closed")) return;
+                handler.post(() -> {
+                    binding.loading.setVisibility(View.INVISIBLE);
+                    suggestionName.add("Error getting suggestions");
+                    testAdapter.notifyItemInserted(testAdapter.getItemCount() - 1);
+                });
             }
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
@@ -1085,7 +1093,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private void submitSearchRequest(String val) {
         if (!suggestionMap.containsKey(val)) {
             Log.d("TESTINGHELLO", suggestionMap.toString());
-             closeKeyboard();
+            closeKeyboard();
             return;
         }
         if (navigationMapRoute != null) {

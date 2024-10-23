@@ -58,6 +58,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.TestViewHolder
             @Override
             public void onClick(View v) {
                 Log.d("TEST", "Search item clicked");
+                if (val.equals("Error getting suggestions")) return;
                 onSearchListener.onSearch(val);
             }
         });

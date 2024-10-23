@@ -1,6 +1,7 @@
 package com.example.donona;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -54,6 +55,7 @@ public class SubscriptionActivity extends AppCompatActivity {
     private Button cancel;
     private String userDocId = "";
     private Button btn;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,7 @@ public class SubscriptionActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        handler = new Handler();
 
         PaymentConfiguration.init(
                 getApplicationContext(),
@@ -155,6 +158,10 @@ public class SubscriptionActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 Log.d("TEST", e.toString());
+                handler.post(() -> {
+                    enableButton(btn, R.string.buy_standard);
+                    Toast.makeText(SubscriptionActivity.this, "Error connecting to server, please try again", Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
@@ -276,7 +283,11 @@ public class SubscriptionActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                return;
+                handler.post(() -> {
+                    enableButton(cancel, R.string.cancel);
+                    Toast.makeText(SubscriptionActivity.this, "Error connecting to server, please try again", Toast.LENGTH_SHORT).show();
+                });
+
             }
 
             @Override
