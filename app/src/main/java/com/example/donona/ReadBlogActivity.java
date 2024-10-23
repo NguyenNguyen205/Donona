@@ -32,6 +32,5 @@ public class ReadBlogActivity extends AppCompatActivity {
         binding.content.setText(content);
         binding.title.setText(title);
         Picasso.get().load(thumbnail).resize(700, 0).into(binding.thumbnail);
-
     }
 }

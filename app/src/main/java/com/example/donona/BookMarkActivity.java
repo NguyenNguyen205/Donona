@@ -42,7 +42,6 @@ public class BookMarkActivity extends AppCompatActivity {
     private ActivityBookMarkBinding binding;
     private BookMarkAdapter bookMarkAdapter;
 
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser user;
@@ -74,8 +73,6 @@ public class BookMarkActivity extends AppCompatActivity {
             finish();
         }
         handler = new Handler();
-//        fetchCoffeePlaces();
-
     }
 
 
@@ -121,7 +118,6 @@ public class BookMarkActivity extends AppCompatActivity {
     }
 
     private void fetchVietmapData(String refId) {
-//        Log.d("TESTING", refId);
         String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refId;
         Request req = new Request.Builder()
                 .url(url)
@@ -134,7 +130,6 @@ public class BookMarkActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String body = response.body().string();
-//                Log.d("TESTING", body);
                 try {
                     JSONObject res = new JSONObject(body);
                     CoffeePlace coffeePlace = new CoffeePlace();
@@ -151,17 +146,13 @@ public class BookMarkActivity extends AppCompatActivity {
                         coffeePlaceList.add(coffeePlace);
                         bookMarkAdapter.notifyItemInserted(bookMarkAdapter.getItemCount() - 1);
                     });
-
                 }
-
                 catch (Exception e) {
                     Log.d("TESING", e.toString());
                 }
             }
         });
     }
-
-
 
     @Override
     public void onStart() {

@@ -114,6 +114,8 @@ public class SignupActivity extends AppCompatActivity {
         data.put("password", mPassword.getText().toString());
         data.put("image", "No Image");
         data.put("bookmarks", new ArrayList<String>());
+        data.put("tier", "free");
+        data.put("subscriptionId", "");
 
         db.collection("user")
                 .add(data)

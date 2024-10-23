@@ -1,0 +1,4 @@
+firebase_admin==6.5.0
+stripe==11.1.1
+flask==3.0.3
+flask_cors==5.0.0

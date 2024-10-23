@@ -14,7 +14,6 @@ import com.example.donona.databinding.ActivityNearMeBinding;
 import com.example.donona.model.CoffeePlace;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,16 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NearMeActivity extends AppCompatActivity {
-    private FirebaseAuth mAuth;
     private List<CoffeePlace> coffeePlaceList;
     private ActivityNearMeBinding binding;
     private CoffeePlaceAdapter coffeePlaceAdapter;
-    String refId ;
-
-
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    private String currentDocumentId;
+    private String refId ;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +38,6 @@ public class NearMeActivity extends AppCompatActivity {
 
         // Khởi tạo danh sách
         coffeePlaceList = new ArrayList<>();
-
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Khởi tạo adapter
@@ -81,7 +74,6 @@ public class NearMeActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        mAuth = FirebaseAuth.getInstance();
     }
 
     private void onClickNearMe(CoffeePlace coffeePlace) {

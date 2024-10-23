@@ -2,9 +2,6 @@ package com.example.donona;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,7 +9,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.donona.adapter.BlogAdapter;
 import com.example.donona.databinding.ActivityBlogPostBinding;
 import com.example.donona.model.Blog;
@@ -49,13 +45,7 @@ public class BlogPostActivity extends AppCompatActivity {
         binding.recycler.setAdapter(blogAdapter);
         binding.recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        // Init data
         fetchData();
-
-        // Init launcher
-
-        // Launch read post when the whole view is click ?
-
     }
 
     public void fetchData() {
@@ -69,28 +59,17 @@ public class BlogPostActivity extends AppCompatActivity {
                     if (!blogs.isEmpty()) {
                         blogAdapter.setBlogs(blogs);
                         blogAdapter.notifyDataSetChanged();
-                        Log.d("TEST", "Data added");
                     }
                 }
             }
         });
     }
 
-//    public void onClickReturn(View view) {
-//        Log.d("TEST", "Return button click");
-//        finish();
-//    }
-
     private void onBlogRead(Blog blog) {
         Intent intent = new Intent(BlogPostActivity.this, ReadBlogActivity.class);
-//        Log.d("TEST", blog.getThumbnail());
         intent.putExtra("thumbnail", blog.getThumbnail());
         intent.putExtra("title", blog.getTitle());
         intent.putExtra("content", blog.getBlogContent());
         startActivity(intent);
     }
-
-
-
-
 }

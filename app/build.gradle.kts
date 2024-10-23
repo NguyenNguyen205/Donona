@@ -38,11 +38,6 @@ android {
         viewBinding = true
     }
 
-//    sourceSets.getByName("main") {
-//        res.srcDir("src/main/res/layout/fragment")
-//        res.srcDir("src/main/res/layout")
-//        res.srcDir("src/main/res")
-//    }
 }
 
 dependencies {
@@ -73,7 +68,6 @@ dependencies {
     implementation("com.google.firebase:firebase-storage")
 
     // For facebook authentication
-//    implementation("com.facebook.android:facebook-android-sdk:8.x")
 
     // Prebuilt Auth UI
     implementation("com.firebaseui:firebase-ui-auth:7.2.0")
@@ -81,14 +75,7 @@ dependencies {
     // Cardview module
     implementation("androidx.cardview:cardview:1.0.0")
 
-
-//    implementation("com.facebook.android:facebook-login:latest.release")
-
     // For credential manager since everything else is deprecated
-//    implementation("androidx.credentials:credentials:1.5.0-alpha04")
-//    implementation("androidx.credentials:credentials-play-services-auth:<latest version>")
-//    implementation("com.google.android.libraries.identity.googleid:googleid:<latest version>")
-
     // Vietmap module
     implementation("com.github.vietmap-company:maps-sdk-android:2.0.4")
     implementation("com.github.vietmap-company:maps-sdk-plugin-localization-android:2.0.0")

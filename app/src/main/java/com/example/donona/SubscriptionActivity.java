@@ -161,7 +161,6 @@ public class SubscriptionActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String body = response.body().string();
                 body = body.substring(1, body.length() - 2);
-//                Log.d("TEST", body);
                 getStripeSubscription(body, priceId);
             }
         });
@@ -283,11 +282,9 @@ public class SubscriptionActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String body = response.body().string();
-//                Log.d("TESTING", body);
                 try {
                     JSONObject res = new JSONObject(body);
                     if (res.getString("status").equals("canceled")) {
-
                         // Update firebase
                         db.collection("user").document(userDocId).update("tier", "free",
                                 "subscriptionId", "")

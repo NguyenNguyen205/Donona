@@ -1,8 +1,6 @@
 package com.example.donona;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,8 +26,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -38,17 +34,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import java.io.File;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    //Declaring FireBase Authorization
     private FirebaseAuth mAuth;
     private FirebaseStorage storage;
-    //Declaring FireBaseStore
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    //Declaring UI from layout
     private TextInputEditText usernameProfile;
     private TextView emailProfile;
     private Button updateButton;
@@ -71,7 +63,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String newUsername = usernameProfile.getText().toString();
-                String newEmail = emailProfile.getText().toString();
                 if (currentDocumentId != null) {
                     updateProfile(currentDocumentId, newUsername);
                 } else {
@@ -94,16 +85,10 @@ public class ProfileActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav);
         bottomNavigationView.setSelectedItemId(R.id.navigation_account);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            // can't use switch case due to non constant id
             final int itemId = item.getItemId();
             if (itemId == R.id.navigation_account) {
                 return true;
             }
-//            if (itemId == R.id.navigation_streaming) {
-//                startActivity(new Intent(ProfileActivity.this, StreamingActivity.class));
-//                finish();
-//                return true;
-//            }
             if (itemId == R.id.navigation_home) {
                 startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
                 finish();
@@ -125,8 +110,6 @@ public class ProfileActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-//            setContentView(R.layout.activity_profile);
-            // return;
             String userIdToFind = currentUser.getUid(); // Assuming your user ID is the Firebase Auth UID
 
             db.collection("user")
@@ -150,7 +133,6 @@ public class ProfileActivity extends AppCompatActivity {
             });
 
         } else {
-//            setContentView(R.layout.activity_login);
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(intent);
         }
@@ -175,25 +157,16 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-//    private void updateAvatar() {
-//
-//    }
-
     private void imageChooser() {
-
-        // create an instance of the
-        // intent of the type image
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
         startActivityForResult(Intent.createChooser(i, "Select Picture"), SELECT_PICTURE);
     }
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         startActivity(new Intent(ProfileActivity.this, HomeActivity.class));
     }
 
@@ -234,7 +207,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-//                            imageButton.setImageURI(uri);
                                         db.collection("user").document(currentDocumentId)
                                                 .update("image", uri.toString())
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -252,8 +224,6 @@ public class ProfileActivity extends AppCompatActivity {
                                                         Log.w("TAG", "Error updating ", e);
                                                     }
                                                 });
-
-
                                     }
                                 });
                             }
