@@ -24,6 +24,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.donona.util.NetworkUtils;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
 import com.firebase.ui.auth.IdpResponse;
@@ -189,6 +190,12 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter Email or Password", Toast.LENGTH_LONG).show();
             return;
         }
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         mAuth.signInWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

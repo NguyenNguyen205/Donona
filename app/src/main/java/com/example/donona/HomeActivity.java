@@ -23,6 +23,7 @@ import com.example.donona.databinding.ActivityHomeBinding;
 import com.example.donona.databinding.ActivityNearMeBinding;
 import com.example.donona.model.CoffeePlace;
 import com.example.donona.music.MusicService;
+import com.example.donona.util.NetworkUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -183,6 +184,11 @@ public class HomeActivity extends AppCompatActivity {
 //    }
 
     public void onClickNearMe(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -195,6 +201,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickGameLauncher(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -206,6 +217,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickSuggest(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -217,6 +233,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickPost(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -244,6 +265,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickSubscription(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -255,6 +281,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void onClickNearMe(CoffeePlace coffeePlace) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -269,6 +300,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickSuggestReal(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -278,6 +314,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickPromotion(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -287,6 +328,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickBookMark(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();

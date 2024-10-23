@@ -20,6 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.donona.transformation.CircleTransform;
+import com.example.donona.util.NetworkUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -157,6 +158,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void updateProfile(String documentId, String newUsername) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         db.collection("user").document(documentId)
                 .update("username", newUsername)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -180,7 +186,11 @@ public class ProfileActivity extends AppCompatActivity {
 //    }
 
     private void imageChooser() {
-
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         // create an instance of the
         // intent of the type image
         Intent i = new Intent();
