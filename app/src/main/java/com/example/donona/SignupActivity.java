@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.donona.util.NetworkUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +58,11 @@ public class SignupActivity extends AppCompatActivity {
 
         EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
                 .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {

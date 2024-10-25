@@ -3,6 +3,7 @@ package com.example.donona;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.donona.adapter.CoffeePlaceAdapter;
 import com.example.donona.databinding.ActivityNearMeBinding;
 import com.example.donona.model.CoffeePlace;
+import com.example.donona.util.NetworkUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -77,6 +79,11 @@ public class NearMeActivity extends AppCompatActivity {
     }
 
     private void onClickNearMe(CoffeePlace coffeePlace) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(NearMeActivity.this, NearActivity.class);
         String key = coffeePlace.getName() + " " + coffeePlace.getAddress();
         refId = coffeePlace.getRef_id();

@@ -16,6 +16,7 @@ import com.example.donona.adapter.TrendingCoffeeAdapter;
 import com.example.donona.databinding.ActivityHomeBinding;
 import com.example.donona.model.CoffeePlace;
 import com.example.donona.music.MusicService;
+import com.example.donona.util.NetworkUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -136,24 +137,59 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickNearMe(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Near me button click");
         Intent intent = new Intent(HomeActivity.this, NearActivity.class);
         startActivity(intent);
     }
 
     public void onClickGameLauncher(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Game launcher button click");
         Intent intent = new Intent(HomeActivity.this, GameLauncherActivity.class);
         startActivity(intent);
     }
 
     public void onClickSuggest(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Near me test button click");
         Intent intent = new Intent(HomeActivity.this, NearMeActivity.class);
         startActivity(intent);
     }
 
     public void onClickPost(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
@@ -181,12 +217,32 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickSubscription(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Log.d(TAG, "Subscription page launch");
         Intent intent = new Intent(HomeActivity.this, SubscriptionActivity.class);
         startActivity(intent);
     }
 
     private void onClickNearMe(CoffeePlace coffeePlace) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Intent intent = new Intent(HomeActivity.this, NearActivity.class);
         String key = coffeePlace.getName() + " " + coffeePlace.getAddress();
         String refId = coffeePlace.getRef_id();
@@ -196,14 +252,39 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClickSuggestReal(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
     }
 
     public void onClickPromotion(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();
+            return;
+        }
         Toast.makeText(this, "Comming Soon!", Toast.LENGTH_LONG).show();
     }
 
     public void onClickBookMark(View view) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "You have to login", Toast.LENGTH_LONG).show();

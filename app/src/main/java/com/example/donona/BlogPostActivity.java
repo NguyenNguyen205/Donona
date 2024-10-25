@@ -2,6 +2,10 @@ package com.example.donona;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.donona.adapter.BlogAdapter;
 import com.example.donona.databinding.ActivityBlogPostBinding;
 import com.example.donona.model.Blog;
+import com.example.donona.util.NetworkUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -66,6 +71,11 @@ public class BlogPostActivity extends AppCompatActivity {
     }
 
     private void onBlogRead(Blog blog) {
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(BlogPostActivity.this, ReadBlogActivity.class);
         intent.putExtra("thumbnail", blog.getThumbnail());
         intent.putExtra("title", blog.getTitle());
