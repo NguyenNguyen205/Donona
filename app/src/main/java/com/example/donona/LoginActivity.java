@@ -205,6 +205,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.d(TAG, "Login successfully");
                             FirebaseUser user = mAuth.getCurrentUser();
                             handleSuccessAuthentication(user);
+                            finish();
                         }
                         else {
                             Toast.makeText(LoginActivity.this, "Email or Password is wrong", Toast.LENGTH_LONG).show();
