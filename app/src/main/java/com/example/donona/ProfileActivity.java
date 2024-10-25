@@ -42,11 +42,13 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private TextInputEditText usernameProfile;
+    private TextView tierProfile;
     private TextView emailProfile;
     private Button updateButton;
     private String currentDocumentId;
     private ImageButton imageButton;
     private String imageUri = "";
+    private String username = "";
     int SELECT_PICTURE = 200;
 
 
@@ -58,11 +60,16 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         usernameProfile = findViewById(R.id.username_profile);
         emailProfile = findViewById(R.id.email_profile);
+        tierProfile = findViewById(R.id.tier_profile);
         updateButton = findViewById(R.id.update_button);
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String newUsername = usernameProfile.getText().toString();
+                if (newUsername.equals(username)) {
+                    Toast.makeText(ProfileActivity.this, R.string.no_update, Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (currentDocumentId != null) {
                     updateProfile(currentDocumentId, newUsername);
                 } else {
@@ -121,9 +128,11 @@ public class ProfileActivity extends AppCompatActivity {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Log.d("TAG", document.getId() + " => " + document.getString("username"));
                             // View data from FireBase
+                            username = document.getString("username");
                             currentDocumentId = document.getId();
                             usernameProfile.setText(document.getString("username"));
                             emailProfile.setText(document.getString("email"));
+                            tierProfile.setText(document.getString("tier"));
                             Picasso.get().load(document.getString("image")).transform(new CircleTransform()).into(imageButton);
                         }
                     } else {
@@ -146,12 +155,14 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(ProfileActivity.this, "Update user name successfully", Toast.LENGTH_LONG).show();
                         Log.d("TAG", "Updated successfully");
+                        recreate();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("TAG", "Error updating ", e);
+                        recreate();
                     }
                 });
 

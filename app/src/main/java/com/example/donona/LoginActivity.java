@@ -40,6 +40,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +82,10 @@ public class LoginActivity extends AppCompatActivity {
                                 data.put("email", user.getEmail());
                                 data.put("userID", user.getUid());
                                 data.put("image", "No image");
+                                data.put("bookmarks", new ArrayList<String>());
+                                data.put("tier", "free");
+                                data.put("subscriptionId", "");
+
                                 db.collection("user")
                                         .add(data)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
