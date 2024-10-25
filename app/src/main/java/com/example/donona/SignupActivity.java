@@ -95,19 +95,19 @@ public class SignupActivity extends AppCompatActivity {
 
         // Kiểm tra mật khẩu dưới 6 ký tự
         if (password.length() < 6) {
-            Toast.makeText(SignupActivity.this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignupActivity.this, "Password contains at least 6 characters", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
         // Kiểm tra mật khẩu và xác nhận mật khẩu có trùng nhau không
         if (!password.equals(passwordConfirm)) {
-            Toast.makeText(SignupActivity.this, "Mật khẩu xác nhận không trùng khớp", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignupActivity.this, "Password do not match", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
         if (!(email.endsWith("@gmail.com") || email.endsWith("@yahoo.com") ||
                 email.endsWith("@outlook.com") || email.endsWith("@icloud.com"))) {
-            Toast.makeText(SignupActivity.this, "Email phải có định dạng @gmail.com, @yahoo.com, @outlook.com hoặc @icloud.com", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignupActivity.this, "Email must be contains one of these formats @gmail.com, @yahoo.com, @outlook.com hoặc @icloud.com", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
