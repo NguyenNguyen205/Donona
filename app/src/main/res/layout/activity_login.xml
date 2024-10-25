@@ -90,16 +90,6 @@
             android:background="@drawable/button"
             android:minHeight="50dp"/>
 
-
-        <TextView
-            android:id="@+id/forgotPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="272dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/forgot_pw"
-            android:textSize="12sp" />
-
         <Button
             android:id="@+id/login"
             android:layout_width="345dp"
@@ -137,7 +127,7 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="30dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="18dp"
