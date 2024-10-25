@@ -1,0 +1,10 @@
+Bug
+1. xóa nut bookmark trong near me
+2. đưa them field của tier user lên profile để biết user đang ở field nào
+3. nút chuyển language
+4. check lại nút update nếu không thay đổi gì thì hiện không gì thay đổi
+6. đăng nhập bang google, sẽ không mua gói được
+7. android để chế độ tối, nhưng vào app khi chuyển chế độ thì các nút, chữ vẫn màu trắng không thấy được
+8. nếu đăng ký tài khoản đã tồn tại thì bắt lỗi
+9. them 1 cột check isGoogleAuthen để bắt lỗi co email như vậy thì không đăng ký email đó nữa
+10. xem lại các ảnh slider để đưa lên chplay 

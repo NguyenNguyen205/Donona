@@ -106,9 +106,9 @@ public class SignupActivity extends AppCompatActivity {
             return; // Không tiếp tục nếu có lỗi
         }
 
-        // Kiểm tra định dạng email
-        if (!email.endsWith("@gmail.com")) {
-            Toast.makeText(SignupActivity.this, "Email phải có định dạng @gmail.com", Toast.LENGTH_LONG).show();
+        if (!(email.endsWith("@gmail.com") || email.endsWith("@yahoo.com") ||
+                email.endsWith("@outlook.com") || email.endsWith("@icloud.com"))) {
+            Toast.makeText(SignupActivity.this, "Email phải có định dạng @gmail.com, @yahoo.com, @outlook.com hoặc @icloud.com", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
