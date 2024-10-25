@@ -174,24 +174,32 @@
                 android:textStyle="bold"
                 android:textSize="18dp"/>
 
-            <Switch
-                android:id="@+id/switch_lang"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="210dp"
-                android:layout_marginTop="6dp"
-                android:layout_toEndOf="@+id/switchLangIcon"
-                android:paddingStart="20dp"
+<!--            <Switch-->
+<!--                android:id="@+id/switch_lang"-->
+<!--                android:layout_width="60dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="210dp"-->
+<!--                android:layout_marginTop="6dp"-->
+<!--                android:layout_toEndOf="@+id/switchLangIcon"-->
+<!--                android:paddingStart="20dp"-->
+<!--                app:tint="@color/quite_brown"-->
+<!--                android:scaleX="1.5"-->
+<!--                android:scaleY="1.5"-->
+<!--                android:enabled="false"-->
+<!--                />-->
+            <ImageButton
+                android:id="@+id/switchLang"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="contact"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/arrow_forward_ios_24px"
                 app:tint="@color/quite_brown"
-                android:scaleX="1.5"
-                android:scaleY="1.5"
-                android:enabled="false"
                 />
-
-
         </RelativeLayout>
-
-
     </LinearLayout>
 
 

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -36,7 +38,7 @@ public class SettingActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
 
     //Switch language
-    private Switch switchLang;
+//    private Switch switchLang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,6 @@ public class SettingActivity extends AppCompatActivity {
         contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivity(new Intent(SettingActivity.this, ContactActivity.class));
             }
         });
@@ -109,29 +110,12 @@ public class SettingActivity extends AppCompatActivity {
             logoutButton.setVisibility(View.GONE);
         }
 
-        //Lấy nút chuyển của ngôn ngữ
-        switchLang = findViewById(R.id.switch_lang);
-
-        // Đặt trạng thái ban đầu cho switch (có thể lưu trong SharedPreferences)
-        switchLang.setChecked(isVietnameseLanguage()); // Hàm kiểm tra ngôn ngữ hiện tại
-
-        // Trong phương thức onCreate
-        SharedPreferences preferences = getSharedPreferences("app_prefs", MODE_PRIVATE);
-        switchLang.setChecked(preferences.getBoolean("isVietnamese", false));
-
-        switchLang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        // Navigate user to change language
+        ImageButton lanBtn = findViewById(R.id.switchLang);
+        lanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    setLocale(SettingActivity.this, "vi");
-                } else {
-                    setLocale(SettingActivity.this, "en");
-                }
-
-                // Lưu trạng thái ngôn ngữ
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("isVietnamese", isChecked);
-                editor.apply();
+            public void onClick(View v) {
+                startActivity(new Intent(Settings.ACTION_LOCALE_SETTINGS));
             }
         });
 
@@ -166,32 +150,9 @@ public class SettingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        //Lấy nút chuyển của ngôn ngữ
-        switchLang = findViewById(R.id.switch_lang);
-
-        // Đặt trạng thái ban đầu cho switch (có thể lưu trong SharedPreferences)
-        switchLang.setChecked(isVietnameseLanguage()); // Hàm kiểm tra ngôn ngữ hiện tại
-        Log.d("HELLOTESTING", String.valueOf(isVietnameseLanguage()));
-
         // Trong phương thức onCreate
         SharedPreferences preferences = getSharedPreferences("AppSettingsPrefs", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-
-        switchLang.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    setLocale(SettingActivity.this, "vi");
-                } else {
-                    setLocale(SettingActivity.this, "en");
-                }
-                // Lưu trạng thái ngôn ngữ
-                editor.putBoolean("isVietnamese", isChecked);
-                editor.apply();
-                editor.commit();
-            }
-        });
-
     }
 
     public void logout(View view) {
