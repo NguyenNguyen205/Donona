@@ -185,7 +185,6 @@ public class SettingActivity extends AppCompatActivity {
                 } else {
                     setLocale(SettingActivity.this, "en");
                 }
-
                 // Lưu trạng thái ngôn ngữ
                 editor.putBoolean("isVietnamese", isChecked);
                 editor.apply();
@@ -208,16 +207,8 @@ public class SettingActivity extends AppCompatActivity {
         Configuration config = resources.getConfiguration();
         config.setLocale(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//        createConfigurationContext(config);
-
         // Khởi động lại Activity để áp dụng ngôn ngữ mới
         recreate();
-//        finish();
-//        startActivity(getIntent());
     }
 
     private boolean isVietnameseLanguage() {

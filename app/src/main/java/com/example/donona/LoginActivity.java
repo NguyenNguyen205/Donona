@@ -41,6 +41,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +83,10 @@ public class LoginActivity extends AppCompatActivity {
                                 data.put("email", user.getEmail());
                                 data.put("userID", user.getUid());
                                 data.put("image", "No image");
+                                data.put("bookmarks", new ArrayList<String>());
+                                data.put("tier", "free");
+                                data.put("subscriptionId", "");
+
                                 db.collection("user")
                                         .add(data)
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -114,8 +119,6 @@ public class LoginActivity extends AppCompatActivity {
             alert.show();
         }
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,11 +155,6 @@ public class LoginActivity extends AppCompatActivity {
             if (itemId == R.id.navigation_account) {
                 return true;
             }
-//            if (itemId == R.id.navigation_streaming) {
-//                startActivity(new Intent(LoginActivity.this, StreamingActivity.class));
-//                finish();
-//                return true;
-//            }
             if (itemId == R.id.navigation_setting) {
                 startActivity(new Intent(LoginActivity.this, SettingActivity.class));
                 finish();
@@ -184,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onSignin(View view) {
-        EditText mEmail = (EditText)findViewById(R.id.editTextTextEmailAddress);
+        EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
         if (mEmail.getText().toString().isEmpty() || mPassword.getText().toString().isEmpty()) {
             Toast.makeText(this, "Please enter Email or Password", Toast.LENGTH_LONG).show();
@@ -223,7 +221,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
     public void onSignup(View view) {
         startActivity(new Intent(LoginActivity.this, SignupActivity.class));
     }
@@ -234,14 +231,12 @@ public class LoginActivity extends AppCompatActivity {
 
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build()
-//                new AuthUI.IdpConfig.FacebookBuilder().build()
         );
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .build();
         signInLauncher.launch(signInIntent);
-
     }
 
     // Phương thức để thay đổi ngôn ngữ

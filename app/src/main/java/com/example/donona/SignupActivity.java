@@ -34,7 +34,7 @@ import java.util.Map;
 public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private String TAG = "Hello";
+    private String TAG = "TESTINGHELLO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +65,9 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onSuccess(AuthResult authResult) {
                         Log.d(TAG, "Sign up successfully");
                         FirebaseUser user = mAuth.getCurrentUser();
                         handleSuccessAuthentication(user);
@@ -76,11 +76,10 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Sign up fail");
-                        handleFailAuthentication();
+                        Log.d(TAG, e.getMessage());
+                        handleFailAuthentication(e.getMessage());
                     }
                 });
-
     }
 
     private void handleSuccessAuthentication(FirebaseUser user) {
@@ -120,6 +119,8 @@ public class SignupActivity extends AppCompatActivity {
         data.put("password", mPassword.getText().toString());
         data.put("image", "No Image");
         data.put("bookmarks", new ArrayList<String>());
+        data.put("tier", "free");
+        data.put("subscriptionId", "");
 
         db.collection("user")
                 .add(data)
@@ -140,8 +141,13 @@ public class SignupActivity extends AppCompatActivity {
                 });
     }
 
-    private void handleFailAuthentication() {
-        Toast.makeText(SignupActivity.this, "Đăng ký thất bại", Toast.LENGTH_LONG).show();
+    private void handleFailAuthentication(String error) {
+        if (error.endsWith("another account.")) {
+            Toast.makeText(SignupActivity.this, R.string.used_email, Toast.LENGTH_LONG).show();
+            return;
+        }
+        Toast.makeText(SignupActivity.this, "Failed", Toast.LENGTH_LONG).show();
+
     }
 
     public void onSignIn(View view) {

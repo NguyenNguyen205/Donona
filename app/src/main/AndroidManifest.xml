@@ -27,9 +27,6 @@
             android:name=".BookMarkActivity"
             android:exported="false" />
         <activity
-            android:name=".TestActivity"
-            android:exported="false" />
-        <activity
             android:name=".ContactActivity"
             android:exported="false" />
         <activity

@@ -160,7 +160,7 @@ def home():
     return Response("Hello world", status=200)
 
 def main():
-    app.run(debug=True, port=5528)
+    app.run(host='0.0.0.0', port=5528)
 
 
 if __name__ == "__main__":
