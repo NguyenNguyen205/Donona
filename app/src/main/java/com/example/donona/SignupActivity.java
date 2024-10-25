@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -106,8 +107,9 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         if (!(email.endsWith("@gmail.com") || email.endsWith("@yahoo.com") ||
-                email.endsWith("@outlook.com") || email.endsWith("@icloud.com"))) {
-            Toast.makeText(SignupActivity.this, "Email must be contains one of these formats @gmail.com, @yahoo.com, @outlook.com hoặc @icloud.com", Toast.LENGTH_LONG).show();
+                email.endsWith("@outlook.com") || email.endsWith("@icloud.com")) ||
+                Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(SignupActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
