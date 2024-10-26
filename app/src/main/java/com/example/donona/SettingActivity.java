@@ -32,14 +32,6 @@ import java.util.Locale;
 public class SettingActivity extends AppCompatActivity {
     private ImageButton logoutButton;
 
-    //Switch between dark and light mode
-    private Switch switchTheme;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-
-    //Switch language
-//    private Switch switchLang;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,35 +51,6 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SettingActivity.this, ContactActivity.class));
-            }
-        });
-
-        // Nút để chuyển chế độ sáng tối
-        switchTheme = findViewById(R.id.switch_theme);
-
-        // SharedPreferences để lưu trạng thái
-        sharedPreferences = getSharedPreferences("AppSettingsPrefs", 0);
-        editor = sharedPreferences.edit();
-
-        // Kiểm tra trạng thái hiện tại của theme
-        boolean isNightMode = sharedPreferences.getBoolean("NightMode", false);
-        switchTheme.setChecked(isNightMode);
-
-        // Xử lý khi người dùng thay đổi theme
-        switchTheme.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            boolean currentMode = sharedPreferences.getBoolean("NightMode", false);
-            if (isChecked != currentMode) {
-                if (isChecked) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    editor.putBoolean("NightMode", true);
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    editor.putBoolean("NightMode", false);
-                }
-                editor.apply();  // Lưu trạng thái vào SharedPreferences
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
             }
         });
 
@@ -161,19 +124,4 @@ public class SettingActivity extends AppCompatActivity {
         startActivity(new Intent(SettingActivity.this, ProfileActivity.class));
     }
 
-    private void setLocale(Activity activity, String lang) {
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Resources resources = activity.getResources();
-        Configuration config = resources.getConfiguration();
-        config.setLocale(locale);
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        // Khởi động lại Activity để áp dụng ngôn ngữ mới
-        recreate();
-    }
-
-    private boolean isVietnameseLanguage() {
-        // Kiểm tra ngôn ngữ hiện tại
-        return Locale.getDefault().getLanguage().equals("vi");
-    }
 }

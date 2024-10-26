@@ -79,40 +79,6 @@
         app:layout_constraintTop_toBottomOf="@+id/title"
         >
 
-        <!--DarkMode-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="50dp"
-                android:id="@+id/darkmodeIcon"
-                android:layout_height="50dp"
-                android:src="@drawable/dark_mode_40px"
-                android:padding="12dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/darkmodeIcon"
-                android:text="@string/dark_mode"
-                android:textColor="@color/quite_brown"
-                android:textStyle="bold"
-                android:textSize="18dp"/>
-
-            <Switch
-                android:id="@+id/switch_theme"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="210dp"
-                android:layout_marginTop="6dp"
-                android:layout_toEndOf="@+id/darkmodeIcon"
-                android:paddingStart="20dp"
-                app:tint="@color/quite_brown"
-                android:scaleX="1.5"
-                android:scaleY="1.5" />
-        </RelativeLayout>
 
         <!--Music-->
         <RelativeLayout
