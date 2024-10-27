@@ -155,12 +155,12 @@ def search():
     ## May need to change format to include distance
     return Response(json.dumps(suggestionMap, indent = 4), status = 200)
 
-@app.route('/api')
+@app.route('/')
 def home():
     return Response("Hello world", status=200)
 
 def main():
-    app.run(host='0.0.0.0', port=5528)
+    app.run(host='0.0.0.0', port=80)
 
 
 if __name__ == "__main__":

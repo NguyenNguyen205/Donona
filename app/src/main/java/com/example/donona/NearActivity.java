@@ -132,9 +132,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private FirebaseAuth auth;
     private ActivityVietMapMapViewBinding binding;
     private TestAdapter testAdapter;
-    private String searchApi = "http://10.0.2.2:5528/api/search?text=";
+    private String searchApi = "http://kreden.id.vn/api/search?text=";
 
-    //Variables for startNavigation
+    //Variables for startNavigationh
     private boolean isOverviewing;
     private boolean isNavigationCanceled;
     private DirectionsRoute currentRoute = null;
@@ -535,6 +535,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String body = response.body().string();
+                Log.d("TESTING", body);
                 try {
                     JSONObject res = new JSONObject(body);
                     Iterator<String> keys = res.keys();

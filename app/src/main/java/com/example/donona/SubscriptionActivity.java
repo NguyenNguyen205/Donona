@@ -43,7 +43,7 @@ public class SubscriptionActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private String url = "http://10.0.2.2:5528/";
+    private String url = "http://kreden.id.vn/";
     private String priceId = "price_1QBX33RsoCurEVDXh4Gfwfpr"; // will fetch database later on
     private String stripePublicKey = "pk_test_51PSxSqRsoCurEVDXHObnzZlGaERCvJGTwR1MxNVxB7kjrCTBcsZVY6mVvkV39LUFjgq8NAkQxF0dDzi8VqatK1Yh00aOaQesFF";
     private String clientSecret = "";
