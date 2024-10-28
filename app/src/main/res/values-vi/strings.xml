@@ -38,14 +38,14 @@
     <string name="upgrade_your_account">Nâng cấp tài khoản của bạn</string>
     <string name="free_tier">Cấp miễn phí</string>
     <string name="basic">Cơ bản</string>
-    <string name="basic_features">Tìm kiếm cửa hàng \n Đánh giá \n Đánh dấu \n Trò chơi arcade</string>
-    <string name="standard_price">5.000 VND</string>
+    <string name="basic_features">Tìm kiếm cửa hàng không giới hạn \n Trò chơi arcade</string>
+    <string name="standard_price">10.000 VND</string>
     <string name="standard">Tiêu chuẩn</string>
-    <string name="standard_features">Tìm kiếm cửa hàng Pro \n Đánh giá Pro \n Đánh dấu Pro \n Trò chơi arcade Pro \n Không quảng cáo Pro</string>
+    <string name="standard_features">Đánh dấu địa điểm \n Đọc Blog \n Thay Map Icon</string>
     <string name="buy_standard">Mua Tiêu chuẩn</string>
     <string name="checkout">Thanh toán</string>
     <string name="hello_world">Xin chào thế giới</string>
-    <string name="address_in_after_life">Địa chỉ trong kiếp sau</string>
+    <string name="address_in_after_life">Placeholder</string>
     <string name="searching">Đang tìm kiếm</string>
     <string name="coffee_shop_name">Tên quán cà phê</string>
     <string name="intro">Donona là một ứng dụng đáng yêu được phát triển bởi một nhóm sinh viên năm cuối đang trong quá trình hoàn thành môn Khởi nghiệp (EXE201) tại trường đại học FPT. Ứng dụng cho phép người dùng tìm kiếm các quán cà phê gần vị trí hiện tại của họ sử dụng VietMap. Người dùng có thể đăng nhập bằng Google và tận hưởng nhiều tính năng khác.</string>
@@ -55,14 +55,19 @@
     <string name="app_info">Thông tin ứng dụng</string>
     <string name="switch_lang">Chuyển đổi ngôn ngữ</string>
     <string name="book_mark">Đánh Dấu</string>
+    <string name="loading">Đang tải …</string>
+    <string name="cancel">Huỷ đăng kí</string>
     <string name="near_me_ps">Gần đây</string>
-    <string name="map_ps">Map</string>
+    <string name="map_ps">Bản Đồ</string>
     <string name="upgrade_ps">Nâng cấp</string>
     <string name="book_mark_ps">Đánh dấu</string>
     <string name="blog_ps">Bài viết</string>
     <string name="promotion_ps">Giảm giá</string>
     <string name="suggest_ps">Gợi ý</string>
     <string name="game_ps">Trò chơi</string>
+    <string name="used_email">Email đã tồn tại</string>
+    <string name="tier">Cấp</string>
+    <string name="no_update">Dữ liệu không đổi</string>
 
 
 </resources>

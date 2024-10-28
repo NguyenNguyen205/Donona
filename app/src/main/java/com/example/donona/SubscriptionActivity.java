@@ -1,6 +1,5 @@
 package com.example.donona;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -45,9 +43,9 @@ public class SubscriptionActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-    private String url = "http://10.0.2.2:5528/";
-    private String priceId = "price_1Q6QGjRt4Jb0KcASHTGyC592"; // will fetch database later on
-    private String stripePublicKey = "pk_test_51PZTGERt4Jb0KcASqJvZReNwjK5oiWEzZvp27FpjQ8HadaXWg8WKlKO1kfoIcV7AyuI68Trx4ZdTOne1KPrnNP7e00RBCAu2mn";
+    private String url = "http://kreden.id.vn/";
+    private String priceId = "price_1QBX33RsoCurEVDXh4Gfwfpr"; // will fetch database later on
+    private String stripePublicKey = "pk_test_51PSxSqRsoCurEVDXHObnzZlGaERCvJGTwR1MxNVxB7kjrCTBcsZVY6mVvkV39LUFjgq8NAkQxF0dDzi8VqatK1Yh00aOaQesFF";
     private String clientSecret = "";
     private String subscriptionId = "";
     private OkHttpClient client = new OkHttpClient();
@@ -56,6 +54,8 @@ public class SubscriptionActivity extends AppCompatActivity {
     private PaymentSheet paymentSheet;
     private Button cancel;
     private String userDocId = "";
+    private Button btn;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +70,7 @@ public class SubscriptionActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        handler = new Handler();
 
         PaymentConfiguration.init(
                 getApplicationContext(),
@@ -78,10 +79,11 @@ public class SubscriptionActivity extends AppCompatActivity {
         paymentSheet = new PaymentSheet(this, this::onPaymentSheetResult);
 
 
-        Button btn = (Button) findViewById(R.id.buy_standard);
+        btn = (Button) findViewById(R.id.buy_standard);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButton(btn);
                 buyStandard(v);
             }
         });
@@ -90,10 +92,21 @@ public class SubscriptionActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                disableButton(cancel);
                 onCancelSubscription();
             }
         });
 
+    }
+
+    private void disableButton(Button btn) {
+        btn.setText(R.string.loading);
+        btn.setEnabled(false);
+    }
+
+    private void enableButton(Button btn, int resId) {
+        btn.setText(resId);
+        btn.setEnabled(true);
     }
 
     public void buyStandard(View view) {
@@ -101,6 +114,7 @@ public class SubscriptionActivity extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             Toast.makeText(SubscriptionActivity.this, "You need to login", Toast.LENGTH_SHORT).show();
+            enableButton(btn, R.string.buy_standard);
             return;
         }
         // Check user subscription tier
@@ -115,6 +129,7 @@ public class SubscriptionActivity extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                         if (doc.getString("tier").equals("standard")) {
                             Toast.makeText(SubscriptionActivity.this, "You are already a pro", Toast.LENGTH_SHORT).show();
+                            enableButton(btn, R.string.buy_standard);
                             return;
                         }
                         userDocId = doc.getId();
@@ -143,13 +158,16 @@ public class SubscriptionActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 Log.d("TEST", e.toString());
+                handler.post(() -> {
+                    enableButton(btn, R.string.buy_standard);
+                    Toast.makeText(SubscriptionActivity.this, "Error connecting to server, please try again", Toast.LENGTH_SHORT).show();
+                });
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String body = response.body().string();
                 body = body.substring(1, body.length() - 2);
-                Log.d("TEST", body);
                 getStripeSubscription(body, priceId);
             }
         });
@@ -195,7 +213,7 @@ public class SubscriptionActivity extends AppCompatActivity {
 
     private void displayPayment(String clientSecret) {
         PaymentSheet.Configuration config = new PaymentSheet.Configuration.Builder("Donona Inc")
-                .primaryButtonLabel("Subscribe for 10$/Month (Very cheap)")
+                .primaryButtonLabel("Subscribe for 10.000 VND / Month")
                 .allowsDelayedPaymentMethods(true)
                 .build();
         paymentSheet.presentWithPaymentIntent(clientSecret, config);
@@ -209,10 +227,13 @@ public class SubscriptionActivity extends AppCompatActivity {
                     .document(userDocId)
                     .update("tier", "standard",
                             "subscriptionId", subscriptionId);
+            enableButton(btn, R.string.buy_standard);
+
 
 
         } else if (res instanceof PaymentSheetResult.Canceled) {
             Log.d("TEST", "Cancel payment");
+            enableButton(btn, R.string.buy_standard);
         }
     }
 
@@ -221,6 +242,7 @@ public class SubscriptionActivity extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             Toast.makeText(SubscriptionActivity.this, "You need to login", Toast.LENGTH_SHORT).show();
+            enableButton(cancel, R.string.cancel);
             return;
         }
         // check user current tier
@@ -235,6 +257,7 @@ public class SubscriptionActivity extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                         if (doc.getString("tier").equals("free")) {
                             Toast.makeText(SubscriptionActivity.this, "You don't have subscription", Toast.LENGTH_SHORT).show();
+                            enableButton(cancel, R.string.cancel);
                             return;
                         }
                         userDocId = doc.getId();
@@ -260,28 +283,29 @@ public class SubscriptionActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                return;
+                handler.post(() -> {
+                    enableButton(cancel, R.string.cancel);
+                    Toast.makeText(SubscriptionActivity.this, "Error connecting to server, please try again", Toast.LENGTH_SHORT).show();
+                });
+
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String body = response.body().string();
-                Log.d("TESTING", body);
                 try {
                     JSONObject res = new JSONObject(body);
                     if (res.getString("status").equals("canceled")) {
-                        Log.d("TESTING", "1");
-
                         // Update firebase
                         db.collection("user").document(userDocId).update("tier", "free",
                                 "subscriptionId", "")
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Log.d("TESTING", "2");
 
                                         if (task.isSuccessful()) {
-                                            Log.d("TESTING", "Cancel subscription successfuly");
+                                            Toast.makeText(SubscriptionActivity.this, "Cancel subscription successfuly", Toast.LENGTH_SHORT).show();
+                                            enableButton(cancel, R.string.cancel);
                                         }
                                     }
                                 });

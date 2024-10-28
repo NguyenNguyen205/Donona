@@ -77,37 +77,27 @@
                 android:translationZ="10dp"
                 >
 
-                <RadioButton
-                    android:id="@+id/freeIcon"
-                    android:button="@null"
-                    android:background="@drawable/logo"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:checked="true"
-                    android:text="freeIcon"
-                    android:textColor="#00000000"
-                    />
 
-                <RadioButton
-                    android:id="@+id/standardIcon"
-                    android:button="@null"
-                    android:background="@drawable/logo_legend"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:text="standardIcon"
-                    android:textColor="#00000000"
-                    />
+<!--                <RadioButton-->
+<!--                    android:id="@+id/standardIcon"-->
+<!--                    android:button="@null"-->
+<!--                    android:background="@drawable/logo_legend"-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="60dp"-->
+<!--                    android:text="standardIcon"-->
+<!--                    android:textColor="#00000000"-->
+<!--                    />-->
 
-                <RadioButton
-                    android:id="@+id/kawaIcon"
-                    android:button="@null"
-                    android:background="@drawable/logo_kawa"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:checked="true"
-                    android:text="kawaIcon"
-                    android:textColor="#00000000"
-                    />
+<!--                <RadioButton-->
+<!--                    android:id="@+id/kawaIcon"-->
+<!--                    android:button="@null"-->
+<!--                    android:background="@drawable/logo_kawa"-->
+<!--                    android:layout_width="60dp"-->
+<!--                    android:layout_height="60dp"-->
+<!--                    android:checked="true"-->
+<!--                    android:text="kawaIcon"-->
+<!--                    android:textColor="#00000000"-->
+<!--                    />-->
             </RadioGroup>
             <ImageButton
                 android:id="@+id/my_location"
@@ -175,6 +165,14 @@
                             android:layout_toRightOf="@+id/findRoute"
                             android:background="@drawable/button"
                             android:src="@drawable/near_me_24px" />
+
+                        <ImageButton
+                            android:id="@+id/bookmarkPlace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/bookmark_24px"
+                            android:layout_toRightOf="@+id/startNavigation"
+                            />
 
                         <ImageButton
                             android:id="@+id/stopNavigation"

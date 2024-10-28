@@ -37,14 +37,14 @@
     <string name="upgrade_your_account">Upgrade Your Account</string>
     <string name="free_tier">Free Tier</string>
     <string name="basic">Basic</string>
-    <string name="basic_features">Searching store \n Rating \n Bookmark \n Arcade game</string>
-    <string name="standard_price">5.000VND</string>
+    <string name="basic_features">Unlimited Store Search \n Arcade game</string>
+    <string name="standard_price">10.000VND</string>
     <string name="standard">Standard</string>
-    <string name="standard_features">Searching store Pro \n Rating Pro \n Bookmark Pro \n Arcade game Pro \n No ads Pro</string>
+    <string name="standard_features">Bookmark Store \n Read Blog \n Change Map Icon </string>
     <string name="buy_standard">Buy Standard</string>
     <string name="checkout">Check Out</string>
     <string name="hello_world">Hello world</string>
-    <string name="address_in_after_life">Address in Afterlife</string>
+    <string name="address_in_after_life">Placeholder</string>
     <string name="searching">Searching</string>
     <string name="coffee_shop_name">Coffee Shop Name</string>
     <string name="intro">Donona is a lovely app developed by a group of final-year students who are in the process of completing the Entrepreneurship course (EXE201) at FPT University. The application allows users to search for coffee shops near their current location using VietMap. Users can log in with Google and enjoy many other features.</string>
@@ -54,7 +54,9 @@
     <string name="app_info">Appliance Infomation</string>
     <string name="switch_lang">Switch Language</string>
     <string name="book_mark">Book Mark</string>
-    <string name="near_me_ps">Book Mark</string>
+    <string name="loading">Loading …</string>
+    <string name="cancel">Cancel subscription</string>
+    <string name="near_me_ps">Near Me</string>
     <string name="map_ps">Map</string>
     <string name="upgrade_ps">Upgrade</string>
     <string name="book_mark_ps">Book Mark</string>
@@ -62,6 +64,9 @@
     <string name="promotion_ps">Promotion</string>
     <string name="suggest_ps">Suggest</string>
     <string name="game_ps">Game</string>
+    <string name="used_email">Email already in used</string>
+    <string name="tier">Tier</string>
+    <string name="no_update">No update</string>
 
 
 

@@ -2,20 +2,17 @@ package com.example.donona;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -27,6 +24,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -37,8 +35,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-
-import com.example.donona.adapter.BlogAdapter;
 import com.example.donona.adapter.TestAdapter;
 import com.example.donona.databinding.ActivityVietMapMapViewBinding;
 import com.example.donona.model.CoffeePlace;
@@ -53,7 +49,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
@@ -64,12 +59,11 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -79,7 +73,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import vn.vietmap.services.android.navigation.ui.v5.camera.CameraOverviewCancelableCallback;
-import vn.vietmap.services.android.navigation.ui.v5.listeners.NavigationListener;
 import vn.vietmap.services.android.navigation.v5.location.replay.ReplayRouteLocationEngine;
 import vn.vietmap.services.android.navigation.v5.milestone.Milestone;
 import vn.vietmap.services.android.navigation.v5.milestone.MilestoneEventListener;
@@ -96,9 +89,7 @@ import vn.vietmap.services.android.navigation.v5.snap.SnapToRoute;
 import vn.vietmap.vietmapsdk.Vietmap;
 import vn.vietmap.vietmapsdk.annotations.Marker;
 import vn.vietmap.vietmapsdk.annotations.MarkerOptions;
-import vn.vietmap.vietmapsdk.annotations.Polygon;
 import vn.vietmap.vietmapsdk.annotations.Polyline;
-import vn.vietmap.vietmapsdk.annotations.PolylineOptions;
 import vn.vietmap.vietmapsdk.camera.CameraPosition;
 import vn.vietmap.vietmapsdk.camera.CameraUpdate;
 import vn.vietmap.vietmapsdk.camera.CameraUpdateFactory;
@@ -114,16 +105,12 @@ import vn.vietmap.vietmapsdk.location.engine.LocationEngineDefault;
 import vn.vietmap.vietmapsdk.location.engine.LocationEngineResult;
 import vn.vietmap.vietmapsdk.location.modes.CameraMode;
 import vn.vietmap.vietmapsdk.location.modes.RenderMode;
-import vn.vietmap.vietmapsdk.maps.Image;
 import vn.vietmap.vietmapsdk.maps.MapView;
 import vn.vietmap.vietmapsdk.maps.OnMapReadyCallback;
 import vn.vietmap.vietmapsdk.maps.Style;
 import vn.vietmap.vietmapsdk.maps.VietMapGL;
 import vn.vietmap.vietmapsdk.maps.VietMapGLOptions;
 
-
-
-// To do next: set up proper onmarker click listener
 public class NearActivity extends AppCompatActivity implements NavigationEventListener, FasterRouteListener, ProgressChangeListener, MilestoneEventListener, OffRouteListener {
     private MapView mapView;
     private VietMapGL vietMapGL;
@@ -132,7 +119,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private LocationEngine locationEngine;
 
     private ArrayList<String> suggestionName = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
     private OkHttpClient client = new OkHttpClient();
     private Call call;
     private HashMap<String, String> suggestionMap = new HashMap<>();
@@ -146,9 +132,9 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private FirebaseAuth auth;
     private ActivityVietMapMapViewBinding binding;
     private TestAdapter testAdapter;
-    private String searchApi = "http://10.0.2.2:5528/api/search?text=";
+    private String searchApi = "http://kreden.id.vn/api/search?text=";
 
-    //Variables for startNavigation
+    //Variables for startNavigationh
     private boolean isOverviewing;
     private boolean isNavigationCanceled;
     private DirectionsRoute currentRoute = null;
@@ -169,17 +155,26 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private int[] padding = {150, 500, 150, 500};
     private LocationComponentOptions customeIcon;
     private Style style;
-
+    private ArrayList<Integer> freeLogo = new ArrayList<Integer>() {{
+        add(R.drawable.logo);
+        add(R.drawable.logo_angry_thor);
+    }};
+    private ArrayList<Integer> standardLogo = new ArrayList<Integer>() {{
+        add(R.drawable.logo);
+        add(R.drawable.logo_angry_thor);
+        add(R.drawable.logo_angry_phone);
+        add(R.drawable.logo_kawa);
+        add(R.drawable.logo_kitsune);
+        add(R.drawable.logo_legend);
+    }};
 
     private String apiKey = "77080684e9ccee64241cc6682a316130a475ee2eb26bb04d";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         /// Initialization
         Vietmap.getInstance(this);
-
         handler = new Handler();
 
         // Setting up layout
@@ -203,7 +198,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         binding.recyclerView2.setAdapter(testAdapter);
         binding.recyclerView2.setLayoutManager(new LinearLayoutManager(this));
         binding.searchResult.setOnClickListener(this::onSearchResultClick);
-
 
         // Ask for map permission
         if (!checkPermission()) {
@@ -235,12 +229,12 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     call.cancel();
                 }
                 binding.loading.setVisibility(View.VISIBLE);
-                String url = "https://maps.vietmap.vn/api/autocomplete/v3?apikey=" + apiKey + "&text=" + newText + "&cityId=12";
-                getSearchSuggestion(url, newText, false);
+                getSearchSuggestion(newText);
                 return true;
             }
         });
         mapView.onStart();
+        checkUsertier();
     }
 
     @Override
@@ -312,7 +306,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     }
 
     private void createMap() {
-
         initLocationEngine();
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -331,7 +324,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     }
                 });
 
-
                 // Add VietMap raster style to VietMapSDK - Can't add vector style
                 String url = "https://maps.vietmap.vn/api/maps/light/styles.json?apikey=";
                 vietMapGL.setStyle(new Style.Builder()
@@ -343,17 +335,16 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                             NearActivity.this.style = style;
                         });
 
-                // ?? about usefulness
-                vietMapGL.setOnPolylineClickListener(new VietMapGL.OnPolylineClickListener() {
-                    @Override
-                    public void onPolylineClick(Polyline polyline) {
-                        Toast.makeText(
-                                NearActivity.this,
-                                "You clicked on polyline with id = " + polyline.getId(),
-                                Toast.LENGTH_SHORT
-                        ).show();
-                    }
-                });
+//                vietMapGL.setOnPolylineClickListener(new VietMapGL.OnPolylineClickListener() {
+//                    @Override
+//                    public void onPolylineClick(Polyline polyline) {
+//                        Toast.makeText(
+//                                NearActivity.this,
+//                                "You clicked on polyline with id = " + polyline.getId(),
+//                                Toast.LENGTH_SHORT
+//                        ).show();
+//                    }
+//                });
 
                 // start navigation
                 ImageButton navButton = (ImageButton) findViewById(R.id.startNavigation);
@@ -362,7 +353,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     public void onClick(View v) {
                         Log.d("TEST", "Navigation start");
                         isNavigationInProgress = true;
-//                        fetchRoute(true);
                         if (navigationMapRoute != null && currentRoute != null) {
                             navigationMapRoute.addRoute(currentRoute);
                             List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
@@ -380,7 +370,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     public void onClick(View v) {
                         Log.d("TEST", "Find route");
                         isNavigationInProgress = false;
-//                        fetchRoute();
                         if (navigationMapRoute != null && currentRoute != null) {
                             navigationMapRoute.addRoute(currentRoute);
                             List<Point> routePoints = (List<Point>) currentRoute.routeOptions().coordinates();
@@ -400,13 +389,19 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     }
                 });
 
+                // Bookmark place
+                binding.bookmarkPlace.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bookmarkPlace(v);
+                    }
+                });
+
                 // Custom marker click event handler
                 vietMapGL.setOnMarkerClickListener(new VietMapGL.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(@NonNull Marker marker) {
-
                         stopNavigation();
-
                         focusMarker = marker;
                         setFocusMarker(focusMarker,true);
                         // if set a custom marker click listener handler, the tool tip will not display
@@ -419,7 +414,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                             }
                             else {
                                 String url = "https://maps.vietmap.vn/api/place/v3?apikey=" + apiKey + "&refid=" + refID;
-                                addMarkerToMap(url, "", true);
+                                addMarkerToMap(url, refID, true);
                             }
                         }
                         else {
@@ -440,19 +435,70 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         });
     }
 
+    private void checkUsertier() {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            displayFreeTier();
+            return;
+        }
+        db.collection("user")
+                .whereEqualTo("userID", user.getUid())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (!task.isSuccessful() || task.getResult().isEmpty()) {
+                            return;
+                        }
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        if (doc.getString("tier").equals("free")) {
+                            displayFreeTier();
+                            return;
+                        }
+                        displayStandardTier();
+                    }
+                });
+    }
+
+    private void displayFreeTier() {
+        binding.bookmarkPlace.setVisibility(View.INVISIBLE);
+        binding.bookmarkPlace.setEnabled(false);
+        for (int i = 0; i < freeLogo.size(); i++) {
+            RadioButton btn = new RadioButton(NearActivity.this);
+            btn.setId(i);
+            btn.setBackgroundResource(freeLogo.get(i));
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(240,240);
+            btn.setLayoutParams(params);
+            btn.setButtonDrawable(null);
+            btn.setTextColor(Color.TRANSPARENT);
+            btn.setTag(freeLogo.get(i));
+            binding.mapIcon.addView(btn);
+        }
+    }
+
+    private void displayStandardTier() {
+        binding.bookmarkPlace.setVisibility(View.VISIBLE);
+        binding.bookmarkPlace.setEnabled(true);
+        for (int i = 0; i < standardLogo.size(); i++) {
+            RadioButton btn = new RadioButton(NearActivity.this);
+            btn.setId(i);
+            btn.setBackgroundResource(standardLogo.get(i));
+            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(240,240);
+            btn.setLayoutParams(params);
+            btn.setButtonDrawable(null);
+            btn.setTextColor(Color.TRANSPARENT);
+            btn.setTag(standardLogo.get(i));
+            binding.mapIcon.addView(btn);
+        }
+    }
+
     private void updateUserIcon(int id) {
         if (style == null) {
             Log.d("TESTING", "map hasn't been initialized");
+            return;
         }
-        HashMap<String, Integer> mapper = new HashMap<String, Integer>() {{
-           put("freeIcon", R.drawable.logo);
-           put("standardIcon", R.drawable.logo_legend);
-           put("kawaIcon", R.drawable.logo_kawa);
-        }};
         RadioButton button = findViewById(id);
-        int icon = mapper.get(button.getText());
         customeIcon = LocationComponentOptions.builder(NearActivity.this)
-                                .foregroundDrawable(icon)
+                                .foregroundDrawable(Integer.parseInt(button.getTag().toString()))
                                 .minZoomIconScale((float) 0.1)
                                 .build();
         locationComponent.activateLocationComponent(
@@ -464,8 +510,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         binding.mapIcon.setVisibility(View.INVISIBLE);
     }
 
-
-    private void getSearchSuggestion(String url, String text, boolean placeMarker) {
+    private void getSearchSuggestion(String text) {
         if (text.isEmpty()) {
             suggestionName.clear();
             testAdapter.notifyDataSetChanged();
@@ -479,12 +524,18 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                return;
+                Log.d("TESTINGHELLO", e.getMessage());
+                if (e.getMessage().equals("Socket closed")) return;
+                handler.post(() -> {
+                    binding.loading.setVisibility(View.INVISIBLE);
+                    suggestionName.add("Error getting suggestions");
+                    testAdapter.notifyItemInserted(testAdapter.getItemCount() - 1);
+                });
             }
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 String body = response.body().string();
-
+                Log.d("TESTING", body);
                 try {
                     JSONObject res = new JSONObject(body);
                     Iterator<String> keys = res.keys();
@@ -501,12 +552,10 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         binding.loading.setVisibility(View.INVISIBLE);
                         testAdapter.notifyDataSetChanged();
                     });
-
                 }
                 catch (Exception e) {
                     Log.d("TESTING", e.toString());
                 }
-
             }
         });
     }
@@ -544,25 +593,26 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                     String placeName = res.getString("name");
                     String address = res.getString("hs_num") + " " + res.getString("street") + " " + res.getString("city") + " " + res.getString("district") + res.getString("ward");
                     LatLng pos = new LatLng(res.getDouble("lat"), res.getDouble("lng"));
-                    destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                    if (focus) {
+                        destination = new LatLng(res.getDouble("lat"), res.getDouble("lng")); // store potential destination for navigation
+                    }
                     // Store ref Id for pre loaded marker
                     if (!refId.isEmpty()) {
                         markerRefid.put(placeName + " " + address, refId);
                     }
                     handler.post(() -> {
                         Marker mid = addMarker(pos, placeName, address, focus);
-                        if (focusMarker != null) {
+                        if (focusMarker != null && focus) {
                             Log.d("TEST", "reset marker");
                             setFocusMarker(focusMarker,false);
                         }
-
-                        focusMarker = mid;
                         if (focus) {
-                            setFocusMarker(mid,true);
+                            focusMarker = mid;
+                            setFocusMarker(mid, true);
+                            fetchRoute(false);
+                            focusCamera(pos);
+                            displayPlaceInfo(res, refId);
                         }
-                        if (focus) fetchRoute(false);
-                        if (focus) focusCamera(pos);
-                        if (focus) displayPlaceInfo(res);
                     });
                 }
                 catch (Exception e) {
@@ -600,18 +650,17 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         }
                         handler.post(() -> {
                             Marker mid = addMarker(pos, placeName, address, focus);
-                            if (focusMarker != null) {
+                            if (focusMarker != null && focus) {
                                 Log.d("TEST", "reset marker");
                                 setFocusMarker(focusMarker,false);
                             }
-
-                            focusMarker = mid;
                             if (focus) {
-                                setFocusMarker(mid,true);
+                                focusMarker = mid;
+                                setFocusMarker(mid, true);
+                                fetchRoute(false);
+                                focusCamera(pos);
+                                displayPlaceInfo(res, refId);
                             }
-                            if (focus) fetchRoute(false);
-                            if (focus) focusCamera(pos);
-                            if (focus) displayPlaceInfo(res);
                         });
                     }
                 });
@@ -629,31 +678,34 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
     }
 
-    private void displayPlaceInfo(JSONObject data) {
+    private void displayPlaceInfo(JSONObject data, String ref_id) {
         CardView cardView = (CardView) findViewById(R.id.card_view);
         cardView.setVisibility(View.VISIBLE);
         TextView nameView = (TextView) findViewById(R.id.place_name);
         TextView addressView = (TextView) findViewById(R.id.place_address);
-//        TextView distanceView = (TextView) findViewById(R.id.place_distance);
         ImageView thumbnail = (ImageView) findViewById(R.id.coffee_thumbnail);
 
         String name = "";
         String address = "";
-//        Double distance = 0.0;
         try {
             name = data.getString("name");
             address = data.getString("address");
-//            distance = data.getDouble("distance");
+
         } catch (JSONException e) {
             Log.e("ERROR", e.getMessage());
         }
         nameView.setText(name);
         addressView.setText(address);
-//        distanceView.setText(String.format("%1$,.2f", distance) + "m");
         thumbnail.setVisibility(View.INVISIBLE);
+        try {
+            isBookmark(ref_id);
+        }
+        catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
     }
 
-    private void displayPlaceInfo(DocumentSnapshot doc) {
+    private void displayPlaceInfo(DocumentSnapshot doc, String ref_id) {
         CardView cardView = (CardView) findViewById(R.id.card_view);
         cardView.setVisibility(View.VISIBLE);
 
@@ -665,6 +717,12 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         addressView.setText(doc.getString("address"));
         thumbnail.setVisibility(View.VISIBLE);
         Picasso.get().load(doc.getString("image")).resize(300, 0).into(thumbnail);
+        try {
+            isBookmark(ref_id);
+        }
+        catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
     }
 
 
@@ -675,7 +733,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             manager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
 
     // Add firebase coffee place to map as marker when first load
     private void getFirebaseSuggesstion() {
@@ -727,7 +784,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
             }
         });
     }
-
 
     private void askPermission() {
         ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -798,13 +854,11 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     }
 
     private void updateMyLocationTrackingMode() {
-//        int[] vietmapTrackingMode = {CameraMode.NONE, CameraMode.TRACKING, CameraMode.TRACKING_COMPASS, CameraMode.TRACKING_GPS};
         int[] vietmapTrackingMode = {CameraMode.NONE, CameraMode.TRACKING, CameraMode.TRACKING_GPS};
         locationComponent.setCameraMode(vietmapTrackingMode[0]);
     }
 
     private void updateMyLocationRenderMode() {
-//        int[] vietmapRenderMode = {RenderMode.NORMAL, RenderMode.COMPASS, RenderMode.GPS};
         int[] vietmapRenderMode = {RenderMode.NORMAL, RenderMode.GPS};
         locationComponent.setRenderMode(vietmapRenderMode[0]);
 
@@ -833,21 +887,15 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                 Log.d("TEST", "GET location successful");
                 LatLng userLoc = new LatLng(location.getLatitude(), location.getLongitude());
                 origin = new LatLng(location.getLatitude(), location.getLongitude()); // store user location as origin
-
-
                 // Check if there is any data in intent
                 Intent intent = getIntent();
                 if (intent.getStringExtra("key") != null) {
-//                    Log.d("TESTINGHELLO", intent.getStringExtra("key"));
-//                    Log.d("TESTINGHELLO", intent.getStringExtra("refId"));
                     suggestionMap.put(intent.getStringExtra("key"), intent.getStringExtra("refId"));
                     binding.search.setIconified(false);
                     onSearch(intent.getStringExtra("key"));
                 }
                 // Populate map
-//                getFirebaseSuggesstion();
                 getVietmapSuggestion();
-
             }
 
             @Override
@@ -856,10 +904,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     }
 
     // Navigation function
-    private void overViewRoute() {}
-
-    private void clearRoute() {}
-
     private void startNavigation() {
         tilt = 60;
         zoom = 17;
@@ -906,10 +950,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         isOverviewing = false;
         if (currentCenterPoint != null) {
             focusCamera(new LatLng(currentCenterPoint.getLatitude(), currentCenterPoint.getLongitude()));
-//            moveCamera(
-//                    new LatLng(currentCenterPoint.getLatitude(), currentCenterPoint.getLongitude()),
-//                    currentCenterPoint.getBearing()
-//            );
         }
     }
 
@@ -935,8 +975,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         }
 
                         navigationMapRoute = new NavigationMapRoute(mapView, vietMapGL);
-                        // allow user to choose route ??
-                        Log.d("TESTINGHELLO", String.valueOf(currentRoute.distance()));
 
                         // get route points
                         isBuildingRoute = false;
@@ -952,8 +990,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         if (isNavigationInProgress) {
                             startNavigation();
                         }
-
-
                     }
 
                     @Override
@@ -982,16 +1018,12 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
 
         zoom = 17;
         tilt = 23;
-//        focusCamera(origin);
 
         if (focusMarker != null) {
             Log.d("TEST", "reset marker");
             setFocusMarker(focusMarker,false);
         }
-
     }
-
-
 
     // Animate camera only
     private void animateVietmapGLForRouteOverview(int[] padding, List<Point> routePoints) {
@@ -1001,7 +1033,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         vietMapGL.animateCamera(
                 resetUpdate, 150, new CameraOverviewCancelableCallback(overviewUpdate, vietMapGL)
         );
-
     }
 
     private CameraUpdate buildResetCameraUpdate() {
@@ -1063,7 +1094,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
     private void submitSearchRequest(String val) {
         if (!suggestionMap.containsKey(val)) {
             Log.d("TESTINGHELLO", suggestionMap.toString());
-             closeKeyboard();
+            closeKeyboard();
             return;
         }
         if (navigationMapRoute != null) {
@@ -1077,7 +1108,6 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         binding.loading.setVisibility(View.INVISIBLE);
         binding.searchResult.setVisibility(View.VISIBLE);
         binding.searchResult.setText(val);
-//        Log.d("TESTINGHELLO", suggestionMap.get(val));
 
         // Add marker to map
         String refID = suggestionMap.get(val);
@@ -1092,30 +1122,88 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         stopNavigation();
     }
 
+    private void bookmarkPlace(View view) {
+        FirebaseUser user = auth.getCurrentUser();
+        if (user == null) {
+            Toast.makeText(NearActivity.this, "You need to sign in", Toast.LENGTH_LONG).show();
+            return;
+        }
+        // Save to user bookmark
+        try {
+            String ref = markerRefid.get(focusMarker.getTitle() + " " + focusMarker.getSnippet());
+            Log.d("TEST", ref);
+            CollectionReference userColl = db.collection("user");
+            userColl
+                    .whereEqualTo("userID", user.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            ArrayList<String> bookmarks = (ArrayList<String>) doc.get("bookmarks");
+                            HashSet<String> bookmarkSet = new HashSet<>();
+                            bookmarkSet.addAll(bookmarks);
+                            if (bookmarkSet.contains(ref)) {
+                                bookmarkSet.remove(ref);
+                                binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.white));
+                            }
+                            else {
+                                bookmarkSet.add(ref);
+                                binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.blue));
+                            }
+                            userColl.document(doc.getId()).update("bookmarks", new ArrayList<>(bookmarkSet));
+                        }
+                    });
+        } catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
+    }
 
-    @Override
-    public void onRunning(boolean b) {
+    private void isBookmark(String refId) {
+        FirebaseUser currUser = auth.getCurrentUser();
+        if (currUser == null) {
+            return;
+        }
+        try {
+            String ref = markerRefid.get(focusMarker.getTitle() + " " + focusMarker.getSnippet());
+            Log.d("TEST", ref);
+            CollectionReference userColl = db.collection("user");
+            userColl
+                    .whereEqualTo("userID", currUser.getUid())
+                    .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                            ArrayList<String> bookmarks = (ArrayList<String>) doc.get("bookmarks");
+                            for (int i = 0; i < bookmarks.size(); i++) {
+                                if (bookmarks.get(i).equals(refId)) {
+                                    Log.d("TESTING", "true");
+                                    binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.blue));
+                                    return;
+                                }
+                            }
+//                            Log.d("TESTING", "" + refId);
+//                            Log.d("TESTING", "" + bookmarks.toString());
 
+                            binding.bookmarkPlace.setBackgroundColor(getResources().getColor(R.color.white));
+                        }
+                    });
+        } catch (Exception e) {
+            Log.d("TEST", e.toString());
+        }
     }
 
     @Override
-    public void fasterRouteFound(DirectionsRoute directionsRoute) {
-
-    }
+    public void onRunning(boolean b) {}
 
     @Override
-    public void onProgressChange(Location location, RouteProgress routeProgress) {
-
-    }
+    public void fasterRouteFound(DirectionsRoute directionsRoute) {}
 
     @Override
-    public void onMilestoneEvent(RouteProgress routeProgress, String s, Milestone milestone) {
-
-
-    }
+    public void onProgressChange(Location location, RouteProgress routeProgress) {}
 
     @Override
-    public void userOffRoute(Location location) {
+    public void onMilestoneEvent(RouteProgress routeProgress, String s, Milestone milestone) {}
 
-    }
+    @Override
+    public void userOffRoute(Location location) {}
 }

@@ -4,8 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.donona.R;
 import com.example.donona.databinding.ItemCoffeePlaceBinding;
 import com.example.donona.model.CoffeePlace;
-import com.example.donona.transformation.CircleTransform;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -52,18 +49,10 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
         CoffeePlace coffeePlace = coffeePlaceList.get(position);
         Picasso.get().load(coffeePlace.getImage()).into(holder.binding.coffeeImage);
         holder.binding.coffeeName.setText(coffeePlace.getName());
-//        holder.binding.coffeeDisplay.setText("Coffee Name:" + coffeePlace.getDisplay());
         holder.binding.coffeeAddress.setText("Address:" + coffeePlace.getAddress());
-//        holder.binding.coffeeStreet.setText("Street:" + coffeePlace.getStreet());
-//        holder.binding.coffeeWard.setText("Ward:" + coffeePlace.getWard());
-//        holder.binding.coffeeDistrict.setText("District:" + coffeePlace.getDistrict());
-//        holder.binding.coffeeCity.setText("City:" + coffeePlace.getCity());
         holder.binding.coffeePriceRange.setText("Price:" + coffeePlace.getPriceRange());
         holder.binding.coffeeStarttime.setText(coffeePlace.getStartTime() + " A.M.");
         holder.binding.coffeeEndtime.setText(coffeePlace.getEndtime() + " P.M.");
-//        holder.binding.coffeeHsNum.setText("Hs Number:" + coffeePlace.getHs_num());
-//        holder.binding.coffeeLat.setText(String.valueOf("Latitude:" + coffeePlace.getLat()));
-//        holder.binding.coffeeLng.setText(String.valueOf("Longitude:" + coffeePlace.getLng()));
         boolean hasWifi = coffeePlace.isWifi();
         holder.binding.coffeeWifi.setText(hasWifi ? "Wifi: Yes" : "Wifi: No");
         holder.binding.nearMe.setOnClickListener(new View.OnClickListener() {
@@ -75,46 +64,46 @@ public class CoffeePlaceAdapter extends RecyclerView.Adapter<CoffeePlaceAdapter.
         });
 //        holder.binding.coffeeThumbnail.setText(coffeePlace.getThumbnail());
 
-        if (coffeePlace.isIsBookMark()) {
-            holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50_selected); // Tô đậm
-        } else {
-            holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50); // Sáng
-        }
-        Log.d("BookmarkTest", "Current state: " + coffeePlace.isIsBookMark());
-        holder.binding.bookmarkButton.setOnClickListener(v -> {
-            String refId = coffeePlace.getRef_id().replace("fb:", "");  // Loại bỏ "fb:" khỏi ref_id
-            boolean currentBookMarkState = coffeePlace.isIsBookMark();    // Lấy trạng thái hiện tại
-            boolean newBookMarkState = !currentBookMarkState;           // Đảo ngược trạng thái isBookMark
-
-            Log.d("Bookmark", "Current state: " + currentBookMarkState);  // Log trạng thái hiện tại
-            Log.d("Bookmark", "New state: " + newBookMarkState);         // Log trạng thái sau khi đảo ngược
-
-            // Cập nhật trạng thái cục bộ ngay lập tức
-            coffeePlace.setIsBookMark(newBookMarkState);
-            notifyItemChanged(position);
-
-            // Gọi listener để thông báo cho Activity về sự thay đổi
-            if (onBookmarkClickListener != null) {
-                onBookmarkClickListener.onBookmarkClick(position, newBookMarkState);
-            }
-
-            // Cập nhật Firestore với trạng thái mới
-            db.collection("coffeePlace")
-                    .document(refId)
-                    .update("isBookMark", newBookMarkState)
-                    .addOnSuccessListener(aVoid -> {
-                        Log.d("Firestore", "Bookmark updated successfully");
-
-                        // Cập nhật lại trạng thái cục bộ sau khi Firestore thành công
-                        coffeePlace.setIsBookMark(newBookMarkState);  // Cập nhật lại trạng thái cục bộ
-                        Log.d("Bookmark", "Updated state locally: " + coffeePlace.isIsBookMark());
-
-                        notifyItemChanged(position);  // Cập nhật lại RecyclerView sau khi thay đổi
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w("Firestore", "Error updating bookmark", e);
-                    });
-        });
+//        if (coffeePlace.isIsBookMark()) {
+//            holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50_selected); // Tô đậm
+//        } else {
+//            holder.binding.bookmarkButton.setImageResource(R.drawable.icons8_bookmark_50); // Sáng
+//        }
+//        Log.d("BookmarkTest", "Current state: " + coffeePlace.isIsBookMark());
+//        holder.binding.bookmarkButton.setOnClickListener(v -> {
+//            String refId = coffeePlace.getRef_id().replace("fb:", "");  // Loại bỏ "fb:" khỏi ref_id
+//            boolean currentBookMarkState = coffeePlace.isIsBookMark();    // Lấy trạng thái hiện tại
+//            boolean newBookMarkState = !currentBookMarkState;           // Đảo ngược trạng thái isBookMark
+//
+//            Log.d("Bookmark", "Current state: " + currentBookMarkState);  // Log trạng thái hiện tại
+//            Log.d("Bookmark", "New state: " + newBookMarkState);         // Log trạng thái sau khi đảo ngược
+//
+//            // Cập nhật trạng thái cục bộ ngay lập tức
+//            coffeePlace.setIsBookMark(newBookMarkState);
+//            notifyItemChanged(position);
+//
+//            // Gọi listener để thông báo cho Activity về sự thay đổi
+//            if (onBookmarkClickListener != null) {
+//                onBookmarkClickListener.onBookmarkClick(position, newBookMarkState);
+//            }
+//
+//            // Cập nhật Firestore với trạng thái mới
+//            db.collection("coffeePlace")
+//                    .document(refId)
+//                    .update("isBookMark", newBookMarkState)
+//                    .addOnSuccessListener(aVoid -> {
+//                        Log.d("Firestore", "Bookmark updated successfully");
+//
+//                        // Cập nhật lại trạng thái cục bộ sau khi Firestore thành công
+//                        coffeePlace.setIsBookMark(newBookMarkState);  // Cập nhật lại trạng thái cục bộ
+//                        Log.d("Bookmark", "Updated state locally: " + coffeePlace.isIsBookMark());
+//
+//                        notifyItemChanged(position);  // Cập nhật lại RecyclerView sau khi thay đổi
+//                    })
+//                    .addOnFailureListener(e -> {
+//                        Log.w("Firestore", "Error updating bookmark", e);
+//                    });
+//        });
 
     }
 

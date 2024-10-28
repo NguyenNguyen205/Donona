@@ -17,3 +17,4 @@ local.properties
 unityLibrary/build
 unityLibrary/symbols
 stripeServer/serviceKey.json
+stripeServer/testing.pem
