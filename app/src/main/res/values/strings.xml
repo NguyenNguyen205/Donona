@@ -37,11 +37,11 @@
     <string name="upgrade_your_account">Upgrade Your Account</string>
     <string name="free_tier">Free Tier</string>
     <string name="basic">Basic</string>
-    <string name="basic_features">Unlimited Store Search \n Arcade game</string>
-    <string name="standard_price">10.000VND</string>
+    <string name="basic_features">Unlimited Store Search \nArcade game</string>
+    <string name="standard_price">10.000VND/Month</string>
     <string name="standard">Standard</string>
-    <string name="standard_features">Bookmark Store \n Read Blog \n Change Map Icon </string>
-    <string name="buy_standard">Buy Standard</string>
+    <string name="standard_features">Bookmark Store \nRead Blog \nChange Map Icon </string>
+    <string name="buy_standard">Buy standard</string>
     <string name="checkout">Check Out</string>
     <string name="hello_world">Hello world</string>
     <string name="address_in_after_life">Placeholder</string>
@@ -51,7 +51,7 @@
     <string name="insta_id">donona.urcafeurway</string>
     <string name="gmail">donona.urcafeurway@gmail.com</string>
     <string name="contact">Contact</string>
-    <string name="app_info">Appliance Infomation</string>
+    <string name="app_info">Appliance Information</string>
     <string name="switch_lang">Switch Language</string>
     <string name="book_mark">Book Mark</string>
     <string name="loading">Loading …</string>
@@ -64,7 +64,7 @@
     <string name="promotion_ps">Promotion</string>
     <string name="suggest_ps">Suggest</string>
     <string name="game_ps">Game</string>
-
+    <string name="cancel_subscription">Cancel subscription</string>
 
 
 </resources>
