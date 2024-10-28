@@ -65,6 +65,9 @@
     <string name="suggest_ps">Suggest</string>
     <string name="game_ps">Game</string>
     <string name="cancel_subscription">Cancel subscription</string>
+    <string name="used_email">Email already in used</string>
+    <string name="tier">Tier</string>
+    <string name="no_update">No update</string>
 
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.donona.util.NetworkUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -33,7 +35,7 @@ import java.util.Map;
 public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private String TAG = "Hello";
+    private String TAG = "TESTINGHELLO";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +59,16 @@ public class SignupActivity extends AppCompatActivity {
 
         EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
+        if (!NetworkUtils.isWifiConnected(this)) {
+            // Wi-Fi is not connected, do something here
+            Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         mAuth.createUserWithEmailAndPassword(mEmail.getText().toString(), mPassword.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                .addOnSuccessListener(this, new OnSuccessListener<AuthResult>() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
+                    public void onSuccess(AuthResult authResult) {
                         Log.d(TAG, "Sign up successfully");
                         FirebaseUser user = mAuth.getCurrentUser();
                         handleSuccessAuthentication(user);
@@ -70,11 +77,10 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Sign up fail");
-                        handleFailAuthentication();
+                        Log.d(TAG, e.getMessage());
+                        handleFailAuthentication(e.getMessage());
                     }
                 });
-
     }
 
     private void handleSuccessAuthentication(FirebaseUser user) {
@@ -90,19 +96,20 @@ public class SignupActivity extends AppCompatActivity {
 
         // Kiểm tra mật khẩu dưới 6 ký tự
         if (password.length() < 6) {
-            Toast.makeText(SignupActivity.this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignupActivity.this, "Password contains at least 6 characters", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
         // Kiểm tra mật khẩu và xác nhận mật khẩu có trùng nhau không
         if (!password.equals(passwordConfirm)) {
-            Toast.makeText(SignupActivity.this, "Mật khẩu xác nhận không trùng khớp", Toast.LENGTH_LONG).show();
+            Toast.makeText(SignupActivity.this, "Password do not match", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
-        // Kiểm tra định dạng email
-        if (!email.endsWith("@gmail.com")) {
-            Toast.makeText(SignupActivity.this, "Email phải có định dạng @gmail.com", Toast.LENGTH_LONG).show();
+        if (!(email.endsWith("@gmail.com") || email.endsWith("@yahoo.com") ||
+                email.endsWith("@outlook.com") || email.endsWith("@icloud.com")) ||
+                Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(SignupActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
             return; // Không tiếp tục nếu có lỗi
         }
 
@@ -114,6 +121,8 @@ public class SignupActivity extends AppCompatActivity {
         data.put("password", mPassword.getText().toString());
         data.put("image", "No Image");
         data.put("bookmarks", new ArrayList<String>());
+        data.put("tier", "free");
+        data.put("subscriptionId", "");
 
         db.collection("user")
                 .add(data)
@@ -134,8 +143,13 @@ public class SignupActivity extends AppCompatActivity {
                 });
     }
 
-    private void handleFailAuthentication() {
-        Toast.makeText(SignupActivity.this, "Đăng ký thất bại", Toast.LENGTH_LONG).show();
+    private void handleFailAuthentication(String error) {
+        if (error.endsWith("another account.")) {
+            Toast.makeText(SignupActivity.this, R.string.used_email, Toast.LENGTH_LONG).show();
+            return;
+        }
+        Toast.makeText(SignupActivity.this, "Failed", Toast.LENGTH_LONG).show();
+
     }
 
     public void onSignIn(View view) {

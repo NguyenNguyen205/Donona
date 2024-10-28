@@ -9,9 +9,6 @@
     tools:context=".HomeActivity"
     tools:ignore="MissingConstraints">
 
-
-    <!--    Navigation bar-->
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="227dp"
@@ -26,6 +23,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_text" />
 
+    <!--    Navigation bar-->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav"
         android:layout_width="0dp"
@@ -36,26 +34,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
-
-    <!--    <com.google.android.material.textfield.TextInputLayout-->
-    <!--        android:id="@+id/textInputLayout"-->
-    <!--        android:layout_width="342dp"-->
-    <!--        android:layout_height="25dp"-->
-    <!--        android:layout_marginTop="10dp"-->
-    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--        app:layout_constraintRight_toRightOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.6"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/imageView">-->
-
-    <!--        <com.google.android.material.textfield.TextInputEditText-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-
-    <!--            android:hint="Search" />-->
-    <!--    </com.google.android.material.textfield.TextInputLayout>-->
-
-
-    <!--   Card Slider  -->
 
     <GridLayout
         android:id="@+id/menu"
