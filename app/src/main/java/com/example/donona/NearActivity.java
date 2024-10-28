@@ -712,9 +712,13 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         TextView nameView = (TextView) findViewById(R.id.place_name);
         TextView addressView = (TextView) findViewById(R.id.place_address);
         ImageView thumbnail = (ImageView) findViewById(R.id.coffee_thumbnail);
+        TextView openHours = (TextView) findViewById(R.id.openHours);
+        TextView closeHours = (TextView) findViewById(R.id.closeHours);
 
         nameView.setText(doc.getString("name"));
         addressView.setText(doc.getString("address"));
+        openHours.setText(doc.getString("startTime") + " A.M.");
+        closeHours.setText(doc.getString("endtime") + " P.M.");
         thumbnail.setVisibility(View.VISIBLE);
         Picasso.get().load(doc.getString("image")).resize(300, 0).into(thumbnail);
         try {
@@ -984,7 +988,7 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
                         }
 
                         // Display route info in cardview
-                        binding.placeDistance.setText(String.format("%1$,.2f", currentRoute.distance()) + "m");
+                        binding.placeDistance.setText("Distance: " + String.format("%1$,.0f", currentRoute.distance()) + "m");
 
                         // start navigation
                         if (isNavigationInProgress) {
