@@ -117,7 +117,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("androidx.core:core-splashscreen:1.2.0-alpha02")
     // Unity game
-//    implementation(project(":unityLibrary"))
+    //implementation(project(":unityLibrary"))
 
 }
 
