@@ -696,7 +696,8 @@ public class NearActivity extends AppCompatActivity implements NavigationEventLi
         }
         nameView.setText(name);
         addressView.setText(address);
-        thumbnail.setVisibility(View.INVISIBLE);
+        thumbnail.setVisibility(View.VISIBLE);
+        Picasso.get().load(R.drawable.logo).resize(300, 0).into(thumbnail);
         try {
             isBookmark(ref_id);
         }
