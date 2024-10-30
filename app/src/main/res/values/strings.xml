@@ -68,6 +68,7 @@
     <string name="used_email">Email already in used</string>
     <string name="tier">Tier</string>
     <string name="no_update">No update</string>
+    <string name="add_place">Add Place</string>
 
 
 </resources>

@@ -31,5 +31,5 @@ rootProject.name = "donona"
 include(":app")
 
 // Unity
-//include(":unityLibrary")
-//project(":unityLibrary").projectDir = file(".\\unityLibrary")
+include(":unityLibrary")
+project(":unityLibrary").projectDir = file(".\\unityLibrary")

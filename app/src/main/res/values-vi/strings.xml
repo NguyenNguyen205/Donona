@@ -69,5 +69,6 @@
     <string name="tier">Cấp</string>
     <string name="no_update">Dữ liệu không đổi</string>
     <string name="cancel_subscription">Hủy đăng ký</string>
+    <string name="add_place">Thêm Quán</string>
 
 </resources>

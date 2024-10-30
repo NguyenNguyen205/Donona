@@ -1,5 +1,6 @@
 package com.example.donona;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.unity3d.player.UnityPlayerActivity;
 
 public class GameLauncherActivity extends AppCompatActivity {
 
@@ -26,8 +29,8 @@ public class GameLauncherActivity extends AppCompatActivity {
     }
 
     public void launchGame(View view) {
-//        Intent intent = new Intent(GameLauncherActivity.this, UnityPlayerActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(GameLauncherActivity.this, UnityPlayerActivity.class);
+        startActivity(intent);
     }
 
     @Override
