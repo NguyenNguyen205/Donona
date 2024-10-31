@@ -112,10 +112,11 @@ public class LoginActivity extends AppCompatActivity {
 
         } else {
             Log.d("TEST", "Google sign in failed");
+            Log.d("TEST", result.toString());
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Sign in failed");
             alert.setMessage("Please sign in again");
-            alert.setCancelable(false);
+            alert.setCancelable(true);
             alert.show();
         }
     }
