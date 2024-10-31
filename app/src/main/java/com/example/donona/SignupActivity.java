@@ -56,9 +56,59 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignUp(View view) {
-
+        // Get data
+        EditText mUsername = (EditText) findViewById(R.id.editTextTextUsername);
         EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
+        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm);
+
+        String email = mEmail.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        String passwordConfirm = mPasswordConfirm.getText().toString().trim();
+        String username = mUsername.getText().toString().trim();
+
+        if(username.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Username is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if(email.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Email is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if(passwordConfirm.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Password confirm is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if(password.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Password is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        // Kiểm tra mật khẩu dưới 6 ký tự
+        if (password.length() < 6) {
+            Toast.makeText(SignupActivity.this, "Password contains at least 6 characters", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        // Kiểm tra mật khẩu và xác nhận mật khẩu có trùng nhau không
+        if (!password.equals(passwordConfirm)) {
+            Toast.makeText(SignupActivity.this, "Password do not match", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if (!(email.endsWith("@gmail.com") ||
+                email.endsWith("@yahoo.com") ||
+                email.endsWith("@outlook.com") ||
+                email.endsWith("@icloud.com") ||
+                Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        )
+        ) {
+            Toast.makeText(SignupActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
         if (!NetworkUtils.isWifiConnected(this)) {
             // Wi-Fi is not connected, do something here
             Toast.makeText(this, "Wi-Fi is not connected", Toast.LENGTH_SHORT).show();
@@ -88,30 +138,9 @@ public class SignupActivity extends AppCompatActivity {
         EditText mUsername = (EditText) findViewById(R.id.editTextTextUsername);
         EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
         EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
-        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm); // Trường mới cho password confirm
+        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm);
 
-        String email = mEmail.getText().toString().trim();
-        String password = mPassword.getText().toString().trim();
-        String passwordConfirm = mPasswordConfirm.getText().toString().trim();
 
-        // Kiểm tra mật khẩu dưới 6 ký tự
-        if (password.length() < 6) {
-            Toast.makeText(SignupActivity.this, "Password contains at least 6 characters", Toast.LENGTH_LONG).show();
-            return; // Không tiếp tục nếu có lỗi
-        }
-
-        // Kiểm tra mật khẩu và xác nhận mật khẩu có trùng nhau không
-        if (!password.equals(passwordConfirm)) {
-            Toast.makeText(SignupActivity.this, "Password do not match", Toast.LENGTH_LONG).show();
-            return; // Không tiếp tục nếu có lỗi
-        }
-
-        if (!(email.endsWith("@gmail.com") || email.endsWith("@yahoo.com") ||
-                email.endsWith("@outlook.com") || email.endsWith("@icloud.com")) ||
-                Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(SignupActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
-            return; // Không tiếp tục nếu có lỗi
-        }
 
         // store user into database
         Map<String, Object> data = new HashMap<>();
@@ -144,6 +173,59 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void handleFailAuthentication(String error) {
+        // Get data
+        EditText mUsername = (EditText) findViewById(R.id.editTextTextUsername);
+        EditText mEmail = (EditText) findViewById(R.id.editTextTextEmailAddress);
+        EditText mPassword = (EditText) findViewById(R.id.editTextPassword);
+        EditText mPasswordConfirm = (EditText) findViewById(R.id.editTextPasswordConfirm);
+
+        String email = mEmail.getText().toString().trim();
+        String password = mPassword.getText().toString().trim();
+        String passwordConfirm = mPasswordConfirm.getText().toString().trim();
+        String username = mUsername.getText().toString().trim();
+
+        if(username.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Username is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if(email.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Email is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if(passwordConfirm.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Password confirm is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if(password.isEmpty()){
+            Toast.makeText(SignupActivity.this, "Password is empty", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        // Kiểm tra mật khẩu dưới 6 ký tự
+        if (password.length() < 6) {
+            Toast.makeText(SignupActivity.this, "Password contains at least 6 characters", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        // Kiểm tra mật khẩu và xác nhận mật khẩu có trùng nhau không
+        if (!password.equals(passwordConfirm)) {
+            Toast.makeText(SignupActivity.this, "Password do not match", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
+
+        if (!(email.endsWith("@gmail.com") ||
+                email.endsWith("@yahoo.com") ||
+                email.endsWith("@outlook.com") ||
+                email.endsWith("@icloud.com") ||
+                Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        )
+        ) {
+            Toast.makeText(SignupActivity.this, "Invalid email format", Toast.LENGTH_LONG).show();
+            return; // Không tiếp tục nếu có lỗi
+        }
         if (error.endsWith("another account.")) {
             Toast.makeText(SignupActivity.this, R.string.used_email, Toast.LENGTH_LONG).show();
             return;
