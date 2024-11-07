@@ -1,5 +1,5 @@
 # DONONA PROJECT EXE201 FPTU 
-
+1. Thành viên
 - Nguyễn Xuân Yến (SE171363)
 
 - Dương Hoàng Tuấn Kiệt (SE172938)
@@ -14,10 +14,11 @@
 
 - Nguyễn Minh Nguyên (SE999999)
 
-1. Giới Thiệu
+2. Giới thiệu
 - Donona là 1 ứng dụng android, trợ thủ đắc lực giúp bạn khám phá những quán cà phê tốt nhất xung quanh bằng công nghệ của VietMap APIs. Tìm kiếm địa điểm hoàn hảo cho buổi thư giãn cà phê của bạn với công cụ tìm kiếm tiện lợi và đề xuất thông minh dựa trên vị trí. Dù bạn đang tìm một góc yên tĩnh để làm việc hay một quán sôi động để tụ họp, Donona sẽ giúp bạn tìm nơi phù hợp gần mình. Trải nghiệm việc tìm kiếm quán cà phê dễ dàng, hồ sơ cá nhân tùy chỉnh, và nhiều tính năng nâng cao trải nghiệm cà phê của bạn.
 Tìm kiếm, khám phá và tận hưởng. Donona giúp bạn tìm kiếm quán cà phê một cách dễ dàng và thú vị, với các đề xuất gần bạn, chỉ đường chi tiết để tạo trải nghiệm cá nhân.
-2. Các tính năng chính
+
+3. Các tính năng chính
 - ☕ Khám phá quán cà phê gần bạn
 Với Donona, bạn dễ dàng tìm các quán cà phê gần mình. Tìm kiếm theo tên hoặc vị trí, và khám phá các quán được gợi ý phù hợp với sở thích. Từ những điểm đến nổi tiếng đến những quán ẩn mình, Donona sẽ dẫn bạn đến nơi hoàn hảo. Hãy để chúng tôi xử lý việc tìm kiếm, còn bạn chỉ việc tận hưởng cà phê.
 - 🎵 Âm nhạc cho mọi tâm trạng
