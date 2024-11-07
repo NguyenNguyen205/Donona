@@ -14,7 +14,8 @@
 
 - Nguyễn Minh Nguyên - Mysterious Impact 
 
-1. Donona là 1 ứng dụng android, trợ thủ đắc lực giúp bạn khám phá những quán cà phê tốt nhất xung quanh bằng công nghệ của VietMap APIs. Tìm kiếm địa điểm hoàn hảo cho buổi thư giãn cà phê của bạn với công cụ tìm kiếm tiện lợi và đề xuất thông minh dựa trên vị trí. Dù bạn đang tìm một góc yên tĩnh để làm việc hay một quán sôi động để tụ họp, Donona sẽ giúp bạn tìm nơi phù hợp gần mình. Trải nghiệm việc tìm kiếm quán cà phê dễ dàng, hồ sơ cá nhân tùy chỉnh, và nhiều tính năng nâng cao trải nghiệm cà phê của bạn.
+1. Giới Thiệu
+- Donona là 1 ứng dụng android, trợ thủ đắc lực giúp bạn khám phá những quán cà phê tốt nhất xung quanh bằng công nghệ của VietMap APIs. Tìm kiếm địa điểm hoàn hảo cho buổi thư giãn cà phê của bạn với công cụ tìm kiếm tiện lợi và đề xuất thông minh dựa trên vị trí. Dù bạn đang tìm một góc yên tĩnh để làm việc hay một quán sôi động để tụ họp, Donona sẽ giúp bạn tìm nơi phù hợp gần mình. Trải nghiệm việc tìm kiếm quán cà phê dễ dàng, hồ sơ cá nhân tùy chỉnh, và nhiều tính năng nâng cao trải nghiệm cà phê của bạn.
 Tìm kiếm, khám phá và tận hưởng. Donona giúp bạn tìm kiếm quán cà phê một cách dễ dàng và thú vị, với các đề xuất gần bạn, chỉ đường chi tiết để tạo trải nghiệm cá nhân.
 2. Các tính năng chính
 - ☕ Khám phá quán cà phê gần bạn
