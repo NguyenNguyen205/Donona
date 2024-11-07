@@ -1,14 +1,18 @@
-# DONONA PROJECT 
-# EXE201 
-# FPTU 
+# DONONA PROJECT EXE201 FPTU 
 
-Nguyễn Xuân Yến (SE171363) - Leader, create content in FB, design website and UI app.
-Dương Hoàng Tuấn Kiệt (SE172938) - Code back-end 
-Nguyễn Thanh Hợp (SE171294) - Design UI app.
-Lương Chí Hậu (SS150299) - Create content in Instagram.
-Đỗ Đăng Khoa (SE171102) - Design and edit photos use in content and cafes in app.
-Nguyễn Minh Đức (SS171256) - Create content in FB.
-Nguyễn Minh Nguyên - Mysterious Impact 
+- Nguyễn Xuân Yến (SE171363) - Leader, create content in FB, design website and UI app.
+
+- Dương Hoàng Tuấn Kiệt (SE172938) - Code back-end 
+
+- Nguyễn Thanh Hợp (SE171294) - Design UI app.
+
+- Lương Chí Hậu (SS150299) - Create content in Instagram.
+
+- Đỗ Đăng Khoa (SE171102) - Design and edit photos use in content and cafes in app.
+
+- Nguyễn Minh Đức (SS171256) - Create content in FB.
+
+- Nguyễn Minh Nguyên - Mysterious Impact 
 
 Donona là 1 ứng dụng android, trợ thủ đắc lực giúp bạn khám phá những quán cà phê tốt nhất xung quanh bằng công nghệ của VietMap APIs. Tìm kiếm địa điểm hoàn hảo cho buổi thư giãn cà phê của bạn với công cụ tìm kiếm tiện lợi và đề xuất thông minh dựa trên vị trí. Dù bạn đang tìm một góc yên tĩnh để làm việc hay một quán sôi động để tụ họp, Donona sẽ giúp bạn tìm nơi phù hợp gần mình. Trải nghiệm việc tìm kiếm quán cà phê dễ dàng, hồ sơ cá nhân tùy chỉnh, và nhiều tính năng nâng cao trải nghiệm cà phê của bạn.
 Tìm kiếm, khám phá và tận hưởng. Donona giúp bạn tìm kiếm quán cà phê một cách dễ dàng và thú vị, với các đề xuất gần bạn, chỉ đường chi tiết để tạo trải nghiệm cá nhân.
