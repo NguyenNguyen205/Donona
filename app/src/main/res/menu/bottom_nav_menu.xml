@@ -4,23 +4,20 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/coffee_24px"
-        android:title="@string/title_home" />
+        android:title="@string/title_home"
+        android:tint="@color/quite_brown" />
 
     <item
-        android:id="@+id/navigation_streaming"
-        android:icon="@drawable/smart_display_24px"
-        android:title="@string/title_streaming" />
+        android:id="@+id/navigation_account"
+        android:icon="@drawable/account_circle_24px"
+        android:title="@string/title_account"
+        android:tint="@color/quite_brown" />
 
-<!--    <item-->
-<!--        android:id="@+id/navigation_account"-->
-<!--        android:icon="@drawable/account_circle_24px"-->
-<!--        android:title="@string/title_account" />-->
-
-<!--    <item-->
-<!--        android:id="@+id/navigation_setting"-->
-<!--        android:icon="@drawable/settings_24px"-->
-<!--        android:title="@string/title_setting" />-->
-
+    <item
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/settings_24px"
+        android:title="@string/title_setting"
+        android:tint="@color/quite_brown" />
 
 
 

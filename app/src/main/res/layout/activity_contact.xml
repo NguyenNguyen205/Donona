@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="241dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="54dp"
+        android:contentDescription="donona_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_text" />
+
+    <LinearLayout
+        android:background="@drawable/rounded_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <!--Facebook-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/facebook"
+                android:layout_height="50dp"
+                android:src="@drawable/fui_ic_facebook_white_22dp"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/facebook"
+                android:text="@string/app_name"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+            <ImageButton
+                android:id="@+id/fbButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="fb"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="250dp"
+                android:layout_toEndOf="@+id/facebook"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/quite_brown"/>
+
+        </RelativeLayout>
+
+        <!--Instagram-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/instagram"
+                android:layout_height="50dp"
+                android:src="@drawable/insta_logo"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/instagram"
+                android:text="@string/insta_id"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18sp"/>
+            <ImageButton
+                android:id="@+id/insButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="ins"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="250dp"
+                android:layout_toEndOf="@+id/instagram"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/quite_brown"/>
+
+        </RelativeLayout>
+
+        <!--Facebook-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/mail"
+                android:layout_height="50dp"
+                android:src="@drawable/mail_24px"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/mail"
+                android:text="@string/gmail"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+            <ImageButton
+                android:id="@+id/mailButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="mail"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="250dp"
+                android:layout_toEndOf="@+id/mail"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/quite_brown"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

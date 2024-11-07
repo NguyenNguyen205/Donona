@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".SettingActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="241dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="54dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="54dp"
+        android:contentDescription="donona_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_text" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
+        >
+
+        <View
+            android:layout_width="300dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/rounded_line"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3"
+            app:layout_constraintVertical_bias="0.818" />
+
+        <View
+            android:layout_width="45dp"
+            android:layout_height="5dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/rounded_line"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintEnd_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="@+id/textView3"
+            app:layout_constraintVertical_bias="0.818" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Setting"
+            android:textColor="@color/brown"
+            android:textSize="28dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.145"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/setting"
+        android:background="@drawable/rounded_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        >
+
+
+        <!--Music-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/musicIcon"
+                android:layout_height="50dp"
+                android:src="@drawable/nightlife_48px"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/musicIcon"
+                android:text="@string/play_music"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <!-- Nút phát nhạc -->
+
+            <ImageButton
+                android:id="@+id/musicButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="music"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="240dp"
+                android:layout_toEndOf="@+id/musicIcon"
+                android:src="@drawable/play_circle_40px"
+                android:text="@string/play_music"
+                app:tint="@color/quite_brown" />
+        </RelativeLayout>
+
+        <!--SwitchLang-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/switchLangIcon"
+                android:layout_height="50dp"
+                android:src="@drawable/language_24px"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/switchLangIcon"
+                android:text="@string/switch_lang"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+
+<!--            <Switch-->
+<!--                android:id="@+id/switch_lang"-->
+<!--                android:layout_width="60dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="210dp"-->
+<!--                android:layout_marginTop="6dp"-->
+<!--                android:layout_toEndOf="@+id/switchLangIcon"-->
+<!--                android:paddingStart="20dp"-->
+<!--                app:tint="@color/quite_brown"-->
+<!--                android:scaleX="1.5"-->
+<!--                android:scaleY="1.5"-->
+<!--                android:enabled="false"-->
+<!--                />-->
+            <ImageButton
+                android:id="@+id/switchLang"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="contact"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/quite_brown"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:background="@drawable/rounded_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/setting"
+        >
+
+        <!--Contact-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/contactIcon"
+                android:layout_height="50dp"
+                android:src="@drawable/call_24px"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/contactIcon"
+                android:text="@string/contact"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <ImageButton
+                android:id="@+id/contactNavigate"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="contact"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="240dp"
+                android:layout_toEndOf="@+id/contactIcon"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/quite_brown"
+                />
+
+        </RelativeLayout>
+
+        <!--App Info-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/infoIcon"
+                android:layout_height="50dp"
+                android:src="@drawable/info_24px"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/infoIcon"
+                android:text="@string/app_info"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+            <!-- app info -->
+
+            <ImageButton
+            android:id="@+id/appInfor"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+                android:contentDescription="appinfo"
+                android:layout_gravity="center_horizontal"
+            android:background="@drawable/circle_button"
+            android:backgroundTint="@color/white"
+            android:layout_marginStart="240dp"
+            android:layout_toEndOf="@+id/infoIcon"
+            android:src="@drawable/arrow_forward_ios_24px"
+            app:tint="@color/quite_brown" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="50dp"
+                android:id="@+id/logout"
+                android:layout_height="50dp"
+                android:src="@drawable/logout_24px"
+                android:padding="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/logout"
+                android:text="@string/log_out"
+                android:textColor="@color/quite_brown"
+                android:textStyle="bold"
+                android:textSize="18dp"/>
+
+            <ImageButton
+                android:id="@+id/logoutButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:contentDescription="logout"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/circle_button"
+                android:backgroundTint="@color/white"
+                android:layout_marginStart="240dp"
+                android:layout_toEndOf="@+id/logout"
+                android:src="@drawable/arrow_forward_ios_24px"
+                app:tint="@color/quite_brown"
+                android:onClick="logout"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#ffebc9"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

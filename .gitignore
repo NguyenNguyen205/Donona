@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+# UnityGame
+unityLibrary/build
+unityLibrary/symbols
+stripeServer/serviceKey.json
+stripeServer/testing.pem

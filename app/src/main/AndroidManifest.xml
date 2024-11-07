@@ -3,25 +3,68 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_foreground"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.Donona"
+        android:usesCleartextTraffic="true"
+        android:configChanges = "locale"
         tools:targetApi="31">
         <activity
-            android:name=".VietMapMapViewActivity"
+            android:name=".BookMarkActivity"
             android:exported="false" />
         <activity
-            android:name=".StreamingActivity"
+            android:name=".ContactActivity"
             android:exported="false" />
+        <activity
+            android:name=".AppInforActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SubscriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearMeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReadBlogActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BlogPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GameLauncherActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".NearActivity"
+            android:foregroundServiceType="location" />
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.Donona" />
+        <activity
+            android:name=".NearActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".VietMapMapViewActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
@@ -34,13 +77,21 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="vn.vietmap.services.android.navigation.v5.navigation.NavigationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+        <service android:name=".music.MusicService" />
     </application>
 
 </manifest>

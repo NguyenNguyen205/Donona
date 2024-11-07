@@ -1,14 +1,74 @@
 <resources>
-    <string name="app_name">donona</string>
+    <string name="app_name">Donona</string>
     <string name="title_home">Home</string>
     <string name="title_streaming">Streaming</string>
     <string name="title_account">Account</string>
     <string name="title_setting">Setting</string>
-    <string name="username_label">Username</string>
-    <string name="email_label">Email</string>
-    <string name="password_label">Password</string>
-    <string name="confirm_password_label">Confirm Password</string>
+    <string name="username_label"><b>Username</b></string>
+    <string name="email_label"><b>Email/Username</b></string>
+    <string name="password_label"><b>Password</b></string>
+    <string name="confirm_password_label"><b>Confirm Password</b></string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="edit_avatar">Edit Avatar</string>
+    <string name="email"><b>Email</b></string>
+    <string name="forgot_pw">Forgot password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="or">OR</string>
+    <string name="sign_in_gg">Sign in with Google</string>
+    <string name="privacy">To continue, you can review Company’s privacy policy and terms of service.</string>
+    <string name="game_view_content_description" translatable="false">Game view</string>
+    <string name="app_infor">App Information</string>
+    <string name="fanpage">Fanpage</string>
+
+    <string name="blog">Blog</string>
+    <string name="game">Game</string>
+    <string name="trending">Trending</string>
+    <string name="near_me_title">Near Me</string>
+    <string name="near_me_subtitle">Find the best coffee shops nearby</string>
+    <string name="username_hint">User name here</string>
+    <string name="email_hint">Email here</string>
+    <string name="update">Update</string>
+    <string name="log_out">Log out</string>
+    <string name="play_music">Music</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="upgrade_your_account">Upgrade Your Account</string>
+    <string name="free_tier">Free Tier</string>
+    <string name="basic">Basic</string>
+    <string name="basic_features">Unlimited Store Search \nArcade game</string>
+    <string name="standard_price">10.000VND/Month</string>
+    <string name="standard">Standard</string>
+    <string name="standard_features">Bookmark Store \nRead Blog \nChange Map Icon </string>
+    <string name="buy_standard">Buy standard</string>
+    <string name="checkout">Check Out</string>
+    <string name="hello_world">Coffee Name</string>
+    <string name="address_in_after_life">Placeholder</string>
+    <string name="searching">Searching</string>
+    <string name="coffee_shop_name">Coffee Shop Name</string>
+    <string name="intro">Donona is a lovely app developed by a group of final-year students who are in the process of completing the Entrepreneurship course (EXE201) at FPT University. The application allows users to search for coffee shops near their current location using VietMap. Users can log in with Google and enjoy many other features.</string>
+    <string name="insta_id">donona.urcafeurway</string>
+    <string name="gmail">donona.urcafeurway@gmail.com</string>
+    <string name="contact">Contact</string>
+    <string name="app_info">Appliance Information</string>
+    <string name="switch_lang">Switch Language</string>
+    <string name="book_mark">Book Mark</string>
+    <string name="loading">Loading …</string>
+    <string name="cancel">Cancel subscription</string>
+    <string name="near_me_ps">Near Me</string>
+    <string name="map_ps">Map</string>
+    <string name="upgrade_ps">Upgrade</string>
+    <string name="book_mark_ps">Book Mark</string>
+    <string name="blog_ps">Blog</string>
+    <string name="promotion_ps">Promotion</string>
+    <string name="suggest_ps">Suggest</string>
+    <string name="game_ps">Game</string>
+    <string name="cancel_subscription">Cancel subscription</string>
+    <string name="used_email">Email already in used</string>
+    <string name="tier">Tier</string>
+    <string name="no_update">No update</string>
+    <string name="add_place">Add Place</string>
+
 
 </resources>

@@ -4,8 +4,20 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
+    <color name="blue_fb">#1877F2</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#ffebc9</color>
+    <color name="red">#ff0000</color>
+    <color name="blue">#1b6ef3</color>
+    <color name="text">#643120</color>
+    <color name="beige_brown">#BC9E82</color>
+    <color name="quite_brown">#A17246</color>
+    <color name="brown">#643120</color>
+    <color name="beige">#FFEBC9</color>
+    <color name="darker_gray">#AAA49E</color>
+
+    <color name="orange">#FFA500</color>
+    <color name="card_background">#faeed9</color>
 </resources>
